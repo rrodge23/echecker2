@@ -1,0 +1,128 @@
+
+    /*POSITIONS*/
+.float-right{
+    float: right !important;
+}
+
+.float-left{
+    float: left !important;
+}
+.inline{
+    display: inline-block !important;
+}
+
+.vertical-aligntop{
+    vertical-align: top !important;
+}
+
+.center{
+    left:50% !important;
+    margin-left: -25% !important;
+}
+
+.hidden{
+    display: none !important;
+}
+
+    /*COLORS*/
+.color-white{
+    color: white !important;
+}
+
+.color-a2{
+    color: #a2a2a !important;
+}
+.bg-colorwhite{
+    background-color:white !important;
+}
+
+
+ /*TEXT*/
+
+.font-roboto{
+    font-family: 'Roboto',Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+}
+
+.font-product{
+    font-family: 'Product Sans',Arial,Helvetica,sans-serif !important;
+}
+
+.text-center{
+    text-align: center !important;
+}
+
+.text-left{
+    text-align: left !important;
+}
+
+    /*DISPLAYS*/
+.z-index-1000{
+    z-index: 1000 !important;
+}
+
+    /*MARGINS*/
+.margin-left10{
+    margin-left:10px !important;
+}
+.margin-right10{
+    margin-right:10px !important;
+}
+.margin-right-30{
+    margin-right: 30px !important;
+}
+
+.margin-left-30{
+    margin-left: 30px !important;
+}
+
+.margin30{
+    margin: 30px !important;
+}
+.margin-left70{
+    margin-left:70px !important;
+}
+.margin-bottom30{
+    margin-bottom: 30px !important;
+}
+
+.padding-left10{
+    padding-left:10px !important;
+}
+.padding-right10{
+    padding-right:10px !important;
+}
+.padding0{
+    padding: 0px 0px !important;
+}
+
+.padding-left10{
+    padding-left: 10px !important;
+}
+
+.padding-left30{
+    padding-left: 30px !important;
+}
+
+.padding-left100{
+    padding-left: 150px !important;
+}
+
+/*SIZE*/
+
+.width80p{
+    width: 80% !important;
+}
+
+/*SHADOWS*/
+.box-shadow{
+box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2) !important;
+}
+
+.box-shadow-panel{
+box-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+body{
+    font-family: 'Product Sans',Arial,Helvetica,sans-serif !important;
+}
+
