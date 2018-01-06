@@ -35,9 +35,7 @@
     <!--<script src= "assets/js/bootstrap-checkbox-radio.js" type="text/javascript"></script>-->
     <!--<script src= "assets/js/bootstrap-notify.js" type="text/javascript"></script>-->
     <script src= "assets/js/paper-dashboard.js" type="text/javascript"></script>
-    
-     
-    <script src= "assets/js/jquery.bootstrap-duallistbox.min.js" type="text/javascript"></script>
+
     <script src= "assets/js/demo.js" type="text/javascript"></script>
     <!--<script src= "assets/js/chartist.min.js" type="text/javascript"></script>-->
     <!--<script src= "assets/js/material.js" type="text/javascript"></script>-->

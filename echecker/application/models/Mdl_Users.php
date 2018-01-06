@@ -14,6 +14,7 @@ class Mdl_Users extends CI_Model {
                         ->join('user_leveltbl', 'users.user_level = user_leveltbl.user_level')
                         ->get('users');
         $usersData = $query->first_row('array');
+        
         if($usersData['user_level'] == "99"){
             $query = $this->db->where('idadmin',$usersData['idusers'])->get('admin_informationtbl');
             $result = $query->first_row('array');
@@ -21,13 +22,14 @@ class Mdl_Users extends CI_Model {
                 return false;
             }
         }else if($usersData['user_level'] == "1"){
-            $query = $this->db->where('idstudent',$usersData['idusers'])->get('student_informationtbl');
+            $query = $this->db->where('id',$usersData['idusers'])->get('student_informationtbl');
             $result = $query->first_row('array');
             if(!$result){
                 return false;
             }
         }else if($usersData['user_level'] == "2"){
-            $query = $this->db->where('idteacher',$usersData['idusers'])->get('teacher_informationtbl');
+            
+            $query = $this->db->where('id',$usersData['idusers'])->get('teacher_informationtbl');
             $result = $query->first_row('array');
             if(!$result){
                 return false;

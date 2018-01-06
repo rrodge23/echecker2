@@ -14,7 +14,13 @@ class Pages extends MY_Controller {
 			$this->load->model('mdl_dashboards');
 			$scheduleData = $this->mdl_dashboards->getMessage();
 		}
-        $this->_view($pages,$scheduleData);
+		if(isset($scheduleData)){
+			$this->_view($pages,$scheduleData);
+		}else{
+			$this->_view($pages);
+		}
+		
+		
     }
 
 	public function postMessage($data=false){

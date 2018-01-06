@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width" />
     <base href="<?=base_url();?>"> 
     <link href= "assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/> 
+    <link href= "assets/css/jqx.base.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/animate.min.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/paper-dashboard.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/demo.css" rel="stylesheet" type="text/css"/> 
@@ -22,13 +23,21 @@
     <link href= "assets/css/dataTables.css" rel="stylesheet" type="text/css"/>
     <link href= "assets/css/sweetalert.css" rel="stylesheet" type="text/css"/>
     
-    <link href= "assets/css/bootstrap-duallistbox.min.css" rel="stylesheet" type="text/css"/>
+    <!-- <link href= "assets/css/bootstrap-duallistbox.min.css" rel="stylesheet" type="text/css"/> -->
     <link href= "assets/css/fileinput.min.css" rel="stylesheet" type="text/css"/> 
     <!--<link href= "assets/css/fileinput-rtl.min.css" rel="stylesheet" type="text/css"/> -->
     <link href= "assets/css/fonts.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/default.css" rel="stylesheet" type="text/css"/>
     <script src= "assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
     <script src= "assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxcore.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxbuttons.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxscrollbar.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxsplitter.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxlistbox.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxdata.js" type="text/javascript"></script>
+    <script src= "assets/js/demos.js" type="text/javascript"></script>
+
     
 
     

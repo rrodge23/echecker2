@@ -1,7 +1,7 @@
 
 <?php
-    $dashboard="";$subjects="";$users="";$reports="";$departments="";;$courses="";$schedules="";
-    $m_subjects="";$m_users="";$m_reports="";$m_departments="";$m_courses="";$m_schedules="";
+    $dashboard="";$subjects="";$users="";$reports="";$departments="";$examinations="";$courses="";$schedules="";
+    $m_subjects="";$m_users="";$m_reports="";$m_departments="";$m_courses="";$m_examination;$m_schedules="";
     switch($_SESSION['users']['user_level']){
         case '1':
             $m_subjects="";
@@ -9,14 +9,16 @@
             $m_reports="";
             $m_departments="";
             $m_courses="";
+            $m_examination="1";
             $m_schedules="";
             break;
         case '2':
             $m_subjects="";
             $m_users="";
-            $m_reports="";
+            $m_reports="1";
             $m_departments="";
             $m_courses="";
+            $m_examination="1";
             $m_schedules="";
             break;
         case '99':
@@ -25,6 +27,7 @@
             $m_reports="1";
             $m_departments="1";
             $m_courses="1";
+            $m_examination="1";
             $m_schedules="1";
             break;
     };
@@ -50,7 +53,10 @@
             break;   
         case 'courses':
             $courses='active';
-            break;    
+            break;
+        case 'examination':
+            $examinations='active';
+            break;   
         default:
     };
 ?>
@@ -119,6 +125,15 @@
                                 <a href="users">
                                     <i class="material-icons">account_box</i>
                                     <p>Users</p>
+                                </a>
+                            </li>';
+                }
+                if($m_examination == '1'){
+                    
+                    echo '<li class="'.$reports.'">
+                                <a href="examinations">
+                                    <i class="material-icons">book</i>
+                                    <p>Examination</p>
                                 </a>
                             </li>';
                 }

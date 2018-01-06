@@ -126,3 +126,7 @@ body{
     font-family: 'Product Sans',Arial,Helvetica,sans-serif !important;
 }
 
+.jqx-layout-group-auto-hide-content-vertical
+{
+    width: 200px;
+}

@@ -76,6 +76,7 @@ class Users extends MY_Controller {
     }
     public function addStudent(){
         $this->load->model('mdl_Users');
+        print_r($_POST);
         $_POST['pass'] = $_POST['code'];
         $_POST['user_level'] = "1";
         $result = $this->mdl_Users->insertUsers($_POST);

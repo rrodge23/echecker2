@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-
+$route['examinations'] = 'examinations';
 $route['schedules'] = 'schedules';
 $route['reports'] = 'reports';
 $route['courses'] = 'courses';

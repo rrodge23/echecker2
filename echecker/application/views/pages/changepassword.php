@@ -1,6 +1,6 @@
 
  <?php
-    print_r($_SESSION['users']);
+    
  ?>
     
     <div class="growl" id="app-growl"></div>
