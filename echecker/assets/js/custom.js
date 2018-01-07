@@ -102,6 +102,7 @@ $(document).ready(function(){
     $('#table-subjectList').DataTable();
     $('#table-departmentlist').DataTable();
     $('#table-scheduleList-main').DataTable();
+    $('#table-examinationList').DataTable();
     
     //********* DATA TABLES END\
 
