@@ -183,6 +183,10 @@ class Mdl_Users extends CI_Model {
         if(!($deleteUserDepartment)){
             return false;
         }
+        $deleteUserSubject = $this->db->where('UID',$id)->delete('user_subjecttbl');
+        if(!($deleteUserSubject)){
+            return false;
+        }
         $deleteUser = $this->db->where('idusers', $id)->delete('users');
         if($deleteQuery){
             return true;

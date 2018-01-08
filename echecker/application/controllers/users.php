@@ -153,7 +153,12 @@ class Users extends MY_Controller {
               foreach($department as $d){
                   $htmlbody .= '<option value="'.$d['department_name'].'">'.$d['department_name'].'</option>';
               }          
-              $htmlbody .='</select></div></form>';
+              $htmlbody .='</select></div>
+              <div id="kanban">
+                    
+            </div>
+            <input type="hidden" class="form-control input-class-subjectList" name="idsubject" aria-describedby="basic-addon1" required="required">
+         </form>';
         
         $htmlfooter = '<button type="submit" form="mdl-frm-add-student" class="btn btn-primary btn-post-add-subject"><i class="material-icons">playlist_add_check</i></button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button>';

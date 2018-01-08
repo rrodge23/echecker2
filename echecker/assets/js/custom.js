@@ -334,6 +334,9 @@ $(document).ready(function(){
                 $('.modal-footer').html(data["footer"]);
                 $(".chzn-select").chosen({width:"100%",placeholder_text_single: "Select Project/Initiative...",
       no_results_text: "Oops, nothing found!"});
+                //KANBAN
+                kanbanAddUserSubject();
+                // END KANBAN
             }
         });
         
