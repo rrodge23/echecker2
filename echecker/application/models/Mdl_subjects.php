@@ -95,10 +95,16 @@ class Mdl_subjects extends CI_Model {
                                     ->where('idschedule',$subjectInfo['schedule'])
                                     ->update('subject_scheduletbl');
             if($isSchedUpdate){
-                $query=$this->db->where('idsubject',$data)
-                        ->delete('subjecttbl');
+                $queryDeletefrmClassSubjecttbl = $this->db->where('idsubject',$data)
+                                                ->delete('class_subjecttbl');
+                if($queryDeletefrmClassSubjecttbl){
+                    $query=$this->db->where('idsubject',$data)
+                    ->delete('subjecttbl');
+                }else{
+                    return array("Error in class_subjecttbl Deletion", false);  
+                }
                 if($query){
-                    return array("", true);   
+                    return array("Successfully Deleted", true);   
                 }else{
                     return array("Error in Record Deletion", false);  
                 }

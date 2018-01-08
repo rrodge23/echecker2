@@ -15,6 +15,13 @@ class Classes extends MY_Controller {
 		$this->_view('classes',$classes);
 	}
 
+
+	public function getAllClasses($data=false){
+		$this->load->model('mdl_classes');
+		$isClassesAdded = $this->mdl_classes->getAllClasses();
+		echo json_encode($isClassesAdded);
+	}
+
 	public function addClasses($data=false){
 		$this->load->model('mdl_classes');
 		$isClassesAdded = $this->mdl_classes->addClasses($_POST);

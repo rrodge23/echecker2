@@ -31,6 +31,8 @@
     <script src= "assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
     <script src= "assets/js/bootstrap.min.js" type="text/javascript"></script>
     <script src= "assets/js/jqxcore.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxsortable.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxkanban.js" type="text/javascript"></script>
     <script src= "assets/js/jqxbuttons.js" type="text/javascript"></script>
     <script src= "assets/js/jqxscrollbar.js" type="text/javascript"></script>
     <script src= "assets/js/jqxsplitter.js" type="text/javascript"></script>

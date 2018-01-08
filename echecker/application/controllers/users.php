@@ -76,7 +76,6 @@ class Users extends MY_Controller {
     }
     public function addStudent(){
         $this->load->model('mdl_Users');
-        print_r($_POST);
         $_POST['pass'] = $_POST['code'];
         $_POST['user_level'] = "1";
         $result = $this->mdl_Users->insertUsers($_POST);
@@ -104,6 +103,7 @@ class Users extends MY_Controller {
                             <input type="text" class="form-control" name="'.$h.'" aria-describedby="basic-addon1" required="required">
                         </div>';   
         }
+     
         $this->load->model('mdl_departments');
         $department = $this->mdl_departments->getAllDepartments();
         $htmlbody .= '<div class="input-group">
@@ -112,8 +112,13 @@ class Users extends MY_Controller {
               foreach($department as $d){
                   $htmlbody .= '<option value="'.$d['department_name'].'">'.$d['department_name'].'</option>';
               }          
-              $htmlbody .='</select></div></form>';
-        
+              $htmlbody .='</select></div>
+                        <div id="kanban">
+                                
+                        </div>
+                        <input type="hidden" class="form-control input-class-subjectList" name="idsubject" aria-describedby="basic-addon1" required="required">
+                        </form>';
+       
         $htmlfooter = '<button type="submit" form="mdl-frm-add-teacher" class="btn btn-primary btn-post-add-subject"><i class="material-icons">playlist_add_check</i></button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button>';
         echo json_encode(array('body'=>$htmlbody,'footer'=>$htmlfooter));

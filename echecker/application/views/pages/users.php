@@ -1,5 +1,5 @@
 
-<div class="row">
+<div class="row-userList">
     
         <div class="col-md-12">
              <ul class="nav nav-tabs tab-nav-right" role="tablist" style="margin-bottom:50px;">
@@ -161,6 +161,6 @@
         </div>
 </div>
 
-<div class="row">
-  
+<div class="row-user-subjectList">
+    
 </div>

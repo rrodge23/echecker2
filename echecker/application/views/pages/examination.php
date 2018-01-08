@@ -51,9 +51,9 @@
     <div style="overflow: hidden;" id="ContentPanel">
     </div>
 </div>
-    }
+
+    
 <?php
     }
-    
 ?>
     

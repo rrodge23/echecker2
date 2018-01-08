@@ -230,6 +230,80 @@ $(document).ready(function(){
         alert(data.response);
     });
     //********* FILEINPUT END
+    
+    //********* ADD USER SUBJECT KANBAN
+
+   function kanbanAddUserSubject(){
+    $.ajax({
+        url:'subjects/getallsubjectlist',
+        dataType:"json",
+        success:function(data){
+            console.log(data);
+
+            var fields = [
+                { name: "id", map: "id", type: "string" },
+                { name: "status", map: "state", type: "string" },
+                { name: "text", map: "label", type: "string" },
+                { name: "tags", type: "string" },
+                { name: "color", map: "hex", type: "string" },
+                { name: "resourceId", type: "number" }
+            ];
+            var tmpLocalData = [];
+            data.forEach(function(input){
+                var tmpArray = {id : input.idsubject, state:"availableSubjects", label: input.subject_code+" | " + input.subject_description, tags:[input.schedule_code,input.time_start+"-",input.time_end,input.day]};
+                tmpLocalData.push(tmpArray);
+               
+            });
+            var source =
+            {
+                localData: tmpLocalData,
+                dataType: "array",
+                dataFields: fields
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            var resourcesAdapterFunc = function () {
+            var resourcesSource =
+            {
+                localData: [
+                        {},
+                        
+                ],
+                dataType: "array",
+                dataFields: [
+                        { name: "id", type: "number" },
+                        { name: "name", type: "string" },
+                        { name: "image", type: "string" },
+                        { name: "common", type: "boolean" }
+                ]
+            };
+            var resourcesDataAdapter = new $.jqx.dataAdapter(resourcesSource);
+            return resourcesDataAdapter;
+            }
+            $('#kanban').jqxKanban({
+            resources: resourcesAdapterFunc(),
+            source: dataAdapter,
+            width: '100%',
+            height: '100%',
+            columns: [
+                { text: "Subjects", dataField: "subjectsList" },
+                { text: "Available Subjects", dataField: "availableSubjects" },
+            ]
+            });
+            var subjectDataList = $('#kanban').jqxKanban('getItems');
+            
+            var getClassSubjects = [];
+            subjectDataList.forEach(function(data){
+                if(data.status == "subjectsList"){
+                    getClassSubjects.push(data.idsubject);
+                }
+            });
+            $('.input-class-subjectList').val(getClassSubjects);
+        }
+    });
+    
+   }
+
+    //********* ADD USER SUBJECT KANBAN END
 
     //********* ADD USERS \
     $(document).on('click','.btn-add-teacher',function(e){
@@ -239,25 +313,32 @@ $(document).ready(function(){
             dataType:"json",
             success:function(data){
                 $('#mdl-title').html('Add User');
-                $('.modal-body').html(data["body"]);
+                var body = data["body"];
+                $('.modal-body').html(body);
                 $('.modal-footer').html(data["footer"]);
                 $(".chzn-select").chosen({width:"100%",
                         placeholder_text_single: "Select Options...",
                          no_results_text: "Oops, nothing found!"});
+
+
+                //KANBAN
+                kanbanAddUserSubject();
+                // END KANBAN
+                
             }   
         });
-
+      
+   
         $('#modal-dynamic').modal('show');
-    
+        
     });
-
+ 
     $(document).on('click','.btn-add-student',function(e){
         e.preventDefault();
         $.ajax({
             url:'users/modaladdstudent',
             dataType:"json",
             success:function(data){
-                console.log(data);
                 $('#mdl-title').html('Add User');
                 $('.modal-body').html(data["body"]);
                 $('.modal-footer').html(data["footer"]);
@@ -265,7 +346,7 @@ $(document).ready(function(){
       no_results_text: "Oops, nothing found!"});
             }
         });
-
+        
         $('#modal-dynamic').modal('show');
     });
     
@@ -485,12 +566,13 @@ $(document).ready(function(){
                 htmlbody+= "</tbody>"
                       +"</table>";
                 $('.modal-secondary-body').html(htmlbody);
+                
             }
         });
         var footer = '<div style="padding:5px;" class="text-right"><button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button></div>';
         $('.modal-secondary-footer').html(footer);
         $('#table-scheduleList').DataTable();
-    
+        
         $('#modal-dynamic-secondary').modal('show');
     });
 
@@ -1511,6 +1593,11 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     });
     //******** POST DELETE CLASS END*/
 
-    
+    //********  UPDATE CLASS */
 
+
+    //********  UPDATE CLASS END*/
+
+    
+ 
 });
