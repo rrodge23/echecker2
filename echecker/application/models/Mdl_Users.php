@@ -76,7 +76,7 @@ class Mdl_Users extends CI_Model {
     }
 
     public function insertUsers($data=array()){
-        
+        $data['idsubject'] = explode(",", $data['idsubject']);
         $isDataValid = false;
         $studentDataIndex = array('firstname','middlename','lastname','year_level');
         $teacherDataIndex = array('firstname','middlename','lastname','position');
@@ -119,8 +119,19 @@ class Mdl_Users extends CI_Model {
                             if(!($this->db->insert('teacher_informationtbl',$teacherInfo))){
                                 return false;
                             }
+                            
                         }
+                        $isUserSubjectInsertError = false;
 
+                        foreach($data['idsubject'] as $value){
+                            $userClassId = array("UID" => $last_insert, "idsubject" => $value);
+                            if(!($this->db->insert('user_subjecttbl', $userClassId))){
+                                $isUserSubjectInsertError = true;
+                            }
+                        }
+                        if($isUserSubjectInsertError == true){
+                            return false;
+                        }
                         if(array_key_exists('department',$data)){
                             $getDepartmentInfo = $this->db->where('department_name',$data['department'])->limit(1)->get('departmenttbl');
                             

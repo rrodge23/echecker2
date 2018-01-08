@@ -68,6 +68,7 @@ class Users extends MY_Controller {
         echo json_encode($result);
     }
     public function addTeacher(){
+        
         $this->load->model('mdl_Users');
         $_POST['pass'] = $_POST['code'];
         $_POST['user_level'] = "2";

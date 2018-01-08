@@ -238,7 +238,6 @@ $(document).ready(function(){
         url:'subjects/getallsubjectlist',
         dataType:"json",
         success:function(data){
-            console.log(data);
 
             var fields = [
                 { name: "id", map: "id", type: "string" },
@@ -289,15 +288,7 @@ $(document).ready(function(){
                 { text: "Available Subjects", dataField: "availableSubjects" },
             ]
             });
-            var subjectDataList = $('#kanban').jqxKanban('getItems');
             
-            var getClassSubjects = [];
-            subjectDataList.forEach(function(data){
-                if(data.status == "subjectsList"){
-                    getClassSubjects.push(data.idsubject);
-                }
-            });
-            $('.input-class-subjectList').val(getClassSubjects);
         }
     });
     
@@ -328,7 +319,6 @@ $(document).ready(function(){
             }   
         });
       
-   
         $('#modal-dynamic').modal('show');
         
     });
@@ -354,6 +344,17 @@ $(document).ready(function(){
     //********* POST ADD USERS
     $(document).on('submit','.mdl-frm-add-users',function(e){
         e.preventDefault();
+
+        var subjectDataList = $('#kanban').jqxKanban('getItems');
+        
+        var getClassSubjects = [];
+        subjectDataList.forEach(function(data){
+            if(data.status == "subjectsList"){
+                getClassSubjects.push(data.id);
+            }
+        });
+        $('.input-class-subjectList').val(getClassSubjects);
+
         var frm = $(this);
         var id = frm.data('id');
         var method = frm.attr('method');
@@ -371,6 +372,7 @@ $(document).ready(function(){
             },
             function(isConfirm){
             if (isConfirm) {
+              
                 $.ajax({
                     url:url,
                     data:frm.serialize(),
