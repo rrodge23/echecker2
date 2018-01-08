@@ -48,7 +48,8 @@
     <!--<script src= "assets/js/bs.js" type="text/javascript"></script>-->
     <script src= "assets/js/fileinput.min.js" type="text/javascript"></script>
     <script src= "assets/js/bootstrap-select.min.js" type="text/javascript"></script>
-    <script src= "assets/js/custom.js" type="text/javascript"></script> 
+    <script src= "assets/js/custom.js" type="text/javascript"></script>
+     
 </body>
 </html>
     

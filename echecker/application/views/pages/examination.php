@@ -43,17 +43,14 @@
     </table>
 
 
-
-
-
-    <div id="splitter">
-        <div style="overflow: hidden;">
-            <div style="border: none;" id="listbox">
-            </div>
-        </div>
-        <div style="overflow: hidden;" id="ContentPanel">
+    <div id="jqxSplitter">
+    <div style="overflow: hidden;">
+        <div style="border: none;" id="listbox">
         </div>
     </div>
+    <div style="overflow: hidden;" id="ContentPanel">
+    </div>
+</div>
     }
 <?php
     }
