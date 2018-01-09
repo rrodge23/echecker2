@@ -293,6 +293,69 @@ $(document).ready(function(){
     });
     
    }
+   // UPDATE
+   function kanbanUpdateUserSubject(id){
+    $.ajax({
+        url:'users/getUserAvailableSubject',
+        data:{id:id},
+        method:"POST",
+        dataType:"json",
+        
+        success:function(data){
+            var fields = [
+                { name: "id", map: "id", type: "string" },
+                { name: "status", map: "state", type: "string" },
+                { name: "text", map: "label", type: "string" },
+                { name: "tags", type: "string" },
+                { name: "color", map: "hex", type: "string" },
+                { name: "resourceId", type: "number" }
+            ];
+            var tmpLocalData = [];
+            data.forEach(function(input){
+                var tmpArray = {id : input.idsubject, state:"availableSubjects", label: input.subject_code+" | " + input.subject_description, tags:[input.schedule_code,input.time_start+"-",input.time_end,input.day]};
+                tmpLocalData.push(tmpArray);
+               
+            });
+            var source =
+            {
+                localData: tmpLocalData,
+                dataType: "array",
+                dataFields: fields
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            var resourcesAdapterFunc = function () {
+            var resourcesSource =
+            {
+                localData: [
+                        {},
+                        
+                ],
+                dataType: "array",
+                dataFields: [
+                        { name: "id", type: "number" },
+                        { name: "name", type: "string" },
+                        { name: "image", type: "string" },
+                        { name: "common", type: "boolean" }
+                ]
+            };
+            var resourcesDataAdapter = new $.jqx.dataAdapter(resourcesSource);
+            return resourcesDataAdapter;
+            }
+            $('#kanban').jqxKanban({
+            resources: resourcesAdapterFunc(),
+            source: dataAdapter,
+            width: '100%',
+            height: '100%',
+            columns: [
+                { text: "Subjects", dataField: "subjectsList" },
+                { text: "Available Subjects", dataField: "availableSubjects" },
+            ]
+            });
+            
+        }
+    });
+    
+   }
 
     //********* ADD USER SUBJECT KANBAN END
 
@@ -466,6 +529,7 @@ $(document).ready(function(){
                         $('.modal-body').html(data["body"]);
                         $('.modal-footer').html(data["footer"]);
                         $(".chzn-select").chosen({width:"100%"});
+                        kanbanUpdateUserSubject(id);
                     }
                 });
             }

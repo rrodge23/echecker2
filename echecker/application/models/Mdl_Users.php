@@ -199,6 +199,7 @@ class Mdl_Users extends CI_Model {
                             ->join('user_coursetbl','users.idusers = user_coursetbl.iduser_course','left')
                             ->join('coursetbl','user_coursetbl.idcourse = coursetbl.idcourse','left')
                             ->join('user_departmenttbl','users.idusers = user_departmenttbl.UID','left')
+                            ->join('user_subjecttbl','users.idusers = user_subjecttbl.UID','left')
                             ->get('users');
         $userInfo = $getQuery->row_array();
         if($userInfo['user_level'] == 1){
@@ -224,6 +225,34 @@ class Mdl_Users extends CI_Model {
         return false;
     }
 
+    public function getUserAvailableSujbects($data=false){
+        $query=$this->db->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule')
+                            ->get('subjecttbl');
+        $subjectList = $query->result_array();
+        
+        $userSubjectQuery = $this->db->where('UID',$data)
+                            ->get('user_subjecttbl');
+
+        $userSubjectData = $userSubjectQuery->result_array();
+        $userSubjectsID = array();
+        for($i=0;$i<count($userSubjectData);$i++){
+            $userSubjectsID[$i] = $userSubjectData[$i]['idsubject'];
+        }
+        
+        foreach($subjectList as $key => $value){
+            if(in_array($value['idsubject'],$userSubjectsID)){
+                $subjectList[$key]['state'] = "subjectsList";
+
+                
+            }else{
+                $subjectList[$key]['state'] = "availableSubjects";
+                
+            }
+        }
+
+        print_r($subjectList);
+        return false;
+    }
     public function updateUser($data=false){
         
         if($getQuery = $this->db->where('idusers',$data['idusers'])->get('users')){            

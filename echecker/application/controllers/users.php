@@ -95,6 +95,13 @@ class Users extends MY_Controller {
         echo json_encode($result);
     }
 
+    public function getUserAvailableSubject(){
+     
+        $this->load->model('mdl_Users');
+        $query = $this->mdl_Users->getUserAvailableSujbects($_POST['id']);
+        echo json_encode($_POST);
+    }
+
     public function modalAddTeacher(){
         $header = array("code","user","firstname","middlename","lastname","position");
         $htmlbody = '<form action="users/addteacher" method="post" onsubmit="return false;" class="mdl-frm-add-users" id="mdl-frm-add-teacher">';
@@ -156,7 +163,7 @@ class Users extends MY_Controller {
               $htmlbody .='</select></div>
               <div id="kanban">
                     
-            </div>
+              </div>
             <input type="hidden" class="form-control input-class-subjectList" name="idsubject" aria-describedby="basic-addon1" required="required">
          </form>';
         
@@ -210,7 +217,11 @@ class Users extends MY_Controller {
                   }
                     $htmlbody .= '<option value="'.$d['iddepartment'].'">'.$d['department_name'].'</option>';
               }          
-              $htmlbody .='</select></div></form>';
+              $htmlbody .='</select></div>
+              <div id="kanban">       
+                </div>
+                <input type="hidden" class="form-control input-class-subjectList" name="idsubject" aria-describedby="basic-addon1" required="required">
+            </form>';
         
         $htmlfooter = '<button type="submit" form="mdl-frm-update-user" class="btn btn-primary btn-post-user-update">Save changes</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
