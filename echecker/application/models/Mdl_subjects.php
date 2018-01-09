@@ -14,9 +14,40 @@ class Mdl_subjects extends CI_Model {
         return $query->result_array();
     }
     public function getallSubjectUsersById($data=false){
-        $query=$this->db->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule')
-                    ->get('user_classtbl');
-        return $query->result_array();
+        $query=$this->db->join('subjecttbl','user_subjecttbl.idsubject = subjecttbl.idsubject','left')
+                        ->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule','left')
+                        ->join('users','user_subjecttbl.UID = users.idusers','left')
+                        ->where('user_subjecttbl.idsubject',$data)
+                    ->get('user_subjecttbl');
+                   
+        $userListData = $query->result_array();
+        
+        if($userListData){
+            foreach($userListData as $key => $value){
+                if($value['user_level'] == "1"){
+                    $studentQuery=$this->db->where('id',$value['idusers'])
+                                ->get('student_informationtbl');
+                    $studentData = $studentQuery->row_array();
+                    if($studentData){
+                        $userListData[$key] = $studentData;
+                    }
+                }
+                if($value['user_level'] == "2"){
+                    $teacherQuery=$this->db->where('id',$value['idusers'])
+                                ->get('student_informationtbl');
+                    $teacherData = $teacherQuery->row_array();
+                    if($teacherData){
+                        $userListData[$key] = $teacherData;
+                    }
+
+                }
+                
+            }
+           
+            return $userListData;
+        }
+
+        return false;
     }
 
     public function addSubject($data=false){

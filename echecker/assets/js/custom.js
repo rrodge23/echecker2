@@ -1527,7 +1527,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                     
                 });
                 htmlbody+= "</tbody>"
-                      +"</table>";
+                      +"</table><div id='view-subject-users'></div>";
                 $('.modal-secondary-body').html(htmlbody);
             }
         });
@@ -1552,7 +1552,9 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     //******** MODAL VIEW CLASS SUBJECT TABLE */
     $(document).on('click','.mdl-btn-view-classes-subject',function(e){
         e.preventDefault();
-        $('#mdl-secondary-title').html('Subject List');
+        $('#mdl-secondary-title').html('Subject Information');
+        $('#table-classes-subjectlist').attr('style','display:none !important;');
+        $('.modal-dialog').attr('style','width:80% !important;');
         var htmlbody = '';
         e.preventDefault();
         var btn = $(this);
@@ -1560,10 +1562,57 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $.ajax({
             url:'subjects/getallsubjectusersbyid',
             dataType:"json",
+            data:{id:id},
             method:"POST",
             success:function(data){
-                alert(id);
-                $('.modal-secondary-body').html(htmlbody);
+                
+                htmlbody = '<span style="font-size:20px;">Student List:</span>'
+                +'<table id="table-classes-subjectlist" class="table table-striped">'
+                +'<thead>'
+                +'<tr>'
+                +'<td class="text-center font-roboto color-a2">ID</td>'
+                +'<td class="text-center font-roboto color-a2">CODE</td>'
+                +'<td class="text-center font-roboto color-a2">NAME</td>'
+                +'<td class="text-center font-roboto color-a2">COURSE</td>'
+                +'<td class="text-center font-roboto color-a2">YEAR LEVEL</td>'
+                +'<td class="text-center font-roboto color-a2">DEPARTMENT</td>'
+                +'</tr>'
+                +'</thead>'
+                +'<tbody>';
+            if(data != false){
+                data.forEach(function(inputs){
+                    
+                      if(inputs != null){
+                        console.log(inputs);
+                        var id = inputs['id'];
+                        var code = inputs['code'];
+                        var firstname = inputs['firstname'];
+                        var lastname = inputs['lastname'];
+                        var middlename = inputs['middlename'];
+                        var course = inputs['course'];
+                        var year_level = inputs['year_level'];
+                        var department = inputs['department'];
+                   
+                          if(inputs['user_level'] == "1"){
+                              htmlbody += "<tr>"
+                              +"<td class='text-center font-roboto color-a2'>"+id+"</td>"
+                              +"<td class='text-center font-roboto color-a2'>"+code+"</td>"
+                              +"<td class='text-center font-roboto color-a2'>"+lastname+", "+firstname+" "+middlename+"</td>"
+                              +"<td class='text-center font-roboto color-a2'>"+course+"</td>"
+                              +"<td class='text-center font-roboto color-a2'>"+year_level+"</td>"
+                              +"<td class='text-center font-roboto color-a2'>"+department+"</td>"
+                              +"<td class='text-center font-roboto color-a2' style='text-align:center;'>"
+                              +"</td>"
+                              +"</tr>";
+                          }
+                      }
+                                    
+                            
+                    });
+            }
+            htmlbody+= "</tbody>"
+                    +"</table>";
+                $('#view-subject-users').html(htmlbody);
             }
         });
         var footer = '<div style="padding:5px;" class="text-right"><button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button></div>';
