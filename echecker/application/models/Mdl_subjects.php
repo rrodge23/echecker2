@@ -29,20 +29,20 @@ class Mdl_subjects extends CI_Model {
                     $studentQuery=$this->db->where('id',$value['idusers'])
                                 ->get('student_informationtbl');
                     $studentData = $studentQuery->result_array();
-                    print_r($value['user_level']);
-                    return false;
+                    
                     if($studentData){
-                        $userListData = $studentData;
+                       
+                        $userListData[$key] = array_merge($userListData[$key],$studentData[0]);    
+                       
                     }
                 }
                 if($value['user_level'] == "2"){
                     $teacherQuery=$this->db->where('id',$value['idusers'])
                                 ->get('student_informationtbl');
                     $teacherData = $teacherQuery->result_array();
-                    print_r($value['user_level']);
-                    return false;
+                    
                     if($teacherData){
-                        $userListData = $teacherData;
+                        $userListData[$key] = array_merge($userListData[$key],$teacherData[0]);    
                     }
 
                 }

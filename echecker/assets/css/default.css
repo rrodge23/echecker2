@@ -1,7 +1,10 @@
 /*----------------------------------------------------*/
 /*----------------- Testimonials CSS -----------------*/
 /*----------------------------------------------------*/
-s
+.header-class-subject-information-left{
+    font-size:17px;
+    margin:30px;
+}
 .testimonial{
     margin-bottom: 10px;
 }

@@ -1568,7 +1568,9 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             method:"POST",
             success:function(data){
                 
-                htmlbody = '<span style="font-size:20px;">Student List:</span>'
+                htmlbody = '<div class="row"><span class="header-class-subject-information-left">Subject Code:</span><span class="">'+data[0]['subject_code']+'</span></div>'
+                +'<div class="row"><span class="header-class-subject-information-left">Subject Code:</span><span class="">'+data[0]['subject_description']+'</span></div>'
+                +'<span style="font-size:20px;margin:30px;">Student List:</span>'
                 +'<table id="table-classes-subjectlist" class="table table-striped">'
                 +'<thead>'
                 +'<tr>'
@@ -1585,7 +1587,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 data.forEach(function(inputs){
                     
                     
-                        console.log(inputs);
+              
                         var id = inputs['id'];
                         var code = inputs['code'];
                         var firstname = inputs['firstname'];
