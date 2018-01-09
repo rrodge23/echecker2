@@ -22,6 +22,12 @@ class Subjects extends MY_Controller {
 		echo json_encode($subjectList);
 	}
 
+	public function getallSubjectUsersById(){
+		$this->load->model('mdl_subjects');
+		$userList = $this->mdl_subjects->getallSubjectUsersById($_POST['id']);
+		echo json_encode($userList);
+	}
+
     public function addSubject($data=false){
 		$this->load->model('mdl_subjects');
 		$isSubjectAdded = $this->mdl_subjects->addSubject($_POST);

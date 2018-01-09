@@ -13,6 +13,11 @@ class Mdl_subjects extends CI_Model {
                     ->get('subjecttbl');
         return $query->result_array();
     }
+    public function getallSubjectUsersById($data=false){
+        $query=$this->db->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule')
+                    ->get('user_classtbl');
+        return $query->result_array();
+    }
 
     public function addSubject($data=false){
     

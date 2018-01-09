@@ -376,7 +376,6 @@ $(document).ready(function(){
                         placeholder_text_single: "Select Options...",
                          no_results_text: "Oops, nothing found!"});
 
-
                 //KANBAN
                 kanbanAddUserSubject();
                 // END KANBAN
@@ -1519,8 +1518,12 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                         +"<button data-id='"+id+"' data-code='"+code+"' rel='tooltip' data-original-title='Select' class='pull-right mdl-btn-add-classes-subject btn btn-success' type='button' name='create'>"
                         +"<i class='material-icons'>add</i>"
                         +"</button>"
+                        +"<button data-id='"+id+"' data-code='"+code+"' rel='tooltip' data-original-title='View' class='pull-right mdl-btn-view-classes-subject btn btn-success' type='button' name='create'>"
+                        +"<i class='material-icons'>remove_red_eye</i>"
+                        +"</button>"
                         +"</td>"
-                        +"</tr>";   
+                        +"</tr>";
+                           
                     
                 });
                 htmlbody+= "</tbody>"
@@ -1545,6 +1548,29 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $('#modal-dynamic-secondary').modal('hide');
     });
     //******** MODAL ADD CLASS SUBJECT TABLE END*/
+
+    //******** MODAL VIEW CLASS SUBJECT TABLE */
+    $(document).on('click','.mdl-btn-view-classes-subject',function(e){
+        e.preventDefault();
+        $('#mdl-secondary-title').html('Subject List');
+        var htmlbody = '';
+        e.preventDefault();
+        var btn = $(this);
+        var id = btn.data('id');
+        $.ajax({
+            url:'subjects/getallsubjectusersbyid',
+            dataType:"json",
+            method:"POST",
+            success:function(data){
+                alert(id);
+                $('.modal-secondary-body').html(htmlbody);
+            }
+        });
+        var footer = '<div style="padding:5px;" class="text-right"><button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button></div>';
+        $('.modal-secondary-footer').html(footer);
+    });
+
+    //******** MODAL VIEW CLASS SUBJECT TABLE END*/
     
     //******** ADD CLASS*/
     $(document).on('click','.btn-add-classes-subject',function(e){
