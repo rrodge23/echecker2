@@ -250,8 +250,8 @@ class Mdl_Users extends CI_Model {
             }
         }
 
-        print_r($subjectList);
-        return false;
+        
+        return $subjectList;
     }
     public function updateUser($data=false){
         

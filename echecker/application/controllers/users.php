@@ -99,7 +99,7 @@ class Users extends MY_Controller {
      
         $this->load->model('mdl_Users');
         $query = $this->mdl_Users->getUserAvailableSujbects($_POST['id']);
-        echo json_encode($_POST);
+        echo json_encode($query);
     }
 
     public function modalAddTeacher(){

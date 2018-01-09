@@ -302,6 +302,7 @@ $(document).ready(function(){
         dataType:"json",
         
         success:function(data){
+            
             var fields = [
                 { name: "id", map: "id", type: "string" },
                 { name: "status", map: "state", type: "string" },
@@ -312,7 +313,8 @@ $(document).ready(function(){
             ];
             var tmpLocalData = [];
             data.forEach(function(input){
-                var tmpArray = {id : input.idsubject, state:"availableSubjects", label: input.subject_code+" | " + input.subject_description, tags:[input.schedule_code,input.time_start+"-",input.time_end,input.day]};
+                
+                var tmpArray = {id : input.idsubject, state:input.state, label: input.subject_code+" | " + input.subject_description, tags:[input.schedule_code,input.time_start+"-",input.time_end,input.day]};
                 tmpLocalData.push(tmpArray);
                
             });
