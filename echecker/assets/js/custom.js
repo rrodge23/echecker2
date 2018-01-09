@@ -377,6 +377,7 @@ $(document).ready(function(){
                          no_results_text: "Oops, nothing found!"});
 
                 //KANBAN
+                
                 kanbanAddUserSubject();
                 // END KANBAN
                 
@@ -858,8 +859,9 @@ $(document).ready(function(){
                 $.ajax({
                 url:url,
                 data:{id:id},
-                dataType:"json",
                 method:"POST",
+                dataType:"json",
+                
                 success:function(data){
                     if(data[1] == true){
                         btn.closest("tr").remove();
@@ -1582,7 +1584,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             if(data != false){
                 data.forEach(function(inputs){
                     
-                      if(inputs != null){
+                    
                         console.log(inputs);
                         var id = inputs['id'];
                         var code = inputs['code'];
@@ -1593,7 +1595,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                         var year_level = inputs['year_level'];
                         var department = inputs['department'];
                    
-                          if(inputs['user_level'] == "1"){
+                          if(inputs['user_level'] == "1"){  
                               htmlbody += "<tr>"
                               +"<td class='text-center font-roboto color-a2'>"+id+"</td>"
                               +"<td class='text-center font-roboto color-a2'>"+code+"</td>"
@@ -1605,7 +1607,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                               +"</td>"
                               +"</tr>";
                           }
-                      }
+                      
                                     
                             
                     });

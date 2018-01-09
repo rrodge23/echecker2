@@ -9,7 +9,7 @@ class Mdl_subjects extends CI_Model {
     }
    
     public function getAllSubjectList(){
-        $query=$this->db->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule')
+        $query=$this->db->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule','left')
                     ->get('subjecttbl');
         return $query->result_array();
     }
@@ -24,26 +24,31 @@ class Mdl_subjects extends CI_Model {
         
         if($userListData){
             foreach($userListData as $key => $value){
+                
                 if($value['user_level'] == "1"){
                     $studentQuery=$this->db->where('id',$value['idusers'])
                                 ->get('student_informationtbl');
-                    $studentData = $studentQuery->row_array();
+                    $studentData = $studentQuery->result_array();
+                    print_r($value['user_level']);
+                    return false;
                     if($studentData){
-                        $userListData[$key] = $studentData;
+                        $userListData = $studentData;
                     }
                 }
                 if($value['user_level'] == "2"){
                     $teacherQuery=$this->db->where('id',$value['idusers'])
                                 ->get('student_informationtbl');
-                    $teacherData = $teacherQuery->row_array();
+                    $teacherData = $teacherQuery->result_array();
+                    print_r($value['user_level']);
+                    return false;
                     if($teacherData){
-                        $userListData[$key] = $teacherData;
+                        $userListData = $teacherData;
                     }
 
                 }
                 
             }
-           
+            
             return $userListData;
         }
 
@@ -133,12 +138,13 @@ class Mdl_subjects extends CI_Model {
             if($isSchedUpdate){
                 $queryDeletefrmClassSubjecttbl = $this->db->where('idsubject',$data)
                                                 ->delete('class_subjecttbl');
-                if($queryDeletefrmClassSubjecttbl){
-                    $query=$this->db->where('idsubject',$data)
-                    ->delete('subjecttbl');
-                }else{
-                    return array("Error in class_subjecttbl Deletion", false);  
-                }
+                                                
+                $query=$this->db->where('idsubject',$data)
+                    ->delete('user_subjecttbl');
+                $query=$this->db->where('idsubject',$data)
+                ->delete('subjecttbl');
+               
+
                 if($query){
                     return array("Successfully Deleted", true);   
                 }else{
