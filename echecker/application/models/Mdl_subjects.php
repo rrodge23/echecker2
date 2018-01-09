@@ -17,6 +17,10 @@ class Mdl_subjects extends CI_Model {
         $query=$this->db->join('subjecttbl','user_subjecttbl.idsubject = subjecttbl.idsubject','left')
                         ->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule','left')
                         ->join('users','user_subjecttbl.UID = users.idusers','left')
+                        ->join('user_departmenttbl','users.idusers = user_departmenttbl.UID','left')
+                        ->join('departmenttbl','user_departmenttbl.iddepartment = departmenttbl.iddepartment','left')
+                        ->join('user_coursetbl','users.idusers = user_coursetbl.iduser_course','left')
+                        ->join('coursetbl','user_coursetbl.idcourse = coursetbl.idcourse','left')
                         ->where('user_subjecttbl.idsubject',$data)
                     ->get('user_subjecttbl');
                    
@@ -38,7 +42,7 @@ class Mdl_subjects extends CI_Model {
                 }
                 if($value['user_level'] == "2"){
                     $teacherQuery=$this->db->where('id',$value['idusers'])
-                                ->get('student_informationtbl');
+                                ->get('teacher_informationtbl');
                     $teacherData = $teacherQuery->result_array();
                     
                     if($teacherData){

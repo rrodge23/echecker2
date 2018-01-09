@@ -1567,9 +1567,20 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             data:{id:id},
             method:"POST",
             success:function(data){
+                console.log(data);
+                var teacherName = "";
+                data.forEach(function(inputs){
+                    if(inputs["user_level"] == "2"){
+                        teacherName = inputs["lastname"]+", "+inputs["firstname"]+" "+inputs["middlename"];
+                    }
+                });
                 
-                htmlbody = '<div class="row"><span class="header-class-subject-information-left">Subject Code:</span><span class="">'+data[0]['subject_code']+'</span></div>'
-                +'<div class="row"><span class="header-class-subject-information-left">Subject Code:</span><span class="">'+data[0]['subject_description']+'</span></div>'
+                htmlbody = '<div class="row"><span class="header-class-subject-information-left">Code:</span><span class="">'+data[0]['subject_code']+'</span></div>'
+                +'<div class="row"><span class="header-class-subject-information-left">Description:</span><span class="">'+data[0]['subject_description']+'</span></div>'
+                +'<div class="row"><span class="header-class-subject-information-left">Day:</span><span class="">'+data[0]['day']+'</span></div>'
+                +'<div class="row"><span class="header-class-subject-information-left">Time:</span><span class="">'+data[0]['time_start']+'-'+data[0]['time_end']+'</span></div>'
+                +'<div class="row"><span class="header-class-subject-information-left">Units:</span><span class="">'+data[0]['units']+'</span></div>'
+                +'<div class="row"><span class="header-class-subject-information-left">Teacher:</span><span class="">'+teacherName+'</span></div>'
                 +'<span style="font-size:20px;margin:30px;">Student List:</span>'
                 +'<table id="table-classes-subjectlist" class="table table-striped">'
                 +'<thead>'
@@ -1593,9 +1604,9 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                         var firstname = inputs['firstname'];
                         var lastname = inputs['lastname'];
                         var middlename = inputs['middlename'];
-                        var course = inputs['course'];
+                        var course = inputs['course_name'];
                         var year_level = inputs['year_level'];
-                        var department = inputs['department'];
+                        var department = inputs['department_name'];
                    
                           if(inputs['user_level'] == "1"){  
                               htmlbody += "<tr>"
