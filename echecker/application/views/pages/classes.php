@@ -10,6 +10,7 @@
             <td class="text-center font-roboto color-a2">ID</td>
             <td class="text-center font-roboto color-a2">CLASS NAME</td>
             <td class="text-center font-roboto color-a2">DESCRIPTION</td>
+            <td class="text-center font-roboto color-a2">SUBJECT</td>
             <td class="text-center font-roboto color-a2">ROOM</td>
             <td class="text-center font-roboto color-a2">ACTION</td>
 
@@ -21,6 +22,7 @@
                 $id = $class['idclass'];
                 $name = $class['class_name'];
                 $description = $class['class_description'];
+                $subject_code = $class['subject_code'];
                 $room_name =  $class['room_name'];
                 ;
             
@@ -29,6 +31,7 @@
                     <td class='text-center font-roboto color-a2'>$id</td>
                     <td class='text-center font-roboto color-a2'>$name</td>
                     <td class='text-center font-roboto color-a2'>$description</td>
+                    <td class='text-center font-roboto color-a2'>$subject_code</td>
                     <td class='text-center font-roboto color-a2'>$room_name</td>
                     <td class='text-center font-roboto color-a2'>
                         

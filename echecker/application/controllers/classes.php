@@ -35,4 +35,16 @@ class Classes extends MY_Controller {
 		echo json_encode($isClassesDeleted);
 	}
 
+	public function updateClasses($data=false){
+		$this->load->model('mdl_Classes');
+		$isClassesUpdated = $this->mdl_Classes->updateClasses($_POST);
+		echo json_encode($isClassesUpdated);
+	}
+
+	public function getClassesInfoById($data=false){
+		$this->load->model('mdl_Classes');
+		$Classes = $this->mdl_Classes->getClassesInfoById($_POST);
+		echo json_encode($Classes);
+	}
+
 }

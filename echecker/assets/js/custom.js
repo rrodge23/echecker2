@@ -1552,9 +1552,18 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     //******** MODAL ADD CLASS SUBJECT TABLE END*/
 
     //******** MODAL VIEW CLASS SUBJECT TABLE */
+    //back to subject list button
+    $(document).on('click','.btn-view-class-subject-return',function(e){
+        e.preventDefault();
+        $('#table-classes-subjectlist').attr('style','display:block !important;');
+        $('#view-subject-users').attr('style','display:none !important;');
+        $('.modal-dialog').attr('style','width:660px !important;');
+    });
+    //
     $(document).on('click','.mdl-btn-view-classes-subject',function(e){
         e.preventDefault();
         $('#mdl-secondary-title').html('Subject Information');
+        $('#view-subject-users').attr('style','display:block !important;');
         $('#table-classes-subjectlist').attr('style','display:none !important;');
         $('.modal-dialog').attr('style','width:80% !important;');
         var htmlbody = '';
@@ -1581,6 +1590,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 +'<div class="row"><span class="header-class-subject-information-left">Time:</span><span class="">'+data[0]['time_start']+'-'+data[0]['time_end']+'</span></div>'
                 +'<div class="row"><span class="header-class-subject-information-left">Units:</span><span class="">'+data[0]['units']+'</span></div>'
                 +'<div class="row"><span class="header-class-subject-information-left">Teacher:</span><span class="">'+teacherName+'</span></div>'
+                +'<button class="btn btn-sucess pull-right btn-view-class-subject-return">Back</button>'
                 +'<span style="font-size:20px;margin:30px;">Student List:</span>'
                 +'<table id="table-classes-subjectlist" class="table table-striped">'
                 +'<thead>'
@@ -1755,9 +1765,96 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     //******** POST DELETE CLASS END*/
 
     //********  UPDATE CLASS */
+    
+    $(document).on('click','.btn-update-class',function(e){
+        e.preventDefault();
+        var btn = $(this);
+        var id = btn.data('id');
+        $.ajax({
+            url:'classes/getClassesInfoById',
+            dataType:"json",
+            method:"POST",
+            data:{id:id},
+            success:function(data){
 
+                if(data[1] == true){
+                    $('#mdl-title').html('Update classes');
+                    var inputList = ["class_name","class_description","room_name"];
 
-    //********  UPDATE CLASS END*/
+                    var htmlbody = '<form action="classes/updateclasses" method="POST" id="mdl-frm-update-classes" onsubmit="return false;">'
+                                +'<input type="hidden" value="'+data[0]['idclass']+'" name="idclass">';
+                    inputList.forEach(function(inputs){
+                        htmlbody += '<div class="input-group">'
+                                +'   <span class="input-group-addon" id="basic-addon1"><div style="width:100px;float:left;">'+upperCaseFirstWord(inputs)+'</div></span>'
+                                +'   <input type="text" class="form-control" name="'+inputs+'" value="'+data[0][inputs]+'" aria-describedby="basic-addon1" required="required">'
+                                +'</div>'
+                    });
+                    htmlbody += '<div class="input-group">'
+                        +'   <span class="input-group-addon" ><div style="width:100px;float:left;">Subject</div></span>'
+                        +'   <input type="hidden" value="'+data[0]["idsubject"]+'" id="mdl-input-classes-subject" class="form-control btn-classes" name="idsubject" aria-describedby="basic-addon1" required="required">'
+                        +'   <input type="button" value="'+data[0]["subject_code"]+'" id="mdl-input-temp-classes-subject" class="form-control btn-classes-subject" name="temp_classes" aria-describedby="basic-addon1" required="required" style="text-align:left;">'
+                     +'</div>'
+                     +'</form>';
+                            
+                    $('.modal-body').html(htmlbody);
+                    
+                    var footer = '<button type="submit" form="mdl-frm-update-classes" class="btn btn-primary btn-post-classes-update">Save changes</button>'
+                                +'<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
+                    $('.modal-footer').html(footer);
+                }
+            }
+        });
+    
+        $('#modal-dynamic').modal('show');
+    });
+    
+    //******** UPDATE CLASS END*/
+
+    //******** POST UPDATE CLASSES*/
+
+    $(document).on('submit','#mdl-frm-update-classes',function(e){
+        e.preventDefault();
+        var frm = $(this);
+        var id = frm.data('id');
+        var method = frm.attr('method');
+        var url = frm.attr('action');
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to update this record?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, update it!",
+            cancelButtonText: "No, cancel plx!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+            },
+            function(isConfirm){
+            if (isConfirm) {
+                $.ajax({
+                    url:url,
+                    data:frm.serialize(),
+                    method:method,
+                    dataType:"json",
+                    success:function(data){
+                        if(data[1] == true){
+                            swal("success", "Record Updated.", "success");   
+                            location.reload();
+                            $('#mdl-classes-update').modal('hide');
+                        }else{
+                            swal("cancelled", data[0], "error");
+                        }
+                    }
+                });
+            } else {
+                swal("Cancelled", "Update Canceled.", "error");
+            }
+        });
+        
+    });
+
+    
+    //********  POST UPDATE CLASSES END*/
 
     
  
