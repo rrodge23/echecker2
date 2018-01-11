@@ -40,6 +40,19 @@
     <script src= "assets/js/jqxdata.js" type="text/javascript"></script>
     <script src= "assets/js/demos.js" type="text/javascript"></script>
 
+    <?php
+        $userSession = "";
+        
+        if(array_key_exists('users',$_SESSION)){
+            $userSession = $_SESSION['users']['user_level'];
+        }else{
+            
+        }
+    ?>
+    <script type="text/javascript">
+    var __currentPath = '<?php echo $this->uri->segment(1); ?>';
+    var __userSessionUserLevelData='<?php echo $userSession;?>';
+    </script>
     
 
     
