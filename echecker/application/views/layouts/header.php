@@ -51,6 +51,10 @@
     ?>
     <script type="text/javascript">
     var __currentPath = '<?php echo $this->uri->segment(1); ?>';
+    var __secondCurrentPath = '<?php echo $this->uri->segment(2); ?>';
+    if(__secondCurrentPath != null || __secondCurrentPath != ""){
+        __currentPath += '/'+ __secondCurrentPath;
+    }
     var __userSessionUserLevelData='<?php echo $userSession;?>';
     </script>
     

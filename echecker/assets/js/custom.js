@@ -112,7 +112,20 @@ $(document).ready(function(){
     //********* SELECT PICKER
     $(".chzn-select").chosen({width:"80%"});
     //********* SELECT PICKER END
-    
+    $('.datepicker-date').bootstrapMaterialDatePicker({
+        time:false,
+        month:true,
+        date:true,
+        format: 'MM-DD-YY',
+        shortTime:true,
+    });
+    $('.datepicker-time').bootstrapMaterialDatePicker({
+        time:true,
+        month:false,
+        date:false,
+        format: 'HH:mm',
+        shortTime:true,
+    });
     //********* DATE PICKER
     
     //********* DATE PICKER END
@@ -1860,9 +1873,9 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
 
 
     /////
-
-    if(__userSessionUserLevelData != ("99") && __currentPath == "examination"){
-        $("#splitter").jqxSplitter({  width: 600, height: 600, panels: [{ size: '40%'}] });
+  
+    if(__userSessionUserLevelData == ("2") && __currentPath == 'examinations/addQuestionaire'){
+        $("#splitter").jqxSplitter({  width: 1000, height: 1000, panels: [{ size: '20%'}] });
         // prepare the data
         var data = new Array();
         var firstNames = ["Nancy", "Andrew", "Janet", "Margaret", "Steven", "Michael", "Robert", "Laura", "Anne"];
@@ -1945,11 +1958,12 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             renderer: function (index, label, value) {
                 var datarecord = data[index];
                 var imgurl = '../../images/' + label.toLowerCase() + '.png';
-                var img = '<img height="50" width="40" src="' + imgurl + '"/>';
+                var img = '<span>'+(index+1)+'</span>';
                 var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.firstname + " " + datarecord.lastname + '</td></tr><tr><td>' + datarecord.title + '</td></tr></table>';
                 return table;
             }
         });
-        updatePanel(0);
+       
+        updatePanel(3);
     }
 });

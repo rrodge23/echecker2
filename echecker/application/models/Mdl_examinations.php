@@ -19,10 +19,8 @@ class Mdl_examinations extends CI_Model {
 
     
     public function userQuestionaireList($data=false){
-        $query=$this->db->join('subjecttbl','user_subjecttbl.idsubject = subjecttbl.idsubject','left')
-                    ->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule','left')
-                ->where('UID',$data)
-            ->get('user_subjecttbl');
+        $query=$this->db->where('idclass',$data)
+            ->get('questionairetbl');
         return $query->result_array();
     }
 }

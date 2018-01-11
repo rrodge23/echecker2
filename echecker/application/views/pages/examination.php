@@ -36,16 +36,10 @@
                         <td class='text-center font-roboto color-a2'>$units</td>
                         <td class='text-center font-roboto color-a2' id='sample'>$time_start-$time_end</td>
                         <td class='text-center font-roboto color-a2'>
-                            
-                        <form action='examinations/userquestionairelist' method='POST' id='frm-userquestionairelist'>
-                            <input type='hidden' value=$idclass name='id'>
-                            <button rel='tooltip' data-original-title='View Questionaires' class='btn-view-questionaire btn btn-info' type='submit' form='frm-userquestionairelist'>
-                                <i class='material-icons'>remove_red_eye</i>
-                            </button>
-                        </form>
-                            
-                            
-                        
+                        <a rel='tooltip' data-original-title='View Questionaires' class='btn btn-info' href='examinations/userquestionairelist/$idclass'>
+                            <i class='material-icons'>remove_red_eye</i>
+                        </a>    
+                       
                         </td>
                     </tr>
                     ";
