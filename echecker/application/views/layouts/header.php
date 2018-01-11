@@ -22,6 +22,7 @@
     <link href= "assets/css/datepicker.css" rel="stylesheet" type="text/css"/>
     <link href= "assets/css/dataTables.css" rel="stylesheet" type="text/css"/>
     <link href= "assets/css/sweetalert.css" rel="stylesheet" type="text/css"/>
+    <link href= "assets/css/bootstrap-duration-picker.css" rel="stylesheet" type="text/css"/>
     
     <!-- <link href= "assets/css/bootstrap-duallistbox.min.css" rel="stylesheet" type="text/css"/> -->
     <link href= "assets/css/fileinput.min.css" rel="stylesheet" type="text/css"/> 
@@ -39,6 +40,7 @@
     <script src= "assets/js/jqxlistbox.js" type="text/javascript"></script>
     <script src= "assets/js/jqxdata.js" type="text/javascript"></script>
     <script src= "assets/js/demos.js" type="text/javascript"></script>
+    <script src= "assets/js/bootstrap-duration-picker.js" type="text/javascript"></script>
 
     <?php
         $userSession = "";

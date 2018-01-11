@@ -23,7 +23,7 @@
         </div>
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Duration</span>
-            <input type="text" class="form-control use datepicker-time" placeholder="Select Duration" aria-describedby="basic-addon1" required="required" id="" name="questionaire_duration">
+            <input type="text" class="form-control use" placeholder="Select Duration" aria-describedby="basic-addon1" required="required" id="duration" name="questionaire_duration">
         </div>
     </div>
 

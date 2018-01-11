@@ -1,5 +1,28 @@
 $(document).ready(function(){
+    $('#duration').durationPicker({
+        
+          lang: 'en',
+        
+          formatter: function (s) {
+        
+            return s;
+        
+          },
     
+          showDays: false
+    
+        });
+         
+        var langs = {
+        
+            en: {
+                hours: 'hours',
+                minutes: 'minutes',
+        
+            }
+        
+        };
+        
 
 
     //*********** LOGIN
