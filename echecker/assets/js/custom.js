@@ -1615,7 +1615,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             data:{id:id},
             method:"POST",
             success:function(data){
-                console.log(data);
+          
                 var teacherName = "";
                 data.forEach(function(inputs){
                     if(inputs["user_level"] == "2"){
@@ -1896,12 +1896,22 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     //********  POST UPDATE CLASSES END*/
 
     //********  ADD QUESTIONAIRE TYPE */
-    $(document).on('click','.btn-add-question-type',function(){
+    
+    $(document).on('click','.btn-add-question-type',function(e){
         
-
+        if(document.getElementById('category-title-input').value == ""){
+            return false;
+        }    
+        if(document.getElementById('number-of-points-input').value == ""){
+            return false;
+        }    
+        if(document.getElementById('number-of-items-input').value == ""){
+            return false;
+        }    
+        var tabHeaderDataId = (parseInt(document.getElementById('tab-header').lastChild.getAttribute('data-id'))+1);
         var tabHeader = $('.tab-header');
         var tabContent = $('.tab-content');
-        var tabHeaderHtmlElementString = '<li role="presentation" class="active" style="width:20%;">'
+        var tabHeaderHtmlElementString = '<li role="presentation" class="active" style="width:20%;" data-id="'+tabHeaderDataId+'">'
                                             +'<a href="#tab-add-question1" data-toggle="tab">'
                                                 +'<span class="material-icons"></span>Add Category'
                                             +'</a>'
@@ -1916,7 +1926,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
 
         document.getElementById('tab-header').appendChild(tabHeaderNode.documentElement);
         document.getElementById('tab-content').appendChild(tabContentNode.documentElement);
-       
+        alert();
     });
     //********  ADD QUESTIONAIRE TYPE END*/
 
