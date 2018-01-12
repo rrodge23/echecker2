@@ -1,7 +1,7 @@
 
 <?php
   if($_SESSION['users']['user_level'] != "99"){
-   print_r($data);
+
 ?>
 
 <div class="user-subject-list">

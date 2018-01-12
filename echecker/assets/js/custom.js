@@ -1,7 +1,8 @@
 $(document).ready(function(){
-    $('#duration').durationPicker({
+
+    $('.time-hours-minute-duration').durationPicker({
         
-          lang: 'en',
+          langs: 'en',
         
           formatter: function (s) {
         
@@ -11,17 +12,17 @@ $(document).ready(function(){
     
           showDays: false
     
-        });
-         
-        var langs = {
-        
-            en: {
-                hours: 'hours',
-                minutes: 'minutes',
-        
-            }
-        
-        };
+    });
+
+       
+    var langs = {
+    
+        en: {
+            hours: 'hours',
+            minutes: 'minutes',
+        },
+    
+    };
         
 
 
@@ -116,7 +117,7 @@ $(document).ready(function(){
     //******** ETC */
     
         tinymce.init({
-             selector: '#mytextarea'
+             selector: '.mytextarea'
         });
   
    
@@ -1894,7 +1895,32 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     
     //********  POST UPDATE CLASSES END*/
 
+    //********  ADD QUESTIONAIRE TYPE */
+    $(document).on('click','.btn-add-question-type',function(){
+        
 
+        var tabHeader = $('.tab-header');
+        var tabContent = $('.tab-content');
+        var tabHeaderHtmlElementString = '<li role="presentation" class="active" style="width:20%;">'
+                                            +'<a href="#tab-add-question1" data-toggle="tab">'
+                                                +'<span class="material-icons"></span>Add Category'
+                                            +'</a>'
+                                        +'</li>';
+        var tabContentHtmlElementString = '<div role="tabpanel" class="tab-pane fade in active" id="tab-add-question1"></div>';
+        var domParser1 = new DOMParser();
+        var domParser2 = new DOMParser();
+        var tabHeaderNode = domParser1.parseFromString(tabHeaderHtmlElementString, 'text/xml');
+        var tabContentNode = domParser2.parseFromString(tabContentHtmlElementString, 'text/xml');
+        $('#tab-header-add-question').removeClass('active');
+        $('#tab-add-question').removeClass('active in');
+
+        document.getElementById('tab-header').appendChild(tabHeaderNode.documentElement);
+        document.getElementById('tab-content').appendChild(tabContentNode.documentElement);
+       
+    });
+    //********  ADD QUESTIONAIRE TYPE END*/
+
+    
     /////
   
     if(__userSessionUserLevelData == ("2") && __currentPath == 'examinations/addQuestionaire'){
@@ -1989,4 +2015,8 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
        
         updatePanel(3);
     }
+
+
+
+    
 });

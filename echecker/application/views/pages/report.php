@@ -31,7 +31,16 @@
             </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab-studentlist">
                     <div class="row">
-                        
+                    <div id="splitter">
+                        <div style="overflow: hidden;">
+                            <div style="border: none;" id="listbox">
+                            </div>
+                        </div>
+
+                        <div style="overflow: hidden;" id="ContentPanel">
+                        </div>
+
+                    </div>
                     </div>
                 </div>
                 

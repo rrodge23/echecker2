@@ -1,6 +1,12 @@
-/*----------------------------------------------------*/
-/*----------------- Testimonials CSS -----------------*/
-/*----------------------------------------------------*/
+input.add-questionaire-type{
+    width: 20% !important;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+input.add-questionaire-type:focus{
+    width: 40% !important;
+}
+
 .header-class-subject-information-left{
     font-size:17px;
     margin:30px;
