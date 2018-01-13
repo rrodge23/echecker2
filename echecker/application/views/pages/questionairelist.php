@@ -8,7 +8,7 @@
     <a rel='tooltip' data-original-title='Add' class='pull-right btn btn-success' type='button' name='create' href='examinations/addQuestionaire'>
         <i class='material-icons'>add</i>
   </a>
-    <span class="brand" style="font-size:20px;">QUESTIONAIRE LIST:</span>
+    <span class="brand" style="font-size:20px;">QUESTIONNAIRE LIST:</span>
     <table id="table-subjectList" class="table table-striped">        
         <thead>
             <tr>
