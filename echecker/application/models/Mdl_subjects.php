@@ -13,6 +13,17 @@ class Mdl_subjects extends CI_Model {
                     ->get('subjecttbl');
         return $query->result_array();
     }
+
+    public function getAvailableSubjects(){
+        $query=$this->db->query('SELECT * FROM subjecttbl JOIN subject_scheduletbl 
+                    ON subjecttbl.schedule = subject_scheduletbl.idschedule
+                    WHERE NOT EXISTS ("SELECT * FROM user_subjecttbl
+                                    WHERE user_subjecttbl.idsubject = subjecttbl.idsubject")
+                    ');
+        
+        
+        return $query->result_array();
+    }
     public function getallSubjectUsersById($data=false){
         $query=$this->db->join('subjecttbl','user_subjecttbl.idsubject = subjecttbl.idsubject','left')
                         ->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule','left')

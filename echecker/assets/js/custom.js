@@ -274,7 +274,7 @@ $(document).ready(function(){
 
    function kanbanAddUserSubject(){
     $.ajax({
-        url:'subjects/getallsubjectlist',
+        url:'subjects/getAvailableSubjects',
         dataType:"json",
         success:function(data){
 
