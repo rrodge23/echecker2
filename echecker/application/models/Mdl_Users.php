@@ -226,37 +226,73 @@ class Mdl_Users extends CI_Model {
     }
 
     public function getUserAvailableSujbects($data=false){
+      
         $query=$this->db->join('subject_scheduletbl','subjecttbl.schedule = subject_scheduletbl.idschedule')
                             ->get('subjecttbl');
         $subjectList = $query->result_array();
-        
+    
         $userSubjectQuery = $this->db->where('UID',$data)
                             ->get('user_subjecttbl');
 
         $userSubjectData = $userSubjectQuery->result_array();
-        $userSubjectsID = array();
-        for($i=0;$i<count($userSubjectData);$i++){
-            $userSubjectsID[$i] = $userSubjectData[$i]['idsubject'];
-        }
-        
-        foreach($subjectList as $key => $value){
-            if(in_array($value['idsubject'],$userSubjectsID)){
-                $subjectList[$key]['state'] = "subjectsList";
-
-                
-            }else{
-                $subjectList[$key]['state'] = "availableSubjects";
-                
+        $isSubjectAcquiredQuery = $this->db->get('user_subjecttbl');
+        $isSubjectAcquired = $isSubjectAcquiredQuery->result_array();
+        if(count($isSubjectAcquired) > 0){
+            foreach($isSubjectAcquired as $key=>$value){
+                $userSubjectAcquiredId[$key] = $value['idsubject'];
             }
+            
+        }
+        if(count($userSubjectData) > 0){
+            $userSubjectsID = array();
+            for($i=0;$i<count($userSubjectData);$i++){
+                $userSubjectsID[$i] = $userSubjectData[$i]['idsubject'];
+              
+            }
+            
+            for($i = 0; $i < count($subjectList); $i++){
+                
+                if(in_array($subjectList[$i]['idsubject'],$userSubjectsID)){
+                    $subjectList[$i]['state'] = "subjectsList";
+                }else{
+                    
+                    if(!in_array($subjectList[$i]['idsubject'],$userSubjectAcquiredId)){
+                    
+                        $subjectList[$i]['state'] = "availableSubjects";
+            
+                    }else{
+                        array_splice($subjectList,$i,1);
+                        $i--;
+                    }
+                    
+                    
+                }
+            }
+           
+        }else{
+            for($i=0;$i < count($subjectList);$i++){
+                if(!in_array($subjectList[$i]['idsubject'],$userSubjectAcquiredId)){
+                    
+                        $subjectList[$i]['state'] = "availableSubjects";
+            
+                    }else{
+                     
+                        array_splice($subjectList,$i,1);
+                        $i--;
+                    }
+            }
+            
         }
 
         
         return $subjectList;
     }
+
     public function updateUser($data=false){
   
     
         $subjectIdData = explode(',', $data['idsubject']);
+
         $subjectAvailableIdData = explode(',', $data['idsubject_available']);
         
         if($getQuery = $this->db->where('idusers',$data['idusers'])->get('users')){            
@@ -314,7 +350,7 @@ class Mdl_Users extends CI_Model {
                
                 if($userSubjectData){
                     foreach($userSubjectData as $key => $valueUser){
-                        if($subjectIdData){
+                        if(count($subjectIdData) > 1){
                             foreach($subjectIdData as $key=> $valueSubjectId){
                                 if($valueUser['UID'] != $valueSubjectId){
                                     if($valueUser['UID'] == $data['idusers']){
@@ -327,7 +363,7 @@ class Mdl_Users extends CI_Model {
                                 }
                             }
                         }
-                        if($subjectAvailableIdData){
+                        if(count($subjectAvailableIdData) > 1){
                             foreach($subjectAvailableIdData as $key => $valueSubjectId){
                                 if($valueUser['idsubject'] == $valueSubjectId){
                                     if($valueUser['UID'] == $data['idusers']){
