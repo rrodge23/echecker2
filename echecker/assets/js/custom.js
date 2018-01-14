@@ -453,7 +453,7 @@ $(document).ready(function(){
         e.preventDefault();
 
         var subjectDataList = $('#kanban').jqxKanban('getItems');
-        
+       
         var getClassSubjects = [];
         subjectDataList.forEach(function(data){
             if(data.status == "subjectsList"){
@@ -554,6 +554,7 @@ $(document).ready(function(){
         var btn = $(this);
         var id = btn.data('id');
         var user_level = btn.data('level');
+        
         $.ajax({
             url:'users/getuserinfobyid',
             dataType:"json",
@@ -579,13 +580,28 @@ $(document).ready(function(){
         $('#modal-dynamic').modal('show');
     });
 
-    
+    //********* POST UPDATE USER
     $(document).on('submit','#mdl-frm-update-user',function(e){
         e.preventDefault();
         var frm = $(this);
         var id = frm.data('id');
         var method = frm.attr('method');
         var url = frm.attr('action');
+        var subjectDataList = $('#kanban').jqxKanban('getItems');
+        
+         var getClassSubjects = [];
+         var classSubjectsAvailable = [];
+         subjectDataList.forEach(function(data){
+             if(data.status == "subjectsList"){
+                 getClassSubjects.push(data.id);
+             }else if(data.status == "availableSubjects"){
+                classSubjectsAvailable.push(data.id);
+             }
+         });
+         
+         $('.input-class-subjectList').val(getClassSubjects);
+         $('.input-class-available-subjectList').val(classSubjectsAvailable);
+
         swal({
             title: "Are you sure?",
             text: "Do you want to update this record?",
@@ -2043,79 +2059,5 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     });
     //********  ADD QUESTIONAIRE TYPE END*/
     
-    var xxx = '<ul id="tab-header" class="nav nav-tabs tab-nav-right" role="tablist" style="margin-bottom:50px;">'
-    +'<li role="presentation" class="active" style="width:20%;">'
-        +'<a href="#tab-professorlist" data-toggle="tab">'
-            +'<i class="material-icons">account_circle</i>'
-            +'<span>Professors</span>'
-        +'</a>'
-    +'</li>'
-    +'<li role="presentation" style="width:20%;">'
-        +'<a href="#tab-studentlist" data-toggle="tab">'
-            +'<i class="material-icons">person_pin</i>'
-            +'<span>Students</span>'
-        +'</a>'
-    +'</li>'
-   
-+'</ul>'
-
-
-+'<div class="tab-content" id="tab-content">'
-    +'<div role="tabpanel" class="tab-pane fade in active" id="tab-professorlist">'
-        +'1<div id="splitter">'
-            +'<div style="overflow: hidden;">'
-                +'<div style="border: none;" id="listbox">'
-                +'</div>'
-            +'</div>'
-
-            +'<div style="overflow: hidden;" id="ContentPanel">'
-            +'</div>'
-
-        +'</div>'
-    +'</div>'
-    +'<div role="tabpanel" class="tab-pane fade" id="tab-studentlist">'
-        
-        +'2<div id="splitter">'
-            +'<div style="overflow: hidden;">'
-                +'<div style="border: none;" id="listbox">'
-                +'</div>'
-            +'</div>'
-
-            +'<div style="overflow: hidden;" id="ContentPanel">'
-            +'</div>'
-
-        +'</div>'
-    +'</div>'
     
-+'</div>';
-    var xxxParser = new DOMParser();
-    var xnode = xxxParser.parseFromString(xxx, 'text/html');
-    document.getElementById('xxx').appendChild(xnode.documentElement);
-    $(document).on('click','#btnxxx',function(){
-        var panhead ='<li role="presentation" style="width:20%;">'
-                    +'<a href="#tab-studentlist1" data-toggle="tab">'
-                        +'<i class="material-icons">person_pin</i>'
-                        +'<span>Students</span>'
-                    +'</a>'
-                +'</li>';
-        var pancontent ='<div role="tabpanel" class="tab-pane fade" id="tab-studentlist1">'
-        
-                +'3<div id="splitter">'
-                    +'<div style="overflow: hidden;">'
-                        +'<div style="border: none;" id="listbox">'
-                        +'</div>'
-                    +'</div>'
-
-                    +'<div style="overflow: hidden;" id="ContentPanel">'
-                    +'</div>'
-
-                +'</div>'
-            +'</div>';
-        var panParser1 = new DOMParser();
-        var panParser2 = new DOMParser();
-        var xnode1 = panParser1.parseFromString(panhead, 'text/xml');
-        var xnode2 = panParser2.parseFromString(pancontent, 'text/xml');
-        document.getElementById('tab-header').appendChild(xnode1.documentElement);
-        document.getElementById('tab-content').appendChild(xnode2.documentElement);
-    });
 });

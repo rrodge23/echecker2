@@ -57,7 +57,7 @@
         case 'courses':
             $courses='active';
             break;
-        case 'examination':
+        case 'examinations':
             $examinations='active';
             break;   
         case 'classes':
@@ -137,7 +137,7 @@
 
                 if($m_examination == '1'){
                     
-                    echo '<li class="'.$reports.'">
+                    echo '<li class="'.$examinations.'">
                                 <a href="examinations">
                                     <i class="material-icons">library_books</i>
                                     <p>Examination</p>

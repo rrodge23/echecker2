@@ -254,6 +254,10 @@ class Mdl_Users extends CI_Model {
         return $subjectList;
     }
     public function updateUser($data=false){
+  
+    
+        $subjectIdData = explode(',', $data['idsubject']);
+        $subjectAvailableIdData = explode(',', $data['idsubject_available']);
         
         if($getQuery = $this->db->where('idusers',$data['idusers'])->get('users')){            
             $userData = $getQuery->row_array();
@@ -302,8 +306,53 @@ class Mdl_Users extends CI_Model {
                             );
                 $isUpdated = $this->db->set($setTeacherInformation)->where('id',$data['idusers'])->update('teacher_informationtbl');
             }
-
+            
             if($isUpdated){
+                $userSubjectQuery = $this->db->where('UID',$data['idusers'])
+                    ->get('user_subjecttbl');
+                $userSubjectData = $userSubjectQuery->result_array();
+               
+                if($userSubjectData){
+                    foreach($userSubjectData as $key => $valueUser){
+                        if($subjectIdData){
+                            foreach($subjectIdData as $key=> $valueSubjectId){
+                                if($valueUser['UID'] != $valueSubjectId){
+                                    if($valueUser['UID'] == $data['idusers']){
+                                        
+                                        $isSubjectInserted = $this->db->insert('user_subjecttbl',array('idsubject'=>$valueSubjectId,
+                                        'UID'=>$data['idusers'])
+                                        );
+                                    }
+                                   
+                                }
+                            }
+                        }
+                        if($subjectAvailableIdData){
+                            foreach($subjectAvailableIdData as $key => $valueSubjectId){
+                                if($valueUser['idsubject'] == $valueSubjectId){
+                                    if($valueUser['UID'] == $data['idusers']){
+                                        $isSubjectDeleted = $this->db->where('UID',$data['idusers']) 
+                                        ->where('idsubject',$valueSubjectId)
+                                        ->delete('user_subjecttbl');
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                }else{
+                    foreach($subjectIdData as $key=> $valueSubjectId){
+                        $isSubjectInserted = $this->db->insert('user_subjecttbl',array('idsubject'=>$valueSubjectId,
+                        'UID'=>$data['idusers'])
+                        );
+                        
+                    }
+                    foreach($subjectAvailableIdData as $key => $valueSubjectId){
+                        $isSubjectDeleted = $this->db->where('UID',$data['idusers']) 
+                        ->where('idsubject',$valueSubjectId)
+                        ->delete('user_subjecttbl');
+                    }
+                }
                 return true;
             }else{
                 return false;

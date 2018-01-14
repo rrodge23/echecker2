@@ -125,6 +125,7 @@ class Users extends MY_Controller {
                                 
                         </div>
                         <input type="hidden" class="form-control input-class-subjectList" name="idsubject" aria-describedby="basic-addon1" required="required">
+                        <input type="hidden" class="form-control input-class-available-subjectList" name="idsubject_available" aria-describedby="basic-addon1" required="required">
                         </form>';
        
         $htmlfooter = '<button type="submit" form="mdl-frm-add-teacher" class="btn btn-primary btn-post-add-subject"><i class="material-icons">playlist_add_check</i></button>
@@ -164,6 +165,7 @@ class Users extends MY_Controller {
               <div id="kanban">
                     
               </div>
+            <input type="hidden" class="form-control input-class-available-subjectList" name="idsubject_available" aria-describedby="basic-addon1" required="required">
             <input type="hidden" class="form-control input-class-subjectList" name="idsubject" aria-describedby="basic-addon1" required="required">
          </form>';
         
@@ -221,6 +223,7 @@ class Users extends MY_Controller {
               <div id="kanban">       
                 </div>
                 <input type="hidden" class="form-control input-class-subjectList" name="idsubject" aria-describedby="basic-addon1" required="required">
+                <input type="hidden" class="form-control input-class-available-subjectList" name="idsubject_available" aria-describedby="basic-addon1" required="required">
             </form>';
         
         $htmlfooter = '<button type="submit" form="mdl-frm-update-user" class="btn btn-primary btn-post-user-update">Save changes</button>
