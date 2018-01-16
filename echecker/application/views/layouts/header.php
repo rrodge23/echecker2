@@ -3,7 +3,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Document</title>
+    <?php
+    if($this->uri->segment(1) != "" ){
+    ?>
+    <title>E Checker</title>
     <meta charset="UTF-8">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -40,7 +43,9 @@
     <script src= "assets/js/jqxsplitter.js" type="text/javascript"></script>
     <script src= "assets/js/jqxlistbox.js" type="text/javascript"></script>
     <script src= "assets/js/jqxdata.js"type="text/javascript"></script>
-    
+    <?php
+    }
+    ?>
 
     <?php
         $userSession = "";
