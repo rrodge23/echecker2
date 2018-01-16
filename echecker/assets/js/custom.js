@@ -352,12 +352,14 @@ $(document).ready(function(){
             ];
             var tmpLocalData = [];
             
-            data.forEach(function(input){
-                
-                var tmpArray = {id : input.idsubject, state:input.state, label: input.subject_code+" | " + input.subject_description, tags:[input.schedule_code,input.time_start+"-",input.time_end,input.day]};
-                tmpLocalData.push(tmpArray);
-                
-            });
+            if(data){
+                data.forEach(function(input){
+                    
+                    var tmpArray = {id : input.idsubject, state:input.state, label: input.subject_code+" | " + input.subject_description, tags:[input.schedule_code,input.time_start+"-",input.time_end,input.day]};
+                    tmpLocalData.push(tmpArray);
+                    
+                });
+            }
             
             var source =
             {
@@ -594,10 +596,12 @@ $(document).ready(function(){
          var getClassSubjects = [];
          var classSubjectsAvailable = [];
          subjectDataList.forEach(function(data){
-             if(data.status == "subjectsList"){
-                 getClassSubjects.push(data.id);
-             }else if(data.status == "availableSubjects"){
-                classSubjectsAvailable.push(data.id);
+             if(data){
+                if(data.status == "subjectsList"){
+                    getClassSubjects.push(data.id);
+                }else if(data.status == "availableSubjects"){
+                   classSubjectsAvailable.push(data.id);
+                }
              }
          });
          

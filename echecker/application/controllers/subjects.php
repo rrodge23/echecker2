@@ -18,7 +18,7 @@ class Subjects extends MY_Controller {
 
 	public function getAvailableSubjects(){
 		$this->load->model('mdl_subjects');
-		$subjectList = $this->mdl_subjects->getAllSubjectList();
+		$subjectList = $this->mdl_subjects->getAvailableSubjects();
 		echo json_encode($subjectList);
 	}
 
