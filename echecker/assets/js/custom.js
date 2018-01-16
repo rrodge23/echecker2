@@ -272,9 +272,16 @@ $(document).ready(function(){
     
     //********* ADD USER SUBJECT KANBAN
 
-   function kanbanAddUserSubject(){
+   function kanbanAddUserSubject(id){
+    
+    var url = '';
+    if(id == 1){
+        url = 'subjects/getAllSubjectList';
+    }else if (id == 2){
+        url = 'subjects/getAvailableSubjects';
+    }
     $.ajax({
-        url:'subjects/getAvailableSubjects',
+        url:url,
         dataType:"json",
         success:function(data){
 
@@ -421,7 +428,7 @@ $(document).ready(function(){
 
                 //KANBAN
                 
-                kanbanAddUserSubject();
+                kanbanAddUserSubject(2);
                 // END KANBAN
                 
             }   
@@ -443,7 +450,7 @@ $(document).ready(function(){
                 $(".chzn-select").chosen({width:"100%",placeholder_text_single: "Select Project/Initiative...",
       no_results_text: "Oops, nothing found!"});
                 //KANBAN
-                kanbanAddUserSubject();
+                kanbanAddUserSubject(1);
                 // END KANBAN
             }
         });
@@ -795,13 +802,13 @@ $(document).ready(function(){
 
     //******** UPPERCASE*/
     function upperCaseFirstWord(str) {
-    var splitStr = str.toLowerCase().split(' ');
-    for (var i = 0; i < splitStr.length; i++) {
-        
-        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
-    }
+        var splitStr = str.toLowerCase().split(' ');
+        for (var i = 0; i < splitStr.length; i++) {
+            
+            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+        }
 
-    return splitStr.join(' '); 
+        return splitStr.join(' '); 
     }
     //******** UPPERCASE END*/
 

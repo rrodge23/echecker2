@@ -235,11 +235,13 @@ class Mdl_Users extends CI_Model {
                             ->get('user_subjecttbl');
 
         $userSubjectData = $userSubjectQuery->result_array();
-        $isSubjectAcquiredQuery = $this->db->get('user_subjecttbl');
+        $isSubjectAcquiredQuery = $this->db->join('users','user_subjecttbl.UID = users.idusers')
+                                    ->get('user_subjecttbl');
         $isSubjectAcquired = $isSubjectAcquiredQuery->result_array();
         if(count($isSubjectAcquired) > 0){
             foreach($isSubjectAcquired as $key=>$value){
-                $userSubjectAcquiredId[$key] = $value['idsubject'];
+                $userSubjectAcquiredId['idsubject'][$key] = $value['idsubject'];
+                $userSubjectAcquiredId['user_level'][$key] = $value['user_level'];
             }
             
         }
@@ -256,13 +258,18 @@ class Mdl_Users extends CI_Model {
                     $subjectList[$i]['state'] = "subjectsList";
                 }else{
                     
-                    if(!in_array($subjectList[$i]['idsubject'],$userSubjectAcquiredId)){
+                    if(!in_array($subjectList[$i]['idsubject'],$userSubjectAcquiredId['idsubject'])){
                     
                         $subjectList[$i]['state'] = "availableSubjects";
             
                     }else{
-                        array_splice($subjectList,$i,1);
-                        $i--;
+                        if($userSubjectAcquiredId['user_level'][$i] == "2"){
+                            array_splice($subjectList,$i,1);
+                            $i--;
+                        }else{
+                            $subjectList[$i]['state'] = "availableSubjects";
+                        }
+                        
                     }
                     
                     
