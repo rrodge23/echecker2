@@ -33,12 +33,17 @@
     
     <script src= "assets/plugin/tinymce/tinymce.min.js" type="text/javascript"></script>
     <!--<script src= "assets/js/bootstrap-checkbox-radio.js" type="text/javascript"></script>-->
-    <!--<script src= "assets/js/bootstrap-notify.js" type="text/javascript"></script>-->
-    <script src= "assets/js/paper-dashboard.js" type="text/javascript"></script>
+    <script src= "assets/js/bootstrap-notify.js" type="text/javascript"></script>
+    <!-- <script src= "assets/js/paper-dashboard.js" type="text/javascript"></script> -->
 
-    <script src= "assets/js/demo.js" type="text/javascript"></script>
-    <!--<script src= "assets/js/chartist.min.js" type="text/javascript"></script>-->
-    <!--<script src= "assets/js/material.js" type="text/javascript"></script>-->
+    
+    <script src= "assets/js/material.js" type="text/javascript"></script>
+    <script src= "assets/js/chartist.min.js" type="text/javascript"></script>
+    <script src= "assets/js/arrive.min.js" type="text/javascript"></script>
+    <script src= "assets/js/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
+    <script src= "assets/js/bootstrap-notify.js" type="text/javascript"></script>
+    <script src= "assets/js/material-dashboard.js" type="text/javascript"></script>
+    <script src= "assets/js/bootstrap-duration-picker.js" type="text/javascript"></script>
     <script src= "assets/js/morris.js" type="text/javascript"></script>
     <script src= "assets/js/jquery-ui.min.js" type="text/javascript"></script>
     <script src= "assets/js/moment.js" type="text/javascript"></script>
@@ -48,6 +53,7 @@
     <!--<script src= "assets/js/bs.js" type="text/javascript"></script>-->
     <script src= "assets/js/fileinput.min.js" type="text/javascript"></script>
     <script src= "assets/js/bootstrap-select.min.js" type="text/javascript"></script>
+    <script src= "assets/js/demo.js" type="text/javascript"></script>
     <script src= "assets/js/custom.js" type="text/javascript"></script>
      
 </body>

@@ -9,13 +9,14 @@
     <meta name="viewport" content="width=device-width" />
     <base href="<?=base_url();?>"> 
     <link href= "assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/> 
+    <link href= "assets/css/material-dashboard.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/jqx.base.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/animate.min.css" rel="stylesheet" type="text/css"/> 
-    <link href= "assets/css/paper-dashboard.css" rel="stylesheet" type="text/css"/> 
+    <!-- <link href= "assets/css/paper-dashboard.css" rel="stylesheet" type="text/css"/>  -->
     <link href= "assets/css/demo.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/> 
     <!--<link href= "assets/css/themify-icons.css" rel="stylesheet" type="text/css"/> -->
-    <!--<link href= "assets/css/material.css" rel="stylesheet" type="text/css"/>-->
+    <!-- <link href= "assets/css/material.css" rel="stylesheet" type="text/css"/> -->
     <link href= "assets/css/material-icons.css" rel="stylesheet" type="text/css"/>
     <link href= "assets/css/fa.css" rel="stylesheet" type="text/css"/>
     <link href= "assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
@@ -38,9 +39,8 @@
     <script src= "assets/js/jqxscrollbar.js" type="text/javascript"></script>
     <script src= "assets/js/jqxsplitter.js" type="text/javascript"></script>
     <script src= "assets/js/jqxlistbox.js" type="text/javascript"></script>
-    <script src= "assets/js/jqxdata.js" type="text/javascript"></script>
-    <script src= "assets/js/demos.js" type="text/javascript"></script>
-    <script src= "assets/js/bootstrap-duration-picker.js" type="text/javascript"></script>
+    <script src= "assets/js/jqxdata.js"type="text/javascript"></script>
+    
 
     <?php
         $userSession = "";
