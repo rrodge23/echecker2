@@ -1964,13 +1964,13 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         var tabContent = '<div role="tabpanel" class="tab-pane fade" id="tab-add-question'+nextTab+'" data-id="'+nextTab+'">'
                         +'<div class="container">'
                         +'<div class="row">'
-                        +'<div class="col-md-10 bhoechie-tab-container">'
-                            +'<div class="col-md-2 bhoechie-tab-menu">'
+                        +'<div class="col-md-10 bhoechie-tab-container template'+nextTab+'">'
+                            +'<div class="col-md-2 bhoechie-tab-menu template'+nextTab+'">'
                                 +'<div class="list-group">';
                                
         for(i=0;i<inputNumerOfItemsValue;i++){
             tabContent += '<a href="#" class="list-group-item '+((i==0) ? 'active':'')+' text-center">'
-                            +'<h4 class="glyphicon glyphicon-tags"></h4><br/>Train'
+                            +'<h4 class="glyphicon glyphicon-tags"></h4><br/>'+(i+1)
                         +'</a>';
         }
                                 
@@ -1982,7 +1982,15 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             tabContent += '<div class="bhoechie-tab-content '+((i==0) ? 'active':'')+'">'
                 +'<center>'
                     //content
-
+                    +'<div class="col-md-12" style="margin: 5px;">'
+                            +'<h1 class="glyphicon glyphicon-question-sign" style="font-size:4em;color:#55518a"></h1>'
+                            +'<h2 style="margin-top: 0;color:#55518a">Question no. '+(i+1)+'</h2>'
+                            +'<div class="input-group col-md-12">'
+                                +'<span class="input-group-addon" id="basic-addon1">Question:</span>'
+                            +'<input type="text" style="border-bottom:1px solid black;" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="">'
+                        +'</div>'
+                    +'</div>'
+                    
                     //content end
                 +'</center>'
             +'</div>';
@@ -1998,9 +2006,6 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         // create the tab content
         $(tabContent).appendTo('#tab-content');
         
-        answerCaseInput = inputAnswerQuantityValue;
-        testNo = (nextTab+1);
-      
         // make the new tab active
         $('#select-question-type-input').val("0");
         $('#questionaire-case-input').val("");
@@ -2011,15 +2016,19 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $('#tab-header a:last').tab('show');
         
    
-        $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+        $(document).on("click","div.bhoechie-tab-menu.template"+nextTab+">div.list-group>a",function(e) {
             e.preventDefault();
             $(this).siblings('a.active').removeClass("active");
             $(this).addClass("active");
             var index = $(this).index();
-            $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
-            $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+            
+            $("div.bhoechie-tab-container.template"+nextTab+">div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+            $("div.bhoechie-tab-container.template"+nextTab+">div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
         });
-        
+
+        tinymce.init({
+                selector: '.mytextarea'
+        });
     });
 
     
