@@ -1922,55 +1922,49 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     });
 
     //
-    //var listboxTemplate = document.querySelector('.')
+    //LIST BOX
     //
+    var testNo = "";
+    var answerCaseInput = 0;
+
     var data = new Array();
-    var firstNames = [];
-    var lastNames = [];
-    var titles = [];
-    var titleofcourtesy = [];
-    var birthdate = [];
-    var hiredate = [];
-    var address = [];
-    var city = [];
-    var postalcode = [];
-    var country = [];
-    var homephone = [];
-    var notes = [];
+    var firstNames = ["asdf"];
+    var lastNames = ["fda"];
+    var titles = ["fda"];
+    var titleofcourtesy = ["dfsa"];
+    var birthdate = ["fdf"];
+    var hiredate = ["dfd"];
+    var address = ["sdf"];
+    var city = ["fdf"];
+    var postalcode = ["sdf"];
+    var country = ["sf"];
+    var homephone = ["sdfs"];
+    var notes = ["sdfsdf"];
     
     var updatePanel = function (index) {
-        var container = $('<div style="margin: 5px;"></div>')
-        var leftcolumn = $('<div style="float: left; width: 45%;"></div>');
-        var rightcolumn = $('<div style="float: left; width: 40%;"></div>');
-        container.append(leftcolumn);
-        container.append(rightcolumn);
-        var datarecord = data[index];
-        var firstname = "<div style='margin: 10px;'><b>First Name:</b> " + datarecord.firstname + "</div>";
-        var lastname = "<div style='margin: 10px;'><b>Last Name:</b> " + datarecord.lastname + "</div>";
-        var title = "<div style='margin: 10px;'><b>Title:</b> " + datarecord.title + "</div>";
-        var address = "<div style='margin: 10px;'><b>Address:</b> " + datarecord.address + "</div>";
-        $(leftcolumn).append(firstname);
-        $(leftcolumn).append(lastname);
-        $(leftcolumn).append(title);
-        $(leftcolumn).append(address);
-        var postalcode = "<div style='margin: 10px;'><b>Postal Code:</b> " + datarecord.postalcode + "</div>";
-        var city = "<div style='margin: 10px;'><b>City:</b> " + datarecord.city + "</div>";
-        var phone = "<div style='margin: 10px;'><b>Phone:</b> " + datarecord.homephone + "</div>";
-        var hiredate = "<div style='margin: 10px;'><b>Hire Date:</b> " + datarecord.hiredate + "</div>";
-        $(rightcolumn).append(postalcode);
-        $(rightcolumn).append(city);
-        $(rightcolumn).append(phone);
-        $(rightcolumn).append(hiredate);
-        var education = "<div style='clear: both; margin: 10px;'><div><b>Education</b></div><div>" +  $('#listbox').jqxListBox('getItem', index).value + "</div></div>";
-        container.append(education);
-        $("#ContentPanel").html(container.html());
+        var container = $('<div style="margin: 5px;"></div>');
+        var questionHtmlString = '<div class="input-group">'
+                                    +'<span class="input-group-addon" id="basic-addon1">Question:</span>'
+                                    +'<input type="text" style="border-bottom:1px solid black;" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="question_no_'+index+'" data-testno="'+testNo+'">'
+                                +'</div>';
+        var question = $(questionHtmlString);
+        var answerList = "";
+        for(i=0;i<answerCaseInput;i++){
+            answerList += '<div class="input-group">'
+                                +'<span class="input-group-addon" id="basic-addon1">Answer no'+(i+1)+'</span>'
+                                +'<input type="text" class="form-control use" placeholder="Enter Answer Choices '+i+'" aria-describedby="basic-addon1" required="required" id="'+testNo+'_'+index+'_'+i+'" name="'+testNo+'_'+index+'_'+i+'" data-testno="'+testNo+'">'
+                            +'</div>';
+        }
+        container.append(question);
+        container.append(answerList);
+        $(".ContentPanel").html(container.html());
     }
     //********  POST UPDATE CLASSES END*/
     //listBoxInit();
     // LIST BOX FUNCTION
     function listBoxInit(){
         if(__userSessionUserLevelData == ("2") && __currentPath == 'examinations/addQuestionaire'){
-            $(".splitter").jqxSplitter({  width: 800, height: 800, panels: [{ size: '40%'}] });
+            $(".splitter").jqxSplitter({  width: '100%', height: 900, panels: [{ size: '11%'}] });
             // prepare the data
             
             var k = 0;
@@ -1997,21 +1991,22 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 datatype: "array"
             };
             var dataAdapter = new $.jqx.dataAdapter(source);
-            
-            
-        
+
             // Create jqxListBox
-            $('#listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '100%',
+            $('.listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "firstname", valueMember: "notes", itemHeight: 80, height: '100%', width: '100%',
                 renderer: function (index, label, value) {
                     var datarecord = data[index];
-                    var imgurl = '../../images/' + label.toLowerCase() + '.png';
-                    var img = '<span>'+(index+1)+'</span>';
-                    var table = '<table><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.firstname + " " + datarecord.lastname + '</td></tr><tr><td>' + datarecord.title + '</td></tr></table>';
+                    var imgurl = '';
+                    var img = '<span><i style="margin:0 auto;">Question no : '+(index+1)+'<i></span>';
+                    var table = '<table><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td></td></tr><tr><td></td></tr></table>';
                     return table;
                 }
             });
            
-            //updatePanel(0);
+            updatePanel(0);
+            tinymce.init({
+                    selector: '.mytextarea'
+            });
         }
     }
     // LIST BOX FUNCTION END
@@ -2023,14 +2018,20 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         e.preventDefault();
         var inputType= document.getElementById('select-question-type-input');
         var inputTitle = document.getElementById('category-title-input');
+        var inputAnswerQuantity = document.getElementById('questionaire-case-input');
         var inputNumberOfPoints = document.getElementById('number-of-points-input');
         var inputNumerOfItems = document.getElementById('number-of-items-input');
         var inputTypeText = $('#select-question-type-input option:selected').text();
+        var inputAnswerQuantityValue = inputAnswerQuantity.value;
         var inputTitleValue = inputTitle.value;
         var inputNumberOfPointsValue = inputNumberOfPoints.value;
         var inputNumerOfItemsValue = inputNumerOfItems.value;
         var panelQuantity = $('#tab-header > li').length;
         
+        if( inputAnswerQuantityValue == ""){
+            swal("Cancelled", "Fill Up Fields.", "error");
+            return false;
+        }    
         if( inputTitleValue == ""){
             swal("Cancelled", "Fill Up Fields.", "error");
             return false;
@@ -2050,45 +2051,35 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                                 +'<span class="">'+inputTitleValue+' - '+inputTypeText+'</span>'
                             +'</a>'
                         +'</li>';
-        var tabContent = '<div role="tabpanel" class="tab-pane fade" id="tab-add-question'+nextTab+'" data-id="'+nextTab+'">'+nextTab+'</div>';
+        var tabContent = '<div role="tabpanel" class="tab-pane fade" id="tab-add-question'+nextTab+'" data-id="'+nextTab+'">'+nextTab
+                            +'<div class="splitter">'
+                                +'<div style="overflow: hidden;">'
+                                    +'<div style="border: none;" class="listbox">'
+                                    +'</div>'
+                                +'</div>'
+                                +'<div style="overflow: hidden;" class="ContentPanel">'
+                                +'</div>'
+                            +'</div>'
+                        +'</div>';
         // create the tab
         $(tabHeader).appendTo('#tab-header');
         
         // create the tab content
         $(tabContent).appendTo('#tab-content');
-        
+
+        answerCaseInput = inputAnswerQuantityValue;
+        testNo = (nextTab+1);
         // make the new tab active
-        $('#select-question-type-input').val("");
+        $('#select-question-type-input').val("0");
+        $('#questionaire-case-input').val("");
         $('#category-title-input').val("");
         $('#number-of-points-input').val("");
         $('#number-of-items-input').val("");
         $('#total-points-input').val("");
-
         $('#tab-header a:last').tab('show');
         
-        // $(".splitter")
+        listBoxInit();
         
-/*
-        var tabHeaderHtmlElementString = '<li role="presentation" style="width:20%;" data-id="'+ panelQuantity  +'">'
-                                            +'<a href="#tab-add-question'+panelQuantity+'" data-toggle="tab">'
-                                                +'<span class="">'+ inputTitleValue +'</span>'
-                                            +'</a>'
-                                        +'</li>';
-        var tabContentHtmlElementString = '<div role="tabpanel" class="tab-pane fade" id="tab-add-question'+panelQuantity+'">'
-                                                +'<div><p>'+panelQuantity+'</p></div>'
-                                            +'</div>';
-                                            
-        var domParser1 = new DOMParser();
-        var domParser2 = new DOMParser();
-        var tabHeaderNode = domParser1.parseFromString(tabHeaderHtmlElementString, 'text/xml');
-        var tabContentNode = domParser2.parseFromString(tabContentHtmlElementString, 'text/xml');
-        $('#tab-header-add-question').removeClass('active');
-        $('#tab-add-question').removeClass('active in');
-        
-        document.getElementById('tab-header').appendChild(tabHeaderNode.documentElement);
-        document.getElementById('tab-content').appendChild(tabContentNode.documentElement);
-        
-*/
     });
     
     $(document).on('focusout', '#number-of-items-input', function(e){
@@ -2096,6 +2087,22 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         var inputNumberOfPoints = $('#number-of-points-input').val();
         var inputNumberOfPointsValue = $('#number-of-items-input').val();
         $('#total-points-input').val((inputNumberOfPoints*inputNumberOfPointsValue));
+        
+    });
+
+    $(document).on('change', '#select-question-type-input', function(e){
+        e.preventDefault();
+        var selectDropdown = $(this);
+        var spanAnswerCase = $('span#span-answer-case-method');
+        
+        if(selectDropdown.val() == 0){
+            spanAnswerCase.text('Question Quantity');
+            $('#questionaire-case-input').attr('placeholder','Enter Number of Answer Question');
+        }else{
+            spanAnswerCase.text('Answer Quantity');
+            $('#questionaire-case-input').attr('placeholder','Enter number of answers per Item');
+            
+        }
         
     });
     // add questionnaire type end

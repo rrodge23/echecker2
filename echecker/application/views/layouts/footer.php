@@ -56,6 +56,7 @@
     <script src= "assets/js/fileinput.min.js" type="text/javascript"></script>
     <script src= "assets/js/bootstrap-select.min.js" type="text/javascript"></script>
     <script src= "assets/js/demo.js" type="text/javascript"></script>
+    <script src= "assets/js/ripples.js" type="text/javascript"></script>
     <script src= "assets/js/custom.js" type="text/javascript"></script>
     <?php
     }

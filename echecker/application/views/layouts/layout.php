@@ -184,6 +184,12 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
+                            <a href="dashboard" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">dashboard</i>
+                                <p class="hidden-lg hidden-md">Dashboard</p>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="material-icons">person_pin</i>
 								<p><?=$_SESSION['users']['user'];?></p>
@@ -203,7 +209,18 @@
                                 </li>
                             </ul>
                         </li>
+                        
                     </ul>
+                    <form class="navbar-form navbar-right" role="search">
+                        <div class="form-group  is-empty">
+                            <input type="text" class="form-control" placeholder="Search">
+                            <span class="material-input"></span>
+                        </div>
+                        <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                            <i class="material-icons">search</i>
+                            <div class="ripple-container"></div>
+                        </button>
+                    </form>
                 </div>
             </div>
         </nav>

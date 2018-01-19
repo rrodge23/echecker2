@@ -35,21 +35,7 @@
 
     <div class="row">
         <div class="col-md-12">
-         <!-- tab         -->
-        <!-- <div class="container">
-            <div class="well">          
-                <ul class="nav nav-tabs" id="tabs">
-                    <li class="active" id="btnAdd"><a onclick="javascript:void(0)" href="#tab1">Tab 1</a><span>x</span></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tab1">
-                        Hello tab #1 content...
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-         <!-- tab end -->
+      
             <ul class="nav nav-tabs tab-nav-right tab-header" id="tab-header" role="tablist" style="margin-bottom:50px;">
                 <li role="presentation" class="active" style="width:20%;" id="tab-header-add-question" data-id="0">
                     <a href="#tab-add-question" data-toggle="tab">
@@ -65,9 +51,9 @@
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1"><div style="width:100px;float:left;text-align:right;">Question Type</div></span>
                         <select name="quesstion_type" data-placeholder="Select Category" class="chzn-select" required="required" id="select-question-type-input">
-                            <option value="1">Multiple Choice<option>
-                            <option value="2">Identification<option>
-                            <option value="3">Essay<option>
+                            <option value="0">Multiple Choice<option>
+                            <option value="1">Identification<option>
+                            <option value="2">Essay<option>
                         </select>
                     </div>
                     
@@ -76,11 +62,15 @@
                         <input type="text" class="form-control use" placeholder="Enter Title" aria-describedby="basic-addon1" required="required" id="category-title-input" name="questionaire_type_title">
                     </div>
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1">Points per Item</span>
-                        <input type="text" class="form-control use number-duration" placeholder="Enter Number of Points" aria-describedby="basic-addon1" required="required" id="number-of-points-input" name="questionaire_points" pattern="[0-9]+">
+                        <span class="input-group-addon" id="span-answer-case-method">Question Quantity</span>
+                        <input type="text" class="form-control use" placeholder="Enter Number of Answer Question" aria-describedby="basic-addon1" required="required" id="questionaire-case-input" name="questionaire_answer_quantity" pattern="[0-9]+">
                     </div>
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1">Number Of Items</span>
+                        <span class="input-group-addon" id="basic-addon1">Item Points</span>
+                        <input type="text" class="form-control use" placeholder="Enter Number of Points per item" aria-describedby="basic-addon1" required="required" id="number-of-points-input" name="questionaire_points" pattern="[0-9]+">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Item Quantity</span>
                         <input type="text" class="form-control use" placeholder="Enter Number of Items" aria-describedby="basic-addon1" required="required" id="number-of-items-input" name="number_of_items" pattern="[0-9]+">
                     </div>
                     <div class="input-group">

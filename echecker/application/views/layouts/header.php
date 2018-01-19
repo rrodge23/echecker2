@@ -31,6 +31,7 @@
     <!-- <link href= "assets/css/bootstrap-duallistbox.min.css" rel="stylesheet" type="text/css"/> -->
     <link href= "assets/css/fileinput.min.css" rel="stylesheet" type="text/css"/> 
     <!--<link href= "assets/css/fileinput-rtl.min.css" rel="stylesheet" type="text/css"/> -->
+    <link href= "assets/css/ripples.min.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/fonts.css" rel="stylesheet" type="text/css"/> 
     <link href= "assets/css/default.css" rel="stylesheet" type="text/css"/>
     <script src= "assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
