@@ -22,7 +22,7 @@
         <form id="loginform" class="m-x-auto text-center app-login-form" role="form" method="POST" action="login/authenticateLogin" onsubmit="return false;">
                         
             
-            <div class="col-md-12">
+            <div class="col-md-12" style="padding:5px;">
                 <div class="input-group">
                     <span class="input-group-addon">
                         <i class="material-icons" style="padding:0;">mail_outline</i>

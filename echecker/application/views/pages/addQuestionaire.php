@@ -31,10 +31,25 @@
         
     </div>
 
+    <!-- end -->
+
     <div class="row">
         <div class="col-md-12">
-                 
-        <!-- end -->
+         <!-- tab         -->
+        <!-- <div class="container">
+            <div class="well">          
+                <ul class="nav nav-tabs" id="tabs">
+                    <li class="active" id="btnAdd"><a onclick="javascript:void(0)" href="#tab1">Tab 1</a><span>x</span></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        Hello tab #1 content...
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+         <!-- tab end -->
             <ul class="nav nav-tabs tab-nav-right tab-header" id="tab-header" role="tablist" style="margin-bottom:50px;">
                 <li role="presentation" class="active" style="width:20%;" id="tab-header-add-question" data-id="0">
                     <a href="#tab-add-question" data-toggle="tab">
@@ -46,7 +61,7 @@
 
                 <!-- Tab panes -->
             <div class="tab-content" id="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="tab-add-question">
+                <div role="tabpanel" class="tab-pane fade in active" id="tab-add-question" data-id="0">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1"><div style="width:100px;float:left;text-align:right;">Question Type</div></span>
                         <select name="quesstion_type" data-placeholder="Select Category" class="chzn-select" required="required" id="select-question-type-input">
@@ -62,11 +77,11 @@
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Points per Item</span>
-                        <input type="text" class="form-control use number-duration" placeholder="Enter Number of Points" aria-describedby="basic-addon1" required="required" id="number-of-points-input" name="questionaire_points" pattern="[0-9]{10}">
+                        <input type="text" class="form-control use number-duration" placeholder="Enter Number of Points" aria-describedby="basic-addon1" required="required" id="number-of-points-input" name="questionaire_points" pattern="[0-9]+">
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Number Of Items</span>
-                        <input type="text" class="form-control use" placeholder="Enter Number of Items" aria-describedby="basic-addon1" required="required" id="number-of-items-input" name="number_of_items" pattern="[0-9]{10}">
+                        <input type="text" class="form-control use" placeholder="Enter Number of Items" aria-describedby="basic-addon1" required="required" id="number-of-items-input" name="number_of_items" pattern="[0-9]+">
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Total Items</span>
@@ -78,6 +93,7 @@
                     
                  </div><!-- end tab panel first div -->
                 
+               
              </div> <!-- end tab content div -->
 
         </div>
