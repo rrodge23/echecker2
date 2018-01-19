@@ -1921,97 +1921,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         
     });
 
-    //
-    //LIST BOX
-    //
-    var testNo = "";
-    var answerCaseInput = 0;
-
-    var data = new Array();
-    var firstNames = ["asdf"];
-    var lastNames = ["fda"];
-    var titles = ["fda"];
-    var titleofcourtesy = ["dfsa"];
-    var birthdate = ["fdf"];
-    var hiredate = ["dfd"];
-    var address = ["sdf"];
-    var city = ["fdf"];
-    var postalcode = ["sdf"];
-    var country = ["sf"];
-    var homephone = ["sdfs"];
-    var notes = ["sdfsdf"];
     
-    var updatePanel = function (index) {
-        var container = $('<div style="margin: 5px;"></div>');
-        var questionHtmlString = '<div class="input-group">'
-                                    +'<span class="input-group-addon" id="basic-addon1">Question:</span>'
-                                    +'<input type="text" style="border-bottom:1px solid black;" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="question_no_'+index+'" data-testno="'+testNo+'">'
-                                +'</div>';
-        var question = $(questionHtmlString);
-        var answerList = "";
-        for(i=0;i<answerCaseInput;i++){
-            answerList += '<div class="input-group">'
-                                +'<span class="input-group-addon" id="basic-addon1">Answer no'+(i+1)+'</span>'
-                                +'<input type="text" class="form-control use" placeholder="Enter Answer Choices '+i+'" aria-describedby="basic-addon1" required="required" id="'+testNo+'_'+index+'_'+i+'" name="'+testNo+'_'+index+'_'+i+'" data-testno="'+testNo+'">'
-                            +'</div>';
-        }
-        container.append(question);
-        container.append(answerList);
-        $(".ContentPanel").html(container.html());
-    }
-    //********  POST UPDATE CLASSES END*/
-    //listBoxInit();
-    // LIST BOX FUNCTION
-    function listBoxInit(){
-        if(__userSessionUserLevelData == ("2") && __currentPath == 'examinations/addQuestionaire'){
-            $(".splitter").jqxSplitter({  width: '100%', height: 900, panels: [{ size: '11%'}] });
-            // prepare the data
-            
-            var k = 0;
-            for (var i = 0; i < firstNames.length; i++) {
-                var row = {};
-                row["firstname"] = firstNames[k];
-                row["lastname"] = lastNames[k];
-                row["title"] = titles[k];
-                row["titleofcourtesy"] = titleofcourtesy[k];
-                row["birthdate"] = birthdate[k];
-                row["hiredate"] = hiredate[k];
-                row["address"] = address[k];
-                row["city"] = city[k];
-                row["postalcode"] = postalcode[k];
-                row["country"] = country[k];
-                row["homephone"] = homephone[k];
-                row["notes"] = notes[k];
-                data[i] = row;
-                k++;
-            }
-            var source =
-            {
-                localdata: data,
-                datatype: "array"
-            };
-            var dataAdapter = new $.jqx.dataAdapter(source);
-
-            // Create jqxListBox
-            $('.listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "firstname", valueMember: "notes", itemHeight: 80, height: '100%', width: '100%',
-                renderer: function (index, label, value) {
-                    var datarecord = data[index];
-                    var imgurl = '';
-                    var img = '<span><i style="margin:0 auto;">Question no : '+(index+1)+'<i></span>';
-                    var table = '<table><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td></td></tr><tr><td></td></tr></table>';
-                    return table;
-                }
-            });
-           
-            updatePanel(0);
-            tinymce.init({
-                    selector: '.mytextarea'
-            });
-        }
-    }
-    // LIST BOX FUNCTION END
-    
-
     //********  ADD QUESTIONAIRE TYPE */
     
     $(document).on('click','.btn-add-question-type',function(e){
@@ -2051,24 +1961,46 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                                 +'<span class="">'+inputTitleValue+' - '+inputTypeText+'</span>'
                             +'</a>'
                         +'</li>';
-        var tabContent = '<div role="tabpanel" class="tab-pane fade" id="tab-add-question'+nextTab+'" data-id="'+nextTab+'">'+nextTab
-                            +'<div class="splitter">'
-                                +'<div style="overflow: hidden;">'
-                                    +'<div style="border: none;" class="listbox">'
-                                    +'</div>'
-                                +'</div>'
-                                +'<div style="overflow: hidden;" class="ContentPanel">'
-                                +'</div>'
-                            +'</div>'
+        var tabContent = '<div role="tabpanel" class="tab-pane fade" id="tab-add-question'+nextTab+'" data-id="'+nextTab+'">'
+                        +'<div class="container">'
+                        +'<div class="row">'
+                        +'<div class="col-md-10 bhoechie-tab-container">'
+                            +'<div class="col-md-2 bhoechie-tab-menu">'
+                                +'<div class="list-group">';
+                               
+        for(i=0;i<inputNumerOfItemsValue;i++){
+            tabContent += '<a href="#" class="list-group-item '+((i==0) ? 'active':'')+' text-center">'
+                            +'<h4 class="glyphicon glyphicon-tags"></h4><br/>Train'
+                        +'</a>';
+        }
+                                
+        tabContent += '</div>'
+                        +'</div>'
+                        +'<div class="col-md-8 bhoechie-tab">';
+                                
+        for(i=0;i<inputNumerOfItemsValue;i++){
+            tabContent += '<div class="bhoechie-tab-content '+((i==0) ? 'active':'')+'">'
+                +'<center>'
+                    //content
+
+                    //content end
+                +'</center>'
+            +'</div>';
+        }
+                                
+        tabContent += '</div>'
+                        +'</div>'
+                        +'</div>'
                         +'</div>';
         // create the tab
         $(tabHeader).appendTo('#tab-header');
         
         // create the tab content
         $(tabContent).appendTo('#tab-content');
-
+        
         answerCaseInput = inputAnswerQuantityValue;
         testNo = (nextTab+1);
+      
         // make the new tab active
         $('#select-question-type-input').val("0");
         $('#questionaire-case-input').val("");
@@ -2078,10 +2010,21 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $('#total-points-input').val("");
         $('#tab-header a:last').tab('show');
         
-        listBoxInit();
+   
+        $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+            e.preventDefault();
+            $(this).siblings('a.active').removeClass("active");
+            $(this).addClass("active");
+            var index = $(this).index();
+            $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+            $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+        });
         
     });
+
     
+
+
     $(document).on('focusout', '#number-of-items-input', function(e){
         e.preventDefault();
         var inputNumberOfPoints = $('#number-of-points-input').val();
@@ -2105,5 +2048,40 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         }
         
     });
+    /*
+
+    //
+    
     // add questionnaire type end
+
+
+
+    var container = $('<div style="margin: 5px;"></div>');
+    var questionHtmlString = '<div class="input-group">'
+                                +'<span class="input-group-addon" id="basic-addon1">Question:</span>'
+                                +'<input type="text" style="border-bottom:1px solid black;" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="question-no-'+testNo+'-'+index+'" name="question_no_'+index+'" data-testno="'+testNo+'">'
+                            +'</div>';
+    var question = $(questionHtmlString);
+    var answerList = "";
+    for(i=0;i<answerCaseInput;i++){
+        answerList += '<div class="input-group">'
+                            +'<span class="input-group-addon" id="basic-addon1">Answer no'+(i+1)+'</span>'
+                            +'<input type="text" class="form-control use" placeholder="Enter Answer Choices '+(i+1)+'" aria-describedby="basic-addon1" required="required" id="question-choice-'+testNo+'-'+index+'-'+i+'" name="question_choice_'+testNo+'_'+index+'_'+i+'" data-testno="'+testNo+'">'
+                        +'</div>';
+    }
+    var answer = '<div class="form-group">'
+                    +'<label for="question-answer-'+testNo+'-'+index+'-0">Select Question Answer</label>'
+                    +'<select multiple name="question_answer_'+testNo+'_'+index+'_0" required="required" class="form-control" id="question-answer-'+testNo+'-'+index+'-0" data-testno="'+testNo+'">';
+    for(i=0;i<answerCaseInput;i++){
+        answer += '<option value="'+i+'">Choices No '+(i+1)+'</option>'
+    }    
+                    +'</select>'    
+                 +'</div>';
+                  
+    container.append(question);
+    container.append(answerList);
+    container.append(answer);
+    $(".ContentPanel").html(container.html());
+    //
+    */
 });

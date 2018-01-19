@@ -32,7 +32,9 @@
     </div>
 
     <!-- end -->
-
+    <div class="row" style="padding:10px;">
+        <span><b>QUESTIONNAIRE SETTINGS</b></span>
+    </div>
     <div class="row">
         <div class="col-md-12">
       
