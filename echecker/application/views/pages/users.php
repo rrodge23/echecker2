@@ -3,12 +3,14 @@
     
         <div class="col-md-12">
              <ul class="nav nav-tabs tab-nav-right" role="tablist" style="margin-bottom:50px;">
+                
                 <li role="presentation" class="active" style="width:20%;">
                     <a href="#tab-professorlist" data-toggle="tab">
                         <i class="material-icons">account_circle</i>
                         <span>Professors</span>
                     </a>
                 </li>
+        
                 <li role="presentation" style="width:20%;">
                     <a href="#tab-studentlist" data-toggle="tab">
                         <i class="material-icons">person_pin</i>

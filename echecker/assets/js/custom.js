@@ -1931,6 +1931,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         var inputAnswerQuantity = document.getElementById('questionaire-case-input');
         var inputNumberOfPoints = document.getElementById('number-of-points-input');
         var inputNumerOfItems = document.getElementById('number-of-items-input');
+        var inputTypeValue = inputType.value;
         var inputTypeText = $('#select-question-type-input option:selected').text();
         var inputAnswerQuantityValue = inputAnswerQuantity.value;
         var inputTitleValue = inputTitle.value;
@@ -1987,12 +1988,27 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                             +'<h2 style="margin-top: 0;color:#55518a">Question no. '+(i+1)+'</h2>'
                             +'<div class="input-group col-md-12">'
                                 +'<span class="input-group-addon" id="basic-addon1">Question:</span>'
-                            +'<input type="text" style="border-bottom:1px solid black;" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="">'
-                        +'</div>'
-                    +'</div>'
-                    
+                                +'<input type="text" style="border-bottom:1px solid black;" class="form-control use '+(inputTypeValue == 0 ? 'mytextarea' : '')+'" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="">'
+                            +'</div>'
+                        +'</div>';
+            if(inputTypeValue == 0){
+                for(j=0;j<inputAnswerQuantityValue;j++){
+                    tabContent += '<div class="input-group">'
+                                    +'<span class="input-group-addon" id="basic-addon1">Answer no'+(j+1)+'</span>'
+                                    +'<input type="text" class="form-control use" placeholder="Enter Answer Choices '+(j+1)+'" aria-describedby="basic-addon1" required="required" id="" name="" data-testno="">'
+                                +'</div>';
+                }
+                   tabContent += '<div class="form-group">'
+                +'<label for="">Select Question Answer</label>'
+                    +'<select multiple name="" required="required" class="form-control" id="" data-testno="">';
+                for(j=0;j<inputAnswerQuantityValue;j++){
+                    tabContent += '<option value="'+j+'">Choices No '+(j+1)+'</option>';
+                }    
+                    tabContent +='</select>'    
+                        +'</div>';
+            }        
                     //content end
-                +'</center>'
+            tabContent += '</center>'
             +'</div>';
         }
                                 
@@ -2049,14 +2065,15 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         
         if(selectDropdown.val() == 0){
             spanAnswerCase.text('Question Quantity');
-            $('#questionaire-case-input').attr('placeholder','Enter Number of Answer Question');
+            $('#questionaire-case-input').attr('placeholder','Enter number of answer question');
         }else{
             spanAnswerCase.text('Answer Quantity');
-            $('#questionaire-case-input').attr('placeholder','Enter number of answers per Item');
-            
+            $('#questionaire-case-input').attr('placeholder','Enter number of answers per Item');   
         }
         
     });
+
+
     /*
 
     //

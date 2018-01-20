@@ -104,7 +104,7 @@ class Users extends MY_Controller {
     }
 
     public function modalAddTeacher(){
-        $header = array("code","user","firstname","middlename","lastname","position");
+        $header = array("code","user","firstname","middlename","lastname");
         $htmlbody = '<form action="users/addteacher" method="post" onsubmit="return false;" class="mdl-frm-add-users" id="mdl-frm-add-teacher">';
         foreach($header as $h){
             $htmlbody .= '<div class="input-group">
@@ -112,7 +112,18 @@ class Users extends MY_Controller {
                             <input type="text" class="form-control" name="'.$h.'" aria-describedby="basic-addon1" required="required">
                         </div>';   
         }
-     
+        $htmlbody .= '<div class="input-group" style="margin-bottom:10px;">
+                        <span class="input-group-addon" id="basic-addon1"><div style="width:100px;float:left;text-align:right;">Position</div></span>
+                        <select name="position" data-placeholder="Choose Department" class="chzn-select" required="required">
+                            <option value="1">
+                                Teacher
+                            </option>
+                            <option value="2">
+                                dean
+                            </option>
+                        </select>
+                     </div>';
+  
         $this->load->model('mdl_departments');
         $department = $this->mdl_departments->getAllDepartments();
         $htmlbody .= '<div class="input-group">
@@ -128,7 +139,7 @@ class Users extends MY_Controller {
                         <input type="hidden" class="form-control input-class-subjectList" name="idsubject" aria-describedby="basic-addon1" required="required">
                         <input type="hidden" class="form-control input-class-available-subjectList" name="idsubject_available" aria-describedby="basic-addon1" required="required">
                         </form>';
-       
+
         $htmlfooter = '<button type="submit" form="mdl-frm-add-teacher" class="btn btn-primary btn-post-add-subject"><i class="material-icons">playlist_add_check</i></button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button>';
         echo json_encode(array('body'=>$htmlbody,'footer'=>$htmlfooter));
@@ -179,7 +190,7 @@ class Users extends MY_Controller {
         if($_POST['user_level'] == 1){
             $header = array("code","user","firstname","middlename","lastname","year_level");
         }else if($_POST['user_level'] == 2){
-            $header = array("code","user","firstname","middlename","lastname","position");
+            $header = array("code","user","firstname","middlename","lastname");
         }
         $htmlbody = '<form action="users/updateUser" method="POST" id="mdl-frm-update-user">
                         <input type="hidden" value="'.$_POST['user_level'].'" name="user_level">
@@ -191,7 +202,21 @@ class Users extends MY_Controller {
                             <input type="text" class="form-control" value="'.$_POST[$h].'" name="'.$h.'" aria-describedby="basic-addon1" required="required">
                         </div>';   
         }
+        if($_POST['user_level'] == 2){
+            $htmlbody .= '<div class="input-group" style="margin-bottom:10px;">
+                            <span class="input-group-addon" id="basic-addon1"><div style="width:100px;float:left;text-align:right;">Position</div></span>
+                            <select name="position" data-placeholder="Choose Department" class="chzn-select" required="required">
+                                <option value="1">
+                                    Teacher
+                                </option>
+                                <option value="2">
+                                    dean
+                                </option>
+                            </select>
+                        </div>';
+        }
         if($_POST['user_level'] == 1){
+            
             $this->load->model('mdl_courses');
             $course = $this->mdl_courses->getAllcourses();
       

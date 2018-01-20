@@ -14,6 +14,7 @@ spl_autoload_register(function ($file){
         require_once APPPATH . 'third_party/PHPExcel/' . $file . '.php';
     }
 });
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -48,6 +49,7 @@ $config['base_url'] = '/echecker/';
 | variable so that it is blank.
 |
 */
+
 $config['index_page'] = '';
 
 /*
