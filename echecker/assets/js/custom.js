@@ -278,7 +278,7 @@ $(document).ready(function(){
     if(id == 1){
         url = 'subjects/getAllSubjectList';
     }else if (id == 2){
-        url = 'subjects/getAvailableSubjects';
+        url = 'subjects/getAllSubjectList';
     }
     $.ajax({
         url:url,
@@ -440,6 +440,9 @@ $(document).ready(function(){
  
     $(document).on('click','.btn-add-student',function(e){
         e.preventDefault();
+        var button = $(this);
+        var isAdmin = button.data('isadmin');
+        var idSubject = button.data('idsubject');
         $.ajax({
             url:'users/modaladdstudent',
             dataType:"json",
@@ -450,8 +453,14 @@ $(document).ready(function(){
                 $(".chzn-select").chosen({width:"100%",placeholder_text_single: "Select Project/Initiative...",
       no_results_text: "Oops, nothing found!"});
                 //KANBAN
-                kanbanAddUserSubject(1);
+                if(isAdmin == 1){
+                    kanbanAddUserSubject(1);
+                }
+                
                 // END KANBAN
+                if($('.input-class-subjectList').val() != null){
+                    $('.input-class-subjectList').val(idSubject);
+                }
             }
         });
         
@@ -466,12 +475,14 @@ $(document).ready(function(){
         var subjectDataList = $('#kanban').jqxKanban('getItems');
        
         var getClassSubjects = [];
-        subjectDataList.forEach(function(data){
-            if(data.status == "subjectsList"){
-                getClassSubjects.push(data.id);
-            }
-        });
-        $('.input-class-subjectList').val(getClassSubjects);
+        if(subjectDataList != null){
+            subjectDataList.forEach(function(data){
+                if(data.status == "subjectsList"){
+                    getClassSubjects.push(data.id);
+                }
+            });
+            $('.input-class-subjectList').val(getClassSubjects);
+        }
 
         var frm = $(this);
         var id = frm.data('id');
@@ -565,7 +576,9 @@ $(document).ready(function(){
         var btn = $(this);
         var id = btn.data('id');
         var user_level = btn.data('level');
-        
+        var isAdmin = btn.data('isadmin');
+        var idSubject = btn.data('idsubject');
+       
         $.ajax({
             url:'users/getuserinfobyid',
             dataType:"json",
@@ -582,7 +595,12 @@ $(document).ready(function(){
                         $('.modal-body').html(data["body"]);
                         $('.modal-footer').html(data["footer"]);
                         $(".chzn-select").chosen({width:"100%"});
-                        kanbanUpdateUserSubject(id);
+                        if(isAdmin == 1){
+                            kanbanUpdateUserSubject(id);
+                        }
+                        if($('.input-class-subjectList').val() != null){
+                            $('.input-class-subjectList').val(idSubject);
+                        }
                     }
                 });
             }
@@ -602,18 +620,21 @@ $(document).ready(function(){
         
          var getClassSubjects = [];
          var classSubjectsAvailable = [];
-         subjectDataList.forEach(function(data){
-             if(data){
-                if(data.status == "subjectsList"){
-                    getClassSubjects.push(data.id);
-                }else if(data.status == "availableSubjects"){
-                   classSubjectsAvailable.push(data.id);
-                }
-             }
-         });
          
-         $('.input-class-subjectList').val(getClassSubjects);
-         $('.input-class-available-subjectList').val(classSubjectsAvailable);
+         if(subjectDataList != null){
+            subjectDataList.forEach(function(data){
+                if(data){
+                   if(data.status == "subjectsList"){
+                       getClassSubjects.push(data.id);
+                   }else if(data.status == "availableSubjects"){
+                      classSubjectsAvailable.push(data.id);
+                   }
+                }
+            });
+            
+            $('.input-class-subjectList').val(getClassSubjects);
+            $('.input-class-available-subjectList').val(classSubjectsAvailable);
+         }
 
         swal({
             title: "Are you sure?",

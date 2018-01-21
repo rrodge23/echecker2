@@ -1,6 +1,7 @@
 
 <?php
-  if($_SESSION['users']['user_level'] != "99"){
+  if($_SESSION['users']['user_level'] == "2"){
+      print_r($data);
 
 ?>
 
@@ -26,7 +27,6 @@
                     $units = $subj['units'];
                     $time_start = $subj['time_start'];
                     $time_end = $subj['time_end'];
-                    $idclass = $subj['idclass'];
                 
                 echo "
                     <tr>
@@ -36,10 +36,13 @@
                         <td class='text-center font-roboto color-a2'>$units</td>
                         <td class='text-center font-roboto color-a2' id='sample'>$time_start-$time_end</td>
                         <td class='text-center font-roboto color-a2'>
-                        <a rel='tooltip' data-original-title='View Questionaires' class='btn btn-info' href='examinations/userquestionairelist/$idclass'>
+                        <a rel='tooltip' data-original-title='View Questionaires' class='btn btn-success' href='examinations/userquestionairelist/$id'>
+                            <i class='material-icons'>list</i>
+                        </a>    
+                        <a rel='tooltip' data-original-title='View Questionaires' class='btn btn-info' href='examinations/subjectclassinformation/$id'>
                             <i class='material-icons'>remove_red_eye</i>
                         </a>    
-                       
+                        
                         </td>
                     </tr>
                     ";
