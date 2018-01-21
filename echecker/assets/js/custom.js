@@ -1940,8 +1940,10 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         var panelQuantity = $('#tab-header > li').length;
         
         if( inputAnswerQuantityValue == ""){
-            swal("Cancelled", "Fill Up Fields.", "error");
-            return false;
+            if(inputTypeValue != 2){
+                swal("Cancelled", "Fill Up Fields.", "error");
+                return false;
+            }
         }    
         if( inputTitleValue == ""){
             swal("Cancelled", "Fill Up Fields.", "error");
@@ -1978,19 +1980,30 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         tabContent += '</div>'
                         +'</div>'
                         +'<div class="col-md-8 bhoechie-tab">';
-                                
+                        
         for(i=0;i<inputNumerOfItemsValue;i++){
             tabContent += '<div class="bhoechie-tab-content '+((i==0) ? 'active':'')+'">'
-                +'<center>'
+                +'<center id="add-answer">'
                     //content
                     +'<div class="col-md-12" style="margin: 5px;">'
                             +'<h1 class="glyphicon glyphicon-question-sign" style="font-size:4em;color:#55518a"></h1>'
                             +'<h2 style="margin-top: 0;color:#55518a">Question no. '+(i+1)+'</h2>'
-                            +'<div class="input-group col-md-12">'
-                                +'<span class="input-group-addon" id="basic-addon1">Question:</span>'
-                                +'<input type="text" style="border-bottom:1px solid black;" class="form-control use '+(inputTypeValue == 0 ? 'mytextarea' : '')+'" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="">'
-                            +'</div>'
-                        +'</div>';
+                            +'<div class="form-group col-md-12">'
+                                +'<label style="font-size:16px;">Question</label>'
+                                +'<div class="form-group label-floating col-md-12">'
+                                    +'<label class="control-label col-md-3" style="left:0;">Write Your Question Here  . . .</label>'
+                                    +'<textarea class="col-md-9 form-control '+(inputTypeValue == 0 ? 'mytextarea' : '')+'" rows="5"></textarea>'
+                                +'</div>'
+                            +'</div>';
+            if(inputTypeValue == 1){
+                tabContent += '<div class="add-answer">'
+                    +'<span class="span-add-answer'+nextTab+'"><button class="btn-success btn pull-left btn-add-answer">'
+                        +'<span class="material-icons">add</span>'
+                    +'</button></span>'
+                    +'<span style="margin-top:15px;" class="pull-left">Add Answer . . .</span>'
+                +'</div>';
+            }                
+                tabContent +='</div>';
             if(inputTypeValue == 0){
                 for(j=0;j<inputAnswerQuantityValue;j++){
                     tabContent += '<div class="input-group">'
@@ -2031,6 +2044,15 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $('#total-points-input').val("");
         $('#tab-header a:last').tab('show');
         
+        $(document).on('click','div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer',function(e){
+            e.preventDefault();
+            
+            var input = '<div class="input-group">'
+                            +'<span class="input-group-addon" id="basic-addon1">Answer no</span>'
+                            +'<input type="text" class="form-control use" placeholder="Enter Answer Choices" aria-describedby="basic-addon1" required="required" id="" name="" data-testno="">'
+                        +'</div>';
+            $(input).insertBefore('div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer');
+        });
    
         $(document).on("click","div.bhoechie-tab-menu.template"+nextTab+">div.list-group>a",function(e) {
             e.preventDefault();
@@ -2065,10 +2087,19 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         
         if(selectDropdown.val() == 0){
             spanAnswerCase.text('Question Quantity');
+            $('#questionaire-case-input').show();
+            $('#span-answer-case-method').show();
             $('#questionaire-case-input').attr('placeholder','Enter number of answer question');
-        }else{
+        }else if(selectDropdown.val() == 1){
             spanAnswerCase.text('Answer Quantity');
+            $('#questionaire-case-input').show();
+            $('#span-answer-case-method').show();
             $('#questionaire-case-input').attr('placeholder','Enter number of answers per Item');   
+        }else if(selectDropdown.val() == 2){
+
+            $('#questionaire-case-input').hide();
+            $('#span-answer-case-method').hide();
+            
         }
         
     });
