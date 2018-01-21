@@ -1954,14 +1954,16 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         var inputNumerOfItems = document.getElementById('number-of-items-input');
         var inputTypeValue = inputType.value;
         var inputTypeText = $('#select-question-type-input option:selected').text();
-        var inputAnswerQuantityValue = inputAnswerQuantity.value;
+        if(inputAnswerQuantity != null){
+            var inputAnswerQuantityValue = inputAnswerQuantity.value;
+        }
         var inputTitleValue = inputTitle.value;
         var inputNumberOfPointsValue = inputNumberOfPoints.value;
         var inputNumerOfItemsValue = inputNumerOfItems.value;
         var panelQuantity = $('#tab-header > li').length;
         
         if( inputAnswerQuantityValue == ""){
-            if(inputTypeValue != 2){
+            if(inputTypeValue == 0){
                 swal("Cancelled", "Fill Up Fields.", "error");
                 return false;
             }
@@ -1980,6 +1982,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         }
         
         var nextTab = $('#tab-header li').length-1;
+
         var tabHeader = '<li role="presentation" class="" style="width:20%;" data-id="'+nextTab+'">'
                             +'<a href="#tab-add-question'+nextTab+'" data-toggle="tab">'
                                 +'<span class="">'+inputTitleValue+' - '+inputTypeText+'</span>'
@@ -1994,7 +1997,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                                
         for(i=0;i<inputNumerOfItemsValue;i++){
             tabContent += '<a href="#" class="list-group-item '+((i==0) ? 'active':'')+' text-center">'
-                            +'<h4 class="glyphicon glyphicon-tags"></h4><br/>'+(i+1)
+                            +'<h4 class="glyphicon glyphicon-tags"></h4><br/><b>'+(i+1)+'</b>'
                         +'</a>';
         }
                                 
@@ -2013,10 +2016,11 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                                 +'<label style="font-size:16px;">Question</label>'
                                 +'<div class="form-group label-floating col-md-12">'
                                     +'<label class="control-label col-md-3" style="left:0;">Write Your Question Here  . . .</label>'
-                                    +'<textarea class="col-md-9 form-control '+(inputTypeValue == 0 ? 'mytextarea' : '')+'" rows="5"></textarea>'
+                                    +'<textarea class="col-md-9 form-control mytextarea" rows="5" required="required"></textarea>'
                                 +'</div>'
                             +'</div>';
-            if(inputTypeValue == 1){
+            
+            if(inputTypeValue != 0){
                 tabContent += '<div class="add-answer">'
                     +'<span class="span-add-answer'+nextTab+'"><button class="btn-success btn pull-left btn-add-answer">'
                         +'<span class="material-icons">add</span>'
@@ -2040,7 +2044,13 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 }    
                     tabContent +='</select>'    
                         +'</div>';
-            }        
+                
+            }
+            tabContent += '<span class="span-next-item'+nextTab+' item-'+i+'">'
+                            +'<button class="btn-success btn pull-right btn-next-item'+nextTab+' item-'+i+'">'
+                                +'<span class="material-icons">playlist_add_check</span>'
+                            +'</button>'
+                        +'</span>';
                     //content end
             tabContent += '</center>'
             +'</div>';
@@ -2065,12 +2075,39 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $('#total-points-input').val("");
         $('#tab-header a:last').tab('show');
         
+       
+        $(document).on('click','div.bhoechie-tab-content.active span.span-next-item'+nextTab+' > button.btn-next-item'+nextTab+'',function(e){
+            var button = $(this);
+            var spanNext = button.parent();
+            var resultInput = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active input[required]').filter(function () {
+                return $.trim($(this).val()).length == 0
+              }).length == 0;
+            var resultSelect = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active select[required]').filter(function () {
+                return $.trim($(this).val()).length == 0
+            }).length == 0;
+            if(resultInput == true && resultSelect == true){
+                var activeHeader =  $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-menu.template'+nextTab+' a.list-group-item.active');
+                var activeContent = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active');
+                if(parseInt(activeHeader.children('b').text()) != (inputNumerOfItemsValue)){
+                    activeHeader.children('h4').removeClass('glyphicon-tags');
+                    activeHeader.children('h4').addClass('glyphicon-check');
+                    activeHeader.removeClass('active');
+                    activeHeader.next().addClass('active');
+                    activeContent.removeClass('active');
+                    activeContent.next().addClass('active');
+                }
+            }else{
+                swal("Cancelled", "Fill Up Fields.", "error");
+                return false;
+            }
+        });
+
         $(document).on('click','div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer',function(e){
             e.preventDefault();
-            
+          
             var input = '<div class="input-group">'
-                            +'<span class="input-group-addon" id="basic-addon1">Answer no</span>'
-                            +'<input type="text" class="form-control use" placeholder="Enter Answer Choices" aria-describedby="basic-addon1" required="required" id="" name="" data-testno="">'
+                            +'<span class="input-group-addon" id="basic-addon1">Description</span>'
+                            +'<input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="" name="questionaire_description">'
                         +'</div>';
             $(input).insertBefore('div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer');
         });
@@ -2100,27 +2137,27 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $('#total-points-input').val((inputNumberOfPoints*inputNumberOfPointsValue));
         
     });
+    $(document).on('focusout', '#number-of-points-input', function(e){
+        e.preventDefault();
+        var inputNumberOfPoints = $('#number-of-points-input').val();
+        var inputNumberOfPointsValue = $('#number-of-items-input').val();
+        $('#total-points-input').val((inputNumberOfPoints*inputNumberOfPointsValue));
+        
+    });
 
     $(document).on('change', '#select-question-type-input', function(e){
         e.preventDefault();
         var selectDropdown = $(this);
-        var spanAnswerCase = $('span#span-answer-case-method');
         
         if(selectDropdown.val() == 0){
-            spanAnswerCase.text('Question Quantity');
-            $('#questionaire-case-input').show();
-            $('#span-answer-case-method').show();
-            $('#questionaire-case-input').attr('placeholder','Enter number of answer question');
+            var inputCase = '<div class="input-group">'
+                                +'<span class="input-group-addon" id="span-answer-case-method">Question Quantity</span>'
+                                +'<input type="text" class="form-control use" placeholder="Enter Number of Answer Question" aria-describedby="basic-addon1" required="required" id="questionaire-case-input" name="questionaire_answer_quantity" pattern="[0-9]+">'
+                            +'</div>';
+        $(inputCase).insertAfter(selectDropdown.parent().next('div'));
         }else if(selectDropdown.val() == 1){
-            spanAnswerCase.text('Answer Quantity');
-            $('#questionaire-case-input').show();
-            $('#span-answer-case-method').show();
-            $('#questionaire-case-input').attr('placeholder','Enter number of answers per Item');   
-        }else if(selectDropdown.val() == 2){
-
-            $('#questionaire-case-input').hide();
-            $('#span-answer-case-method').hide();
-            
+            var spanAnswerCase = $('span#span-answer-case-method');
+            spanAnswerCase.parent().remove();
         }
         
     });

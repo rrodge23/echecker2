@@ -30,6 +30,7 @@ class Mdl_examinations extends CI_Model {
                         ->join('coursetbl','user_coursetbl.idcourse = coursetbl.idcourse','left')
                         ->join('user_departmenttbl','users.idusers = user_departmenttbl.UID','left')
                         ->join('departmenttbl','user_departmenttbl.iddepartment = departmenttbl.iddepartment','left')
+                        ->join('subjecttbl','user_subjecttbl.idsubject = subjecttbl.idsubject','left')
                         ->where('user_subjecttbl.idsubject',$data)
                         ->where('users.user_level','1')
             ->get('user_subjecttbl');

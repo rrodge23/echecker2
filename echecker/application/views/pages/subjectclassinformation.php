@@ -1,8 +1,16 @@
 <?php
     
 ?>
-<h3>STUDENT LIST:</h3>
+<?php 
+    if(isset($data[0]['subject_code'])){ 
+?>
+<h6><i><b>SUBJECT CODE:</b> <?=$data[0]['subject_code'];?></i></h6>
+<h6><i><b>DESCRIPTION :</b> <?=$data[0]['subject_description'];?></i></h6>
+<?php 
+    }
+?>
 <div class="row">
+<h5><b>STUDENT LIST:</b></h5>
 <button rel='tooltip' data-original-title='Add' class='pull-right btn-add-student btn btn-success' type='button' name='create' onclick='return false;' data-isadmin='0' data-idsubject='<?=$data[0]['idsubject'];?>'>
     <i class='material-icons'>add</i>
 </button>

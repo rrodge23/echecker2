@@ -20,14 +20,15 @@
             <span class="input-group-addon" id="basic-addon1">Time</span>
             <input type="text" class="form-control use datepicker-time" placeholder="Select Time" aria-describedby="basic-addon1" required="required" id="" name="questionaire_time">
         </div>
-        <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">Terms and Condition</span>
-            <input type="text" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="terms_and_condition">
-        </div>
-        <div class="input-group">
+        <div class="input-group col-md-12">
             <span class="input-group-addon" id="basic-addon1">Duration</span>
             <input type="text" class="form-control use time-hours-minute-duration" placeholder="Select Duration" aria-describedby="basic-addon1" required="required" id="" name="questionaire_duration">
         </div>
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Instruction</span>
+            <input type="text" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="terms_and_condition">
+        </div>
+        
         
     </div>
 
@@ -54,8 +55,7 @@
                         <span class="input-group-addon" id="basic-addon1"><div style="width:100px;float:left;text-align:right;">Question Type</div></span>
                         <select name="quesstion_type" data-placeholder="Select Category" class="chzn-select" required="required" id="select-question-type-input">
                             <option value="0">Multiple Choice<option>
-                            <option value="1">Identification<option>
-                            <option value="2">Essay<option>
+                            <option value="1">Essay<option>
                         </select>
                     </div>
                     

@@ -1,8 +1,7 @@
 
 <?php
   if($_SESSION['users']['user_level'] == "2"){
-      print_r($data);
-
+   
 ?>
 
 <div class="user-subject-list">
