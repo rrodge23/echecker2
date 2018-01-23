@@ -294,6 +294,7 @@ $(document).ready(function(){
                 { name: "resourceId", type: "number" }
             ];
             var tmpLocalData = [];
+            console.log(data);
             data.forEach(function(input){
                 var tmpArray = {id : input.idsubject, state:"availableSubjects", label: input.subject_code+" | " + input.subject_description, tags:[input.schedule_code,input.time_start+"-",input.time_end,input.day]};
                 tmpLocalData.push(tmpArray);
@@ -1983,7 +1984,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         
         var nextTab = $('#tab-header li').length-1;
 
-        var tabHeader = '<li role="presentation" class="" style="width:20%;" data-id="'+nextTab+'">'
+        var tabHeader = '<li role="presentation" class="" id="tab-header-add-question'+nextTab+'" style="width:20%;" data-id="'+nextTab+'">'
                             +'<a href="#tab-add-question'+nextTab+'" data-toggle="tab">'
                                 +'<span class="">'+inputTitleValue+' - '+inputTypeText+'</span>'
                             +'</a>'
@@ -2067,12 +2068,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $(tabContent).appendTo('#tab-content');
         
         // make the new tab active
-        $('#select-question-type-input').val("0");
-        $('#questionaire-case-input').val("");
-        $('#category-title-input').val("");
-        $('#number-of-points-input').val("");
-        $('#number-of-items-input').val("");
-        $('#total-points-input').val("");
+        
         $('#tab-header a:last').tab('show');
         
        
@@ -2088,13 +2084,23 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             if(resultInput == true && resultSelect == true){
                 var activeHeader =  $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-menu.template'+nextTab+' a.list-group-item.active');
                 var activeContent = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active');
+                activeHeader.children('h4').removeClass('glyphicon-tags');
+                activeHeader.children('h4').addClass('glyphicon-check');
                 if(parseInt(activeHeader.children('b').text()) != (inputNumerOfItemsValue)){
-                    activeHeader.children('h4').removeClass('glyphicon-tags');
-                    activeHeader.children('h4').addClass('glyphicon-check');
+                    
                     activeHeader.removeClass('active');
                     activeHeader.next().addClass('active');
                     activeContent.removeClass('active');
                     activeContent.next().addClass('active');
+
+                    
+                    //window.setInterval(function() {
+                        console.log(nextTab);
+                        
+                        var elem = $('div.bhoechie-tab-container.template'+nextTab+' .bhoechie-tab-content.active');
+                        debugger;
+                        $('body').scrollTop(elem.offset().top);
+                    //}, 5000);
                 }
             }else{
                 swal("Cancelled", "Fill Up Fields.", "error");
@@ -2127,8 +2133,16 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         });
     });
 
-    
-
+    //EMPTY ADD QUESTIONNAIRE SETTINGS INPUT
+    $(document).on('click','#tab-header-add-question',function(e){
+        $('#select-question-type-input').val("0");
+        $('#questionaire-case-input').val("");
+        $('#category-title-input').val("");
+        $('#number-of-points-input').val("");
+        $('#number-of-items-input').val("");
+        $('#total-points-input').val("");
+    });
+    //EMPTY ADD QUESTIONNAIRE SETTINGS INPUT END
 
     $(document).on('focusout', '#number-of-items-input', function(e){
         e.preventDefault();
@@ -2162,41 +2176,53 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         
     });
 
-
-    /*
-
+    //tinyMCE TO SUBMIT
+    $(document).on('mousedown','#frm-add-questionnaire', function() {
+        tinyMCE.triggerSave();
+    });
     //
-    
-    // add questionnaire type end
 
-
-
-    var container = $('<div style="margin: 5px;"></div>');
-    var questionHtmlString = '<div class="input-group">'
-                                +'<span class="input-group-addon" id="basic-addon1">Question:</span>'
-                                +'<input type="text" style="border-bottom:1px solid black;" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="question-no-'+testNo+'-'+index+'" name="question_no_'+index+'" data-testno="'+testNo+'">'
-                            +'</div>';
-    var question = $(questionHtmlString);
-    var answerList = "";
-    for(i=0;i<answerCaseInput;i++){
-        answerList += '<div class="input-group">'
-                            +'<span class="input-group-addon" id="basic-addon1">Answer no'+(i+1)+'</span>'
-                            +'<input type="text" class="form-control use" placeholder="Enter Answer Choices '+(i+1)+'" aria-describedby="basic-addon1" required="required" id="question-choice-'+testNo+'-'+index+'-'+i+'" name="question_choice_'+testNo+'_'+index+'_'+i+'" data-testno="'+testNo+'">'
-                        +'</div>';
-    }
-    var answer = '<div class="form-group">'
-                    +'<label for="question-answer-'+testNo+'-'+index+'-0">Select Question Answer</label>'
-                    +'<select multiple name="question_answer_'+testNo+'_'+index+'_0" required="required" class="form-control" id="question-answer-'+testNo+'-'+index+'-0" data-testno="'+testNo+'">';
-    for(i=0;i<answerCaseInput;i++){
-        answer += '<option value="'+i+'">Choices No '+(i+1)+'</option>'
-    }    
-                    +'</select>'    
-                 +'</div>';
-                  
-    container.append(question);
-    container.append(answerList);
-    container.append(answer);
-    $(".ContentPanel").html(container.html());
-    //
-    */
+    //SUBMIT ADD QUESTIONNAIRE
+    $(document).on('submit','#frm-add-questionnaire',function(e){
+        e.preventDefault();
+        tinyMCE.triggerSave();
+        if($('#tab-header li').length-1 <= 0){
+            swal("Cancelled", "Add Question Item First.", "error");
+            return false;
+        }
+        
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to add this record?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, Add it!",
+            cancelButtonText: "No, cancel plx!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+            },
+            function(isConfirm){
+            if (isConfirm) {
+                $.ajax({
+                    url:url,
+                    data:frm.serialize(),
+                    method:method,
+                    dataType:"json",
+                    success:function(data){
+                        if(data[1] == true){
+                            swal("success", "Record Added.", "success");   
+                            location.reload();
+                            $('#mdl-classes-update').modal('hide');
+                        }else{
+                            swal("cancelled", data[0], "error");
+                        }
+                    }
+                });
+            } else {
+                swal("Cancelled", "Add Canceled.", "error");
+            }
+        });
+    });
+    //SUBMIT ADD QUESTIONNAIRE END
 });

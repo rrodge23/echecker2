@@ -263,9 +263,12 @@ class Mdl_Users extends CI_Model {
                         $subjectList[$i]['state'] = "availableSubjects";
             
                     }else{
-                        
-                        $subjectList[$i]['state'] = "availableSubjects";
-                        
+                        if($userSubjectAcquiredId['user_level'][$i] == "2"){
+                            array_splice($subjectList,$i,1);
+                            $i--;
+                        }else{
+                            $subjectList[$i]['state'] = "availableSubjects";
+                        }
                         
                     }
                     
@@ -280,9 +283,12 @@ class Mdl_Users extends CI_Model {
                         $subjectList[$i]['state'] = "availableSubjects";
             
                     }else{
-                        
-                        $subjectList[$i]['state'] = "availableSubjects";
-                        
+                        if($userSubjectAcquiredId['user_level'][$i] == "2"){
+                            array_splice($subjectList,$i,1);
+                            $i--;
+                        }else{
+                            $subjectList[$i]['state'] = "availableSubjects";
+                        }
                         
                     }
             }
