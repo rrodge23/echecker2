@@ -2017,7 +2017,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                                 +'<label style="font-size:16px;">Question</label>'
                                 +'<div class="form-group label-floating col-md-12">'
                                     +'<label class="control-label col-md-3" style="left:0;">Write Your Question Here  . . .</label>'
-                                    +'<textarea class="col-md-9 form-control mytextarea" rows="5" required="required"></textarea>'
+                                    +'<textarea name="question" class="col-md-9 form-control mytextarea" id="questionTabno'+nextTab+'-itemno-'+i+'" rows="5" required="required"></textarea>'
                                 +'</div>'
                             +'</div>';
             
@@ -2034,12 +2034,12 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 for(j=0;j<inputAnswerQuantityValue;j++){
                     tabContent += '<div class="input-group">'
                                     +'<span class="input-group-addon" id="basic-addon1">Answer no'+(j+1)+'</span>'
-                                    +'<input type="text" class="form-control use" placeholder="Enter Answer Choices '+(j+1)+'" aria-describedby="basic-addon1" required="required" id="" name="" data-testno="">'
+                                    +'<input type="text" class="form-control use" placeholder="Enter Answer Choices '+(j+1)+'" aria-describedby="basic-addon1" required="required" id="choicesTabno-'+nextTab+'-itemno-'+i+'-choicesno-'+j+'" name="choices" data-testno="">'
                                 +'</div>';
                 }
                    tabContent += '<div class="form-group">'
                 +'<label for="">Select Question Answer</label>'
-                    +'<select multiple name="" required="required" class="form-control" id="" data-testno="">';
+                    +'<select multiple name="answer" required="required" class="form-control" id="answerTabno-'+nextTab+'-itemno-'+i+'-answerno-0" data-testno="">';//tabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'
                 for(j=0;j<inputAnswerQuantityValue;j++){
                     tabContent += '<option value="'+j+'">Choices No '+(j+1)+'</option>';
                 }    
@@ -2095,7 +2095,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
 
                     
                     //window.setInterval(function() {
-                        console.log(nextTab);
+                        
                         
                         var elem = $('div.bhoechie-tab-container.template'+nextTab+' .bhoechie-tab-content.active');
                         debugger;
@@ -2110,10 +2110,11 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
 
         $(document).on('click','div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer',function(e){
             e.preventDefault();
-          
+            var itemNo = $('div.bhoechie-tab-menu.template1>div.list-group > a').length;
+            var answerQuantity = $('div#tab-content > div.active div.bhoechie-tab-content.active input').length-1;
             var input = '<div class="input-group">'
                             +'<span class="input-group-addon" id="basic-addon1">Description</span>'
-                            +'<input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="" name="questionaire_description">'
+                            +'<input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="answerTabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'" name="answer">'
                         +'</div>';
             $(input).insertBefore('div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer');
         });
@@ -2190,7 +2191,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             swal("Cancelled", "Add Question Item First.", "error");
             return false;
         }
-        
+
         swal({
             title: "Are you sure?",
             text: "Do you want to add this record?",
@@ -2204,6 +2205,8 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             },
             function(isConfirm){
             if (isConfirm) {
+
+                /*
                 $.ajax({
                     url:url,
                     data:frm.serialize(),
@@ -2219,6 +2222,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                         }
                     }
                 });
+                */
             } else {
                 swal("Cancelled", "Add Canceled.", "error");
             }
