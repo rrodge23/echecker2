@@ -1989,7 +1989,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                                 +'<span class="">'+inputTitleValue+' - '+inputTypeText+'</span>'
                             +'</a>'
                         +'</li>';
-        var tabContent = '<div role="tabpanel" class="tab-pane fade" id="tab-add-question'+nextTab+'" data-id="'+nextTab+'">'
+        var tabContent = '<div role="tabpanel" class="tab-pane fade" id="tab-add-question'+nextTab+'" data-id="'+nextTab+'" data-questiontype="'+inputTypeValue+'">'
                         +'<div class="container">'
                         +'<div class="row">'
                         +'<div class="col-md-10 bhoechie-tab-container template'+nextTab+'">'
@@ -2008,7 +2008,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                         
         for(i=0;i<inputNumerOfItemsValue;i++){
             tabContent += '<div class="bhoechie-tab-content '+((i==0) ? 'active':'')+'">'
-                +'<center id="add-answer">'
+                +'<center id="add-answer'+nextTab+'-'+i+'">'
                     //content
                     +'<div class="col-md-12" style="margin: 5px;">'
                             +'<h1 class="glyphicon glyphicon-question-sign" style="font-size:4em;color:#55518a"></h1>'
@@ -2092,13 +2092,12 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                     activeHeader.next().addClass('active');
                     activeContent.removeClass('active');
                     activeContent.next().addClass('active');
-
                     
                     //window.setInterval(function() {
                         
                         
                         var elem = $('div.bhoechie-tab-container.template'+nextTab+' .bhoechie-tab-content.active');
-                        debugger;
+                        
                         $('body').scrollTop(elem.offset().top);
                     //}, 5000);
                 }
@@ -2107,18 +2106,18 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 return false;
             }
         });
-
+        //ADD ANSWER
         $(document).on('click','div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer',function(e){
             e.preventDefault();
             var itemNo = $('div.bhoechie-tab-menu.template1>div.list-group > a').length;
-            var answerQuantity = $('div#tab-content > div.active div.bhoechie-tab-content.active input').length-1;
+            var answerQuantity = $('div#tab-content > div.active div.bhoechie-tab-content.active input').length;
             var input = '<div class="input-group">'
                             +'<span class="input-group-addon" id="basic-addon1">Description</span>'
                             +'<input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="answerTabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'" name="answer">'
                         +'</div>';
             $(input).insertBefore('div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer');
         });
-   
+        //ADD ANSWER END
         $(document).on("click","div.bhoechie-tab-menu.template"+nextTab+">div.list-group>a",function(e) {
             e.preventDefault();
             $(this).siblings('a.active').removeClass("active");
@@ -2133,6 +2132,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 selector: '.mytextarea'
         });
     });
+    //********  ADD QUESTIONAIRE TYPE END */
 
     //EMPTY ADD QUESTIONNAIRE SETTINGS INPUT
     $(document).on('click','#tab-header-add-question',function(e){
@@ -2159,7 +2159,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $('#total-points-input').val((inputNumberOfPoints*inputNumberOfPointsValue));
         
     });
-
+   
     $(document).on('change', '#select-question-type-input', function(e){
         e.preventDefault();
         var selectDropdown = $(this);
@@ -2176,7 +2176,29 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         }
         
     });
+    $(document).on('click','#aaa', function() {
+        var a = new Array();
+        for(i=0;i<3;i++){
+            a[i] = new Array();
+            a[i]["type"] = "sdf";
+            for(j=0;j<3;j++){
+                a[i][j] = new Array();
+                a[i][j]["items"] = "items";
+                
+                for(k=0;k<3;k++){
+                    
+                    
+                    
 
+                    a[i][j][k] = new Array();
+                    a[i][j][k]["ss"] = "fsdfsdfsdf";
+                    a[i][j][k] = k;
+                    
+                }
+            }
+        }
+        console.log(a);
+    });
     //tinyMCE TO SUBMIT
     $(document).on('mousedown','#frm-add-questionnaire', function() {
         tinyMCE.triggerSave();
@@ -2205,6 +2227,41 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             },
             function(isConfirm){
             if (isConfirm) {
+                var tabPanelCount = $('#tab-header li').length-1;
+                var inputData = new Array();
+                
+                for(i=0;i<tabPanelCount;i++){
+                    var itemsCount = $('div.bhoechie-tab-menu.template'+i+' a').length;
+                    var questionType = $('#tab-add-question'+i).data('questiontype');   
+                    inputData[i] = new Array();             
+                    inputData[i]["type"] = new Array();             
+                    inputData[i]["type"] = questionType;
+                    for(j=0;j<itemsCount;j++){
+                        inputData[i][j] = new Array();
+                        var question = tinymce.get("questionTabno"+i+"-itemno-"+j+"").getContent();
+                        inputData[i][j]["question"] = question;
+                        if(questionType == 0){
+                            var choicesCount = $('center#add-answer0-0 > div.input-group').length;
+                            
+                            for(k=0;k<choicesCount;k++){
+                                inputData[i][j][k] = new Array();
+                                inputData[i][j][k] = $('#choicesTabno-'+i+'-itemno-'+j+'-choicesno-'+k+'').val();
+                            }
+                            inputData[i][j]["answer"] = $('#answerTabno-'+i+'-itemno-'+i+'-answerno-0').val();
+
+                        }else{
+                            var answerCount = $('center#add-answer'+i+'-'+j+' div.add-answer > span.span-add-answer'+i+' > div.input-group').length
+                            for(k=0;k<answerCount;k++){
+                                inputData[i][j][k] = new Array();
+                                inputData[i][j][k] = $('#answerTabno-'+i+'-itemno-'+j+'-answerno-'+k+'').val();
+                            }
+                            
+                        }
+
+
+                    }
+                }
+                console.log(inputData);
 
                 /*
                 $.ajax({
@@ -2223,6 +2280,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                     }
                 });
                 */
+
             } else {
                 swal("Cancelled", "Add Canceled.", "error");
             }
