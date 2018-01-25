@@ -23,6 +23,8 @@ class Mdl_examinations extends CI_Model {
         return $query->result_array();
     }
 
+    
+
     public function subjectclassinformation($data=false){
         $query=$this->db->join('users','user_subjecttbl.UID = users.idusers','left')
                         ->join('student_informationtbl','users.idusers = student_informationtbl.id','left')
@@ -36,7 +38,28 @@ class Mdl_examinations extends CI_Model {
             ->get('user_subjecttbl');
         return $query->result_array();
     }
-}
+
+    public function postQuestionnaireInformation($data=false){
+        print_r($data);
+        return false;
+        $questionnaireData = array(
+                            'questionaire_title' => $data[1]["title"],
+                            'questionaire_description' => $data[1]['description'],
+                            'questionaire_date' => $data[1]['date'],
+                            'questionaire_time' => $data[1]['time'],
+                            'questionaire_duration' => $data[1]['duration'],
+                            'questionaire_instruction' => $data[1]['instruction'],
+                            );
+       
+        return array($this->db->insert('questionairetbl',$questionnaireData),true);
+        
+    }
+
+
+    
+
+    
+} 
 
 
 ?>

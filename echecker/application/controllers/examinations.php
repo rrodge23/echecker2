@@ -32,6 +32,12 @@ class Examinations extends MY_Controller {
 		$this->_view('addquestionaire');
 	}
 
+	public function postQuestionnaireInformation(){
+		
+		$this->load->model('mdl_Examinations');
+		$isInserted = $this->mdl_Examinations->postQuestionnaireInformation($_POST["data"]);
+		echo json_encode($isInserted);
+	}
 }
 
 ?>

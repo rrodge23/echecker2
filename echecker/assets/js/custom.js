@@ -2041,6 +2041,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 +'<label for="">Select Question Answer</label>'
                     +'<select multiple name="answer" required="required" class="form-control" id="answerTabno-'+nextTab+'-itemno-'+i+'-answerno-0" data-testno="">';//tabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'
                 for(j=0;j<inputAnswerQuantityValue;j++){
+                    
                     tabContent += '<option value="'+j+'">Choices No '+(j+1)+'</option>';
                 }    
                     tabContent +='</select>'    
@@ -2109,7 +2110,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         //ADD ANSWER
         $(document).on('click','div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer',function(e){
             e.preventDefault();
-            var itemNo = $('div.bhoechie-tab-menu.template1>div.list-group > a').length;
+            var itemNo = $('div.bhoechie-tab-menu.template'+nextTab+' a').index($('div.bhoechie-tab-menu.template'+nextTab+' a.active'));
             var answerQuantity = $('div#tab-content > div.active div.bhoechie-tab-content.active input').length;
             var input = '<div class="input-group">'
                             +'<span class="input-group-addon" id="basic-addon1">Description</span>'
@@ -2177,27 +2178,48 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         
     });
     $(document).on('click','#aaa', function() {
-        var a = new Array();
-        for(i=0;i<3;i++){
-            a[i] = new Array();
-            a[i]["type"] = "sdf";
+        var i = 3;
+        var j = 3;
+        var a = [];
+        a[0] = [""];
+        a["data"] = {
+                "sdf":"sdf",
+                "hahaha":"woe",
+
+            };
+        
+
+    
+        /*for(i=0;i<3;i++){
+            a.type = new Array();
+            a.type = "sdf";
             for(j=0;j<3;j++){
-                a[i][j] = new Array();
-                a[i][j]["items"] = "items";
+                
+                a.items[j] = "items";
                 
                 for(k=0;k<3;k++){
-                    
-                    
-                    
-
-                    a[i][j][k] = new Array();
-                    a[i][j][k]["ss"] = "fsdfsdfsdf";
-                    a[i][j][k] = k;
+                   
+                    ai.ss[k] = "fsdfsdfsdf";
                     
                 }
             }
-        }
-        console.log(a);
+        }*/
+        $.ajax({
+            url:"examinations/postQuestionnaireInformation",
+            data:{data:a},
+            method:"POST",
+            dataType:"json",
+            success:function(data){
+                if(data[1] == true){
+                    swal("success", "Record Added.", "success");   
+                    location.reload();
+                    $('#mdl-classes-update').modal('hide');
+                }else{
+                    swal("cancelled", data[0], "error");
+                }
+            }
+        });
+        
     });
     //tinyMCE TO SUBMIT
     $(document).on('mousedown','#frm-add-questionnaire', function() {
@@ -2228,31 +2250,59 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             function(isConfirm){
             if (isConfirm) {
                 var tabPanelCount = $('#tab-header li').length-1;
-                var inputData = new Array();
                 
+                var inputTitle = $('#questionnaire-add-title').val();
+                var inputDescription = $('#questionnaire-add-description').val();
+                var inputDate = $('#questionnaire-add-day').val();
+                var inputTime = $('#questionnaire-add-time').val();
+                var inputDuration = $('#questionnaire-add-duration').val();
+                var inputInstruction = $('#questionnaire-add-instruction').val();
+                var inputData = [];
+                inputData = {
+                        
+                    'data' : {
+                        "title": inputTitle,
+                        "description": inputDescription,
+                        "date": inputDate,
+                        "time": inputTime,
+                        "duration": inputDuration,
+                        "instruction": inputInstruction
+                    }
+                    
+                };
+              
+
                 for(i=0;i<tabPanelCount;i++){
                     var itemsCount = $('div.bhoechie-tab-menu.template'+i+' a').length;
                     var questionType = $('#tab-add-question'+i).data('questiontype');   
-                    inputData[i] = new Array();             
-                    inputData[i]["type"] = new Array();             
-                    inputData[i]["type"] = questionType;
+                    inputData[i] = [];             
+                    
+                    inputData[i] = {
+                        "type": questionType
+                    };
                     for(j=0;j<itemsCount;j++){
-                        inputData[i][j] = new Array();
+                        inputData[i][j] = [];
                         var question = tinymce.get("questionTabno"+i+"-itemno-"+j+"").getContent();
-                        inputData[i][j]["question"] = question;
+                        inputData[i][j] = {
+                            "question": question
+                        }
                         if(questionType == 0){
                             var choicesCount = $('center#add-answer0-0 > div.input-group').length;
                             
                             for(k=0;k<choicesCount;k++){
-                                inputData[i][j][k] = new Array();
+                                inputData[i][j][k] = [];
                                 inputData[i][j][k] = $('#choicesTabno-'+i+'-itemno-'+j+'-choicesno-'+k+'').val();
                             }
-                            inputData[i][j]["answer"] = $('#answerTabno-'+i+'-itemno-'+i+'-answerno-0').val();
+                            var selectValue = $('#answerTabno-'+i+'-itemno-'+i+'-answerno-0').val();
+                            var answer = $('#choicesTabno-'+i+'-itemno-'+j+'-choicesno-'+selectValue+'').val();
+                            inputData[i][j][k] = {
+                                'answer': answer
+                            }
 
                         }else{
                             var answerCount = $('center#add-answer'+i+'-'+j+' div.add-answer > span.span-add-answer'+i+' > div.input-group').length
                             for(k=0;k<answerCount;k++){
-                                inputData[i][j][k] = new Array();
+                                inputData[i][j][k] = [];
                                 inputData[i][j][k] = $('#answerTabno-'+i+'-itemno-'+j+'-answerno-'+k+'').val();
                             }
                             
@@ -2261,13 +2311,13 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
 
                     }
                 }
+                
                 console.log(inputData);
 
-                /*
                 $.ajax({
-                    url:url,
-                    data:frm.serialize(),
-                    method:method,
+                    url:"examinations/postQuestionnaireInformation",
+                    data:{data:inputData},
+                    method:"POST",
                     dataType:"json",
                     success:function(data){
                         if(data[1] == true){
@@ -2279,12 +2329,13 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                         }
                     }
                 });
-                */
 
             } else {
                 swal("Cancelled", "Add Canceled.", "error");
             }
         });
     });
-    //SUBMIT ADD QUESTIONNAIRE END
+    //SUBMIT ADD QUESTIONNAIRE END 
 });
+
+//__userSessionUserLevelData

@@ -8,33 +8,32 @@
         
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Title</span>
-            <input type="text" class="form-control use" placeholder="Enter Title" aria-describedby="basic-addon1" required="required" id="" name="questionaire_title">
+            <input type="text" class="form-control use" placeholder="Enter Title" aria-describedby="basic-addon1" required="required" id="questionnaire-add-title" name="title">
         </div>
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Description</span>
-            <input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="" name="questionaire_description">
+            <input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="questionnaire-add-description" name="questionaire_description">
         </div>
         
         <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">Day</span>
-            <input type="text" class="form-control use datepicker-date" placeholder="Select Date" aria-describedby="basic-addon1" required="required" id="" name="questionaire_date">
+            <span class="input-group-addon" id="basic-addon1">Date</span>
+            <input type="text" class="form-control use datepicker-date" placeholder="Select Date" aria-describedby="basic-addon1" required="required" id="questionnaire-add-day" name="questionaire_date">
         </div>
         
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Time</span>
-            <input type="text" class="form-control use datepicker-time" placeholder="Select Time" aria-describedby="basic-addon1" required="required" id="" name="questionaire_time">
+            <input type="text" class="form-control use datepicker-time" placeholder="Select Time" aria-describedby="basic-addon1" required="required" id="questionnaire-add-time" name="questionaire_time">
         </div>
         
         <div class="input-group col-md-12">
             <span class="input-group-addon" id="basic-addon1">Duration</span>
-            <input type="text" class="form-control use time-hours-minute-duration" placeholder="Select Duration" aria-describedby="basic-addon1" required="required" id="" name="questionaire_duration">
+            <input type="text" class="form-control use time-hours-minute-duration" placeholder="Select Duration" aria-describedby="basic-addon1" required="required" id="questionnaire-add-duration" name="questionaire_duration">
         </div>
         
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Instruction</span>
-            <input type="text" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="" name="terms_and_condition">
+            <input type="text" class="form-control use mytextarea" placeholder="" aria-describedby="basic-addon1" required="required" id="questionnaire-add-instruction" name="terms_and_condition">
         </div>
-        
         
     </div>
     
