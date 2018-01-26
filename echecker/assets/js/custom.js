@@ -1957,12 +1957,15 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         var inputTypeText = $('#select-question-type-input option:selected').text();
         if(inputAnswerQuantity != null){
             var inputAnswerQuantityValue = inputAnswerQuantity.value;
+        }else{
+            var inputAnswerQuantityValue = "";
         }
         var inputTitleValue = inputTitle.value;
         var inputNumberOfPointsValue = inputNumberOfPoints.value;
         var inputNumerOfItemsValue = inputNumerOfItems.value;
         var panelQuantity = $('#tab-header > li').length;
-        
+        var totalPointsValue = $('#total-points-input').val();
+
         if( inputAnswerQuantityValue == ""){
             if(inputTypeValue == 0){
                 swal("Cancelled", "Fill Up Fields.", "error");
@@ -2010,6 +2013,12 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             tabContent += '<div class="bhoechie-tab-content '+((i==0) ? 'active':'')+'">'
                 +'<center id="add-answer'+nextTab+'-'+i+'">'
                     //content
+                    +'<input type="hidden" id="category-title-tabNo'+i+'" value="'+inputTitleValue+'">'
+                    +'<input type="hidden" id="question-quantity-tabNo'+i+'" value="'+inputAnswerQuantityValue+'">'
+                    +'<input type="hidden" id="item-points-tabNo'+i+'" value="'+inputNumberOfPointsValue+'">'
+                    +'<input type="hidden" id="item-quantity-tabNo'+i+'" value="'+inputNumerOfItemsValue+'">'
+                    +'<input type="hidden" id="total-item-tabNo'+i+'" value="'+totalPointsValue+'">'
+                    
                     +'<div class="col-md-12" style="margin: 5px;">'
                             +'<h1 class="glyphicon glyphicon-question-sign" style="font-size:4em;color:#55518a"></h1>'
                             +'<h2 style="margin-top: 0;color:#55518a">Question no. '+(i+1)+'</h2>'
@@ -2181,13 +2190,15 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         var i = 3;
         var j = 3;
         var a = [];
-        a[0] = [""];
-        a["data"] = {
-                "sdf":"sdf",
-                "hahaha":"woe",
-
-            };
+        a = {
+            'a1': {
+                "sdf":"sdfsdf"
+            }
+        };
+        a.a2 = {"sdf2":"sdf2"};
+            
         
+       
 
     
         /*for(i=0;i<3;i++){
@@ -2257,28 +2268,45 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 var inputTime = $('#questionnaire-add-time').val();
                 var inputDuration = $('#questionnaire-add-duration').val();
                 var inputInstruction = $('#questionnaire-add-instruction').val();
+
+                
                 var inputData = [];
                 inputData = {
                         
                     'data' : {
-                        "title": inputTitle,
-                        "description": inputDescription,
-                        "date": inputDate,
-                        "time": inputTime,
-                        "duration": inputDuration,
-                        "instruction": inputInstruction
+                        "questionaire_title": inputTitle,
+                        "questionaire_description": inputDescription,
+                        "questionaire_date": inputDate,
+                        "questionaire_time": inputTime,
+                        "questionaire_duration": inputDuration,
+                        "questionaire_instruction": inputInstruction
                     }
                     
                 };
               
-
+                
+                
                 for(i=0;i<tabPanelCount;i++){
                     var itemsCount = $('div.bhoechie-tab-menu.template'+i+' a').length;
-                    var questionType = $('#tab-add-question'+i).data('questiontype');   
-                    inputData[i] = [];             
+                    var questionType = $('#tab-add-question'+i).data('questiontype');
+
+                    var categoryTitle = $('#category-title-tabNo'+i+'').val();
+                    var questionQuantity = $('#question-quantity-tabNo'+i+'').val();
+                    var itemPoints = $('#item-points-tabNo'+i+'').val();
+                    var itemQuantity = $('#item-quantity-tabNo'+i+'').val();
+                    var totalItem = $('#total-item-tabNo'+i+'').val();
+
+                    inputData[i] = [];                          
                     
                     inputData[i] = {
-                        "type": questionType
+                        'data' : {
+                            "questionaire_type": questionType,
+                            'questionaire_type_title': categoryTitle,
+                            'questionaire_type_question_quantity':questionQuantity,
+                            'questionaire_type_item_points':itemPoints,
+                            'questionaire_type_item_quantity':itemQuantity,
+                            'questionaire_type_total_item':totalItem,
+                        }
                     };
                     for(j=0;j<itemsCount;j++){
                         inputData[i][j] = [];
@@ -2295,9 +2323,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                             }
                             var selectValue = $('#answerTabno-'+i+'-itemno-'+i+'-answerno-0').val();
                             var answer = $('#choicesTabno-'+i+'-itemno-'+j+'-choicesno-'+selectValue+'').val();
-                            inputData[i][j][k] = {
-                                'answer': answer
-                            }
+                            inputData[i][j].answer = answer;
 
                         }else{
                             var answerCount = $('center#add-answer'+i+'-'+j+' div.add-answer > span.span-add-answer'+i+' > div.input-group').length
