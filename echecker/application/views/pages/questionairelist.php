@@ -24,11 +24,11 @@
         <tbody>
             <?php
                 if($data["data"]){
-                    foreach($data as $questionaire){
+                    foreach($data["data"] as $questionaire){
                         $id = $questionaire['idquestionaire'];
                         $title = $questionaire['questionaire_title'];
                         $description = $questionaire['questionaire_description'];
-                        $day = $questionaire['questionaire_day'];
+                        $day = $questionaire['questionaire_date'];
                         $time = $questionaire['questionaire_time'];
                         $status = $questionaire['questionaire_status'];
                         
@@ -38,8 +38,9 @@
                             <td class='text-center font-roboto color-a2'>$id</td>
                             <td class='text-center font-roboto color-a2'>$title</td>
                             <td class='text-center font-roboto color-a2'>$description</td>
+                            <td class='text-center font-roboto color-a2'>$day</td>
                             <td class='text-center font-roboto color-a2'>$time</td>
-                            <td class='text-center font-roboto color-a2'>$status</td>
+                            <td class='text-center font-roboto color-a2'>Unapproved</td>
                             
                             <td class='text-center font-roboto color-a2'>
                                 

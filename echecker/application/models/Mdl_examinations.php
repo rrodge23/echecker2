@@ -45,6 +45,7 @@ class Mdl_examinations extends CI_Model {
         foreach($data["data"] as $key => $value){
             $questionnaireData[$key] = $value;
         }
+        $dataIdSubject = $questionnaireData["idsubject"];
         $isQuestionaireDataInserted = $this->db->insert('questionairetbl',$questionnaireData);
        
             if($isQuestionaireDataInserted){
@@ -118,7 +119,7 @@ class Mdl_examinations extends CI_Model {
 
         
        
-        return array("Record Successfully Added",true);
+        return array("Record Successfully Added",true,$dataIdSubject);
         
     }
 

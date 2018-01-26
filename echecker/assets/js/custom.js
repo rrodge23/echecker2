@@ -2349,7 +2349,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                     success:function(data){
                         if(data[1] == true){
                             swal("success", "Record Added.", "success");   
-                            location.reload();
+                            window.location.replace('examinations/userquestionairelist/'+data[3]+'')
                             $('#mdl-classes-update').modal('hide');
                         }else{
                             swal("cancelled", data[0], "error");
