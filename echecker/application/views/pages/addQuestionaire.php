@@ -1,3 +1,4 @@
+
 <div class="row">
     <span><b>ADD QUESTIONNAIRE</b></span>
 </div>
@@ -5,7 +6,7 @@
 <div class="row" style="height:100%; width:100%;">
     
     <div class="row">
-        
+        <input type="hidden" name="idsubject" id="questionaire-idsubject" value="<?=$data;?>">
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Title</span>
             <input type="text" class="form-control use" placeholder="Enter Title" aria-describedby="basic-addon1" required="required" id="questionnaire-add-title" name="title">

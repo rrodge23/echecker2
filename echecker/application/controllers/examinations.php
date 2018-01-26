@@ -18,9 +18,10 @@ class Examinations extends MY_Controller {
     public function userQuestionaireList($data=false){
 		$this->load->model('mdl_Examinations');
 		$questionaireList = $this->mdl_Examinations->userQuestionaireList($data);
-		$this->_view('questionairelist',$questionaireList);
+		
+		$this->_view('questionairelist',array('idsubject'=> $data,'data'=>$questionaireList));
 	}
-	
+
     public function subjectclassinformation($data=false){
 		
 		$this->load->model('mdl_Examinations');
@@ -30,7 +31,7 @@ class Examinations extends MY_Controller {
 	}
     
     public function addQuestionaire($data=false){
-		$this->_view('addquestionaire');
+		$this->_view('addquestionaire',$data);
 	}
 
 	public function postQuestionnaireInformation(){

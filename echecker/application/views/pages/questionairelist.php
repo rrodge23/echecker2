@@ -5,7 +5,7 @@
 ?>
 
 <div class="user-subject-list">
-    <a rel='tooltip' data-original-title='Add' class='pull-right btn btn-success' type='button' name='create' href='examinations/addQuestionaire'>
+    <a rel='tooltip' data-original-title='Add' class='pull-right btn btn-success' type='button' name='create' href="examinations/addQuestionaire/<?php echo $data["idsubject"];?>">
         <i class='material-icons'>add</i>
   </a>
     <span class="brand" style="font-size:20px;">QUESTIONNAIRE LIST:</span>
@@ -23,37 +23,39 @@
         </thead>
         <tbody>
             <?php
-                foreach($data as $questionaire){
-                    $id = $questionaire['idquestionaire'];
-                    $title = $questionaire['questionaire_title'];
-                    $description = $questionaire['questionaire_description'];
-                    $day = $questionaire['questionaire_day'];
-                    $time = $questionaire['questionaire_time'];
-                    $status = $questionaire['questionaire_status'];
+                if($data["data"]){
+                    foreach($data as $questionaire){
+                        $id = $questionaire['idquestionaire'];
+                        $title = $questionaire['questionaire_title'];
+                        $description = $questionaire['questionaire_description'];
+                        $day = $questionaire['questionaire_day'];
+                        $time = $questionaire['questionaire_time'];
+                        $status = $questionaire['questionaire_status'];
+                        
                     
-                
-                echo "
-                    <tr>
-                        <td class='text-center font-roboto color-a2'>$id</td>
-                        <td class='text-center font-roboto color-a2'>$title</td>
-                        <td class='text-center font-roboto color-a2'>$description</td>
-                        <td class='text-center font-roboto color-a2'>$time</td>
-                        <td class='text-center font-roboto color-a2'>$status</td>
-                        
-                        <td class='text-center font-roboto color-a2'>
+                    echo "
+                        <tr>
+                            <td class='text-center font-roboto color-a2'>$id</td>
+                            <td class='text-center font-roboto color-a2'>$title</td>
+                            <td class='text-center font-roboto color-a2'>$description</td>
+                            <td class='text-center font-roboto color-a2'>$time</td>
+                            <td class='text-center font-roboto color-a2'>$status</td>
                             
-                        <form action='examinations/userquestionairelist' method='POST' id='frm-userquestionairelist'>
-                            <input type='hidden' value=$id name='id'>
-                            <button rel='tooltip' data-original-title='View Questionaires' class='btn-view-questionaire btn btn-info' type='submit' form='frm-userquestionairelist'>
-                                <i class='material-icons'>remove_red_eye</i>
-                            </button>
-                        </form>
+                            <td class='text-center font-roboto color-a2'>
+                                
+                            <form action='examinations/userquestionairelist' method='POST' id='frm-userquestionairelist'>
+                                <input type='hidden' value=$id name='id'>
+                                <button rel='tooltip' data-original-title='View Questionaires' class='btn-view-questionaire btn btn-info' type='submit' form='frm-userquestionairelist'>
+                                    <i class='material-icons'>remove_red_eye</i>
+                                </button>
+                            </form>
+                                
+                                
                             
-                            
-                        
-                        </td>
-                    </tr>
-                    ";
+                            </td>
+                        </tr>
+                        ";
+                    }
                 }
             ?>
                 

@@ -2120,7 +2120,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         $(document).on('click','div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer',function(e){
             e.preventDefault();
             var itemNo = $('div.bhoechie-tab-menu.template'+nextTab+' a').index($('div.bhoechie-tab-menu.template'+nextTab+' a.active'));
-            var answerQuantity = $('div#tab-content > div.active div.bhoechie-tab-content.active input').length;
+            var answerQuantity = $('div#tab-content > div.active div.bhoechie-tab-content.active input.form-control').length;
             var input = '<div class="input-group">'
                             +'<span class="input-group-addon" id="basic-addon1">Description</span>'
                             +'<input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="answerTabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'" name="answer">'
@@ -2268,6 +2268,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 var inputTime = $('#questionnaire-add-time').val();
                 var inputDuration = $('#questionnaire-add-duration').val();
                 var inputInstruction = $('#questionnaire-add-instruction').val();
+                var inputIdSubject= $('#questionaire-idsubject').val();
 
                 
                 var inputData = [];
@@ -2279,7 +2280,8 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                         "questionaire_date": inputDate,
                         "questionaire_time": inputTime,
                         "questionaire_duration": inputDuration,
-                        "questionaire_instruction": inputInstruction
+                        "questionaire_instruction": inputInstruction,
+                        "idsubject":inputIdSubject
                     }
                     
                 };
@@ -2289,19 +2291,18 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 for(i=0;i<tabPanelCount;i++){
                     var itemsCount = $('div.bhoechie-tab-menu.template'+i+' a').length;
                     var questionType = $('#tab-add-question'+i).data('questiontype');
-
                     var categoryTitle = $('#category-title-tabNo'+i+'').val();
                     var questionQuantity = $('#question-quantity-tabNo'+i+'').val();
                     var itemPoints = $('#item-points-tabNo'+i+'').val();
                     var itemQuantity = $('#item-quantity-tabNo'+i+'').val();
                     var totalItem = $('#total-item-tabNo'+i+'').val();
-
+                    
                     inputData[i] = [];                          
                     
                     inputData[i] = {
                         'data' : {
-                            "questionaire_type": questionType,
                             'questionaire_type_title': categoryTitle,
+                            'questionaire_type': questionType,
                             'questionaire_type_question_quantity':questionQuantity,
                             'questionaire_type_item_points':itemPoints,
                             'questionaire_type_item_quantity':itemQuantity,
