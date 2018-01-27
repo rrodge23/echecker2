@@ -526,7 +526,7 @@ $(document).ready(function(){
     //********* POST ADD USERS END
 
     //********* DELETE USER
-
+    
     $(document).on('click','.btn-delete-user',function(e){
         e.preventDefault();
         var btn = $(this);
@@ -2349,7 +2349,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                     success:function(data){
                         if(data[1] == true){
                             swal("success", "Record Added.", "success");   
-                            window.location.replace('examinations/userquestionairelist/'+data[3]+'')
+                            window.location.replace('examinations/userquestionairelist/'+data[2]+'')
                             $('#mdl-classes-update').modal('hide');
                         }else{
                             swal("cancelled", data[0], "error");
@@ -2363,6 +2363,52 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         });
     });
     //SUBMIT ADD QUESTIONNAIRE END 
+
+    //SUBMIT DELETE QUESTIONNAIRE 
+    
+    $(document).on('click','.btn-delete-questionaire',function(e){
+        e.preventDefault();
+        var btn = $(this);
+        var id = btn.data('id');
+
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to delete this record?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel plx!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+            },
+            function(isConfirm){
+            
+            if (isConfirm) {
+                
+                $.ajax({
+                url:'examinations/deleteQuestionaire',
+                data:{id:id},
+                dataType:"json",
+                method:"POST",
+                success:function(data){
+                    if(data[1] == true){
+                        btn.closest("tr").remove();
+                        swal("success", "Record Deleted.", "success");
+                        
+                    }else{
+                        swal("Cancelled", "Error Delete Record.", "error");
+                    }
+                }
+            });
+            } else {
+                swal("Cancelled", "Delete Canceled.", "error");
+            }
+        });
+        
+        
+    });
+    //SUBMIT DELETE QUESTIONNAIRE END 
 });
 
 //__userSessionUserLevelData

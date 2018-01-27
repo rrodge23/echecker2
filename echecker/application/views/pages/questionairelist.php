@@ -49,11 +49,13 @@
                                 <button rel='tooltip' data-original-title='View Questionaires' class='btn-view-questionaire btn btn-info' type='submit' form='frm-userquestionairelist'>
                                     <i class='material-icons'>remove_red_eye</i>
                                 </button>
+                                <button href='departments/deletedepartment' data-id='$id' rel='tooltip' data-original-title='Delete' class='btn-delete-questionaire btn btn-danger' type='submit' name='delete' onclick='return false;'>
+                                    <i class='material-icons'>delete</i>
+                                </button>
                             </form>
                                 
-                                
-                            
                             </td>
+                           
                         </tr>
                         ";
                     }

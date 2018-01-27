@@ -40,6 +40,14 @@ class Examinations extends MY_Controller {
 		$isInserted = $this->mdl_Examinations->postQuestionnaireInformation($_POST["data"]);
 		echo json_encode($isInserted);
 	}
+
+	public function deleteQuestionaire(){
+		
+		$this->load->model('mdl_Examinations');
+		$isDeleted = $this->mdl_Examinations->deleteQuestionaire($_POST["id"]);
+		echo json_encode($isDeleted);
+	}
+
 }
 
 ?>
