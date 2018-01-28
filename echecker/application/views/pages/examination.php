@@ -1,6 +1,6 @@
 
 <?php
-  if($_SESSION['users']['user_level'] == "2"){
+  if($_SESSION['users']['user_level'] != "99"){
    
 ?>
 
@@ -37,14 +37,18 @@
                         <td class='text-center font-roboto color-a2'>
                         <a rel='tooltip' data-original-title='View Questionaires' class='btn btn-success' href='examinations/userquestionairelist/$id'>
                             <i class='material-icons'>list</i>
-                        </a>    
-                        <a rel='tooltip' data-original-title='View Questionaires' class='btn btn-info' href='examinations/subjectclassinformation/$id'>
+                        </a>";
+                if($_SESSION['users']['user_level'] == "2"){
+
+                    echo "<a rel='tooltip' data-original-title='View Questionaires' class='btn btn-info' href='examinations/subjectclassinformation/$id'>
                             <i class='material-icons'>remove_red_eye</i>
-                        </a>    
-                        
-                        </td>
+                        </a>"; 
+                }    
+                           
+                echo "  </td>
                     </tr>
-                    ";
+                    ";       
+                        
                 }
             ?>
                 

@@ -44,9 +44,7 @@
     <script src= "assets/js/jqxsplitter.js" type="text/javascript"></script>
     <script src= "assets/js/jqxlistbox.js" type="text/javascript"></script>
     <script src= "assets/js/jqxdata.js"type="text/javascript"></script>
-    <?php
-    }
-    ?>
+    
 
     <?php
         $userSession = "";
@@ -71,3 +69,6 @@
 </head>
 <body>
 
+<?php
+    }
+?>

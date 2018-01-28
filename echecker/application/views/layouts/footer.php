@@ -1,4 +1,8 @@
-     </div>
+<?php
+    if($this->uri->segment(1) != ""){
+?>   
+
+    </div>
         </div>
 
 
@@ -30,9 +34,7 @@
         
     ?>
     
-    <?php
-    if($this->uri->segment(1) != ""){
-    ?>
+    
     <script src= "assets/plugin/tinymce/tinymce.min.js" type="text/javascript"></script>
     <!--<script src= "assets/js/bootstrap-checkbox-radio.js" type="text/javascript"></script>-->
     <script src= "assets/js/bootstrap-notify.js" type="text/javascript"></script>
@@ -58,9 +60,9 @@
     <script src= "assets/js/demo.js" type="text/javascript"></script>
     <script src= "assets/js/ripples.js" type="text/javascript"></script>
     <script src= "assets/js/custom.js" type="text/javascript"></script>
-    <?php
-    }
-    ?>
+    
 </body>
 </html>
-    
+<?php
+    }
+    ?>

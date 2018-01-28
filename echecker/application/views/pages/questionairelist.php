@@ -5,9 +5,15 @@
 ?>
 
 <div class="user-subject-list">
-    <a rel='tooltip' data-original-title='Add' class='pull-right btn btn-success' type='button' name='create' href="examinations/addQuestionaire/<?php echo $data["idsubject"];?>">
-        <i class='material-icons'>add</i>
-  </a>
+    <?php 
+        if($_SESSION['users']['user_level'] == "2"){ 
+        echo "
+            <a rel='tooltip' data-original-title='Add' class='pull-right btn btn-success' type='button' name='create' href='examinations/addQuestionaire/'".$data["idsubject"]."'>
+                <i class='material-icons'>add</i>
+            </a>
+            ";
+        }
+    ?>
     <span class="brand" style="font-size:20px;">QUESTIONNAIRE LIST:</span>
     <table id="table-subjectList" class="table table-striped">        
         <thead>
@@ -45,14 +51,20 @@
                             <td class='text-center font-roboto color-a2'>
                                 
                             <form action='examinations/userquestionairelist' method='POST' id='frm-userquestionairelist'>
-                                <input type='hidden' value=$id name='id'>
-                                <button rel='tooltip' data-original-title='View Questionaires' class='btn-view-questionaire btn btn-info' type='submit' form='frm-userquestionairelist'>
-                                    <i class='material-icons'>remove_red_eye</i>
-                                </button>
-                                <button href='departments/deletedepartment' data-id='$id' rel='tooltip' data-original-title='Delete' class='btn-delete-questionaire btn btn-danger' type='submit' name='delete' onclick='return false;'>
-                                    <i class='material-icons'>delete</i>
-                                </button>
-                            </form>
+                                <input type='hidden' value=$id name='id'>";
+                    if($_SESSION['users']['user_level'] == "1"){
+                        echo "<button rel='tooltip' data-original-title='View Questionnaires' class='btn-view-questionaire btn btn-info' type='button'>
+                                <i class='material-icons'>remove_red_eye</i>
+                            </button>";
+                    }
+                                
+                    if($_SESSION['users']['user_level'] == "2"){
+                        echo "<button href='departments/deletedepartment' data-id='$id' rel='tooltip' data-original-title='Delete' class='btn-delete-questionaire btn btn-danger' type='submit' name='delete' onclick='return false;'>
+                                <i class='material-icons'>delete</i>
+                            </button>";
+                    }  
+
+                    echo "       </form>
                                 
                             </td>
                            

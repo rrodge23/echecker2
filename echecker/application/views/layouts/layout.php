@@ -140,7 +140,7 @@
                         echo '<li class="'.$examinations.'">
                                     <a href="examinations">
                                         <i class="material-icons">library_books</i>
-                                        <p>Examination</p>
+                                        <p>Subjects</p>
                                     </a>
                                 </li>';
                     }

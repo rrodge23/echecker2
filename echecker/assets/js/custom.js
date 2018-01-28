@@ -2409,6 +2409,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         
     });
     //SUBMIT DELETE QUESTIONNAIRE END 
-});
 
-//__userSessionUserLevelData
+});// DOCUMENT READY END
+
+//__userSessionUserLevelData 
