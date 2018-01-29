@@ -48,6 +48,11 @@ class Examinations extends MY_Controller {
 		echo json_encode($isDeleted);
 	}
 
+	public function examine($id=false){
+		$this->load->model('mdl_Examinations');
+		$questionnaireData = $this->mdl_Examinations->getQuestionnaireInfoById($id);
+		$this->_view('examine',$questionnaireData);
+	}
 }
 
 ?>

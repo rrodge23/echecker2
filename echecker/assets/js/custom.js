@@ -1,5 +1,12 @@
 $(document).ready(function(){
 
+
+    // COUNTDOWN
+    
+    // Set the date we're counting down to
+    
+
+    //COUNTDOWN END
     $('.time-hours-minute-duration').durationPicker({
         
           langs: 'en',
@@ -2410,6 +2417,121 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     });
     //SUBMIT DELETE QUESTIONNAIRE END 
 
+    
+   
+
+    
+   
+    
+
 });// DOCUMENT READY END
+
+
+//EXAMINE FULL SCREEN 
+//
+function goToFullScreen(){
+    swal({
+        title: "Are you Sure?",
+        text: "Press ok to proceed",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes !",
+        cancelButtonText: "No !",
+        closeOnConfirm: true,
+        closeOnCancel: true
+        },
+        function(isConfirm){
+        
+        if (isConfirm) {
+            
+            //var el = document.getElementById('examine-content');
+            //fullScreenToggle(el);
+            //$(el).attr('style','width:100% !important;height:100% !important;');
+            
+            document.body.className += " no-scroll";
+            $('#agreement-container').hide();
+            $('#examine-container').show();
+            //COUNTDOWN TIMER
+            var setDate = new Date();
+            var countDownDate = setDate.setSeconds(setDate.getSeconds() + $('#countdownduration').val());
+           
+            // Update the count down every 1 second
+            var x = setInterval(function() {
+        
+                // Get todays date and time
+                var now = new Date().getTime();
+                
+                // Find the distance between now an the count down date
+                var distance = countDownDate - now;
+                console.log($('#countdownduration').val());
+                // Time calculations for days, hours, minutes and seconds
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Output the result in an element with id="demo"
+                document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+                + minutes + "m " + seconds + "s ";
+                
+                // If the count down is over, write some text 
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("demo").innerHTML = "EXPIRED";
+                }
+            }, 1000);
+            //COUNTDOWN TIMER END
+        } else {
+            swal("Cancelled", "Cancelled", "error");
+        }
+    });
+    
+    $(document).on('fullscreenchange webkitfullscreenchange mozfullscreenchange MSFullscreenChange', function() {
+        if(!IsFullScreenCurrently()){
+            alert('hahahha');
+        }
+
+    });
+
+}
+function IsFullScreenCurrently() {
+	var full_screen_element = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || null;
+	
+	// If no element is in full-screen
+	if(full_screen_element === null)
+		return false;
+	else
+		return true;
+}
+function fullScreenToggle(elem) {
+    if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
+}
+//EXAMINE FULL SCREEN END
+
+
+//
+
+//
 
 //__userSessionUserLevelData 

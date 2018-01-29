@@ -53,9 +53,9 @@
                             <form action='examinations/userquestionairelist' method='POST' id='frm-userquestionairelist'>
                                 <input type='hidden' value=$id name='id'>";
                     if($_SESSION['users']['user_level'] == "1"){
-                        echo "<button rel='tooltip' data-original-title='View Questionnaires' class='btn-view-questionaire btn btn-info' type='button'>
+                        echo "<a rel='tooltip' data-original-title='View Questionnaires' class='btn-view-questionaire btn btn-info' href='examinations/examine/$id'>
                                 <i class='material-icons'>remove_red_eye</i>
-                            </button>";
+                            </a>";
                     }
                                 
                     if($_SESSION['users']['user_level'] == "2"){

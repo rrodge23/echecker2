@@ -22,6 +22,8 @@ class Mdl_examinations extends CI_Model {
             ->get('questionairetbl');
         return $query->result_array();
     }
+
+    
    
     public function deleteQuestionaire($data=false){
         $query=$this->db->select('questionaire_typetbl.idquestionairetype')
@@ -190,7 +192,61 @@ class Mdl_examinations extends CI_Model {
     }
 
 
+    public function getQuestionnaireInfoById($data=false){
 
+        $examData = array();
+
+        $query=$this->db->where('idquestionaire',$data)
+            ->get('questionairetbl');
+        if($questionaireData = $query->result_array()){
+           
+            foreach($questionaireData[0] as $key => $value){
+                $examData[$key] = $value;
+            }
+            $query = $this->db->where('idquestionaire',$data)
+                ->get('questionaire_typetbl');
+            if($questionaireTypeData = $query->result_array()){ 
+
+                foreach($questionaireTypeData as $key => $value){
+                    $examData["questionaire_type"][$key] = $value;
+
+                    $query = $this->db->where('idquestionaire_type',$examData["questionaire_type"][$key]["idquestionairetype"])
+                    ->get('questiontbl');
+                    if($questionData = $query->result_array()){
+                        for($i=0;$i<count($questionData);$i++){
+                            $examData["questionaire_type"][$key]["question"][$i] = $questionData[$i];
+
+                            if($examData["questionaire_type"][$key]["question"][$i]["idquestionaire_type"] == "0"){
+                                $query = $this->db->where('idquestion',$examData["questionaire_type"][$key]["question"][$i]["idquestion"])
+                                ->get('question_choicestbl');
+
+                                if($choicesData = $query->result_array()){
+                                    for($j=0;$j<count($choicesData);$j++){
+                                        $examData["questionaire_type"][$key]["question"][$i]["choices"][$j] = $choicesData[$j];
+
+                                    }
+                                }
+
+                            }
+                            
+                            $query = $this->db->where('idquestion',$examData["questionaire_type"][$key]["question"][$i]["idquestion"])
+                            ->get('question_answertbl');
+                            if($answerData = $query->result_array()){
+                                for($j=0;$j<count($answerData);$j++){
+                                    $examData["questionaire_type"][$key]["question"][$i]["answer"][$j] = $answerData[$j];
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+                
+            }
+           
+        }   
+        
+        return $examData;
+    }
     
 } 
 
