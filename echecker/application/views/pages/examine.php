@@ -8,82 +8,152 @@
     }
     
 ?>
-
-<div id="examine-content" style="height:100%;width=100% !important;">
-    <div id="agreement-container">
-        <div class="card card-profile">
-            <div class="card-avatar" stlye="background-color:#9c27b0;">
-                <a href="javascript:void();">
-                    <img class="img" src="assets/img/homelogo.png" style="background-color:#9c27b0;height:80%;width:100%;"/>
-                </a>
+<!-- tab start -->
+    <div class="row col-md-12">
+        <div class="col-md-12">
+            <div class="row">
+                <input type="hidden" name="duration" id="countdownduration" value="<?=$data["questionaire_duration"]?>">
             </div>
-            <div class="content">
-                <h4 class="card-title"><?=$data["questionaire_title"]?></h4>
-                <h4 class="card-title"><?=$data["questionaire_description"]?></h4><br><br>
-                <h2 class="card-title"><?=$timeFormat?></h2><br><br>
-                <h6 class="category text-gray"><small><?=$data["questionaire_instruction"]?></small></h6>
-                <p class="card-content">
-                    <small>Once you click the button your examination time starts to countdown.</small>
-                </p>
-                <div class="card-footer">
+            
+
                 
-                    <button onclick="goToFullScreen()" class="btn btn-primary btn-round button-fullscreen">Start</button>
-                
+            <div id="examine-content" style="height:100%;width=100% !important;">
+                <div id="agreement-container">
+                    <div class="card card-profile">
+                        <div class="card-avatar" stlye="background-color:#9c27b0;">
+                            <a href="javascript:void();">
+                                <img class="img" src="assets/img/homelogo.png" style="background-color:#9c27b0;height:80%;width:100%;"/>
+                            </a>
+                        </div>
+                        <div class="content">
+                            <h4 class="card-title"><?=$data["questionaire_title"]?></h4>
+                            <h4 class="card-title"><?=$data["questionaire_description"]?></h4><br><br>
+                            <h2 class="card-title"><?=$timeFormat?></h2><br><br>
+                            <h6 class="category text-gray"><small><?=$data["questionaire_instruction"]?></small></h6>
+                            <p class="card-content">
+                                <small>Once you click the button your examination time starts to countdown.</small>
+                            </p>
+                            <div class="card-footer">
+                            
+                                <button onclick="goToFullScreen()" class="btn btn-primary btn-round button-fullscreen">Start</button>
+                            
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-    </div>
 
-    <div id="examine-container" style="display:none;">
-        <!-- content -->
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="blue">
-                <i class="material-icons">content_copy</i>
-            </div>
-            <div class="card-content">
-                <h3 class="title"><?=$data["questionaire_title"]?></h3>
-                <p class="category"><?=$data["questionaire_description"]?></p>
-                <p id="demo"></p>
-            </div>
-            <div class="card-footer">
-                <!-- tab start -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="hidden" name="duration" id="countdownduration" value="<?=$data["questionaire_duration"]?>">
-                        <ul class="nav nav-tabs tab-nav-right tab-header" id="tab-header" role="tablist" style="margin-bottom:50px;">
-                            <li role="presentation" class="active" style="width:20%;" id="tab-header-examine" data-id="0">
-                                <a href="#tab-examine" data-toggle="tab">
-                                    <span class="material-icons">add</span>
-                                </a>
-                            </li>
-                            
-                        </ul>
-
-                            <!-- Tab panes -->
-                        <div class="tab-content" id="tab-content">
-                            <div role="tabpanel" class="tab-pane fade in active" id="tab-examine" data-id="0">
-                                
-                                
-                            </div><!-- end tab panel first div -->
-                            
-                        
-                        </div> <!-- end tab content div -->
-                        
-                        
+            <div id="examine-container" style="display:none;">
+                <!-- content -->
+                <div class="card card-stats">
+                    <div class="card-header" data-background-color="blue">
+                        <i class="material-icons">content_copy</i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="title"><?=$data["questionaire_title"]?></h3>
+                        <p class="category"><?=$data["questionaire_description"]?></p>
+                        <p id="demo"></p>
+                    </div>
+                    <div class="card-footer col-md-12">
                         
                     </div>
                 </div>
-                <!-- tab end -->
-            </div>
-        </div>
-        <!-- content  end-->
+                <!-- tab start -->
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs tab-nav-right" role="tablist" style="margin-bottom:50px;">
+                        <!-- tab header -->
+                        <?php
+                            if($data["questionaire_type"]){
+                                foreach($data["questionaire_type"] as $key=>$value){
+                                    echo '<li role="presentation" class="tab-examine '.(($key == 0) ? "active" : "").'" style="width:20%;">
+                                            <a href="#tab-examine'.$key.'" data-toggle="tab">
+                                                <span>'.$value["questionaire_type_title"].' - '.(($value["questionaire_type"] == 0) ? "MULTIPLE CHOICE" : "ESSAY").'</span>
+                                            </a>
+                                        </li>';
+                                }
+                            }
+                            
+                        ?>
+                        
+                        <!-- tab header end -->
+                    </ul>
 
+                    <!-- Tab panes -->
+                    <div class="tab-content col-md-12">
+                        <!-- tab content -->
+                        <?php
+                            if($data["questionaire_type"]){
+                                foreach($data["questionaire_type"] as $key=>$value){
+                                    echo '<div role="tabpanel" class="tab-pane fade in '.(($key == 0) ? "active" : "").'" id="tab-examine'.$key.'">';
+                                        //bouchie tabpanel start
+                                    echo '
+                                        <div class="container col-md-12">
+                                            <div class="row col-md-12">
+                                                <div class="col-md-10 bhoechie-tab-container">
+                                                    <div class="col-md-2 bhoechie-tab-menu btmenu-template'.$key.'">
+                                                        <div class="list-group">';
+                                                            //bouche tab header
+                                                            foreach($data["questionaire_type"][$key]["question"] as $i => $iValue){
+                                                                echo '<a href="#" class="list-group-item '.(($i == 0) ? "active" : "").' text-center" data-tab="'.$key.'">
+                                                                        <h4 class="glyphicon glyphicon-tags"></h4><br/>'.($i+1).'
+                                                                    </a>';
+                                                            }
+                                                            //bouchie tab header end
+                                                    echo ' </div>
+                                                    </div>
+                                                    <div class="col-md-10 bhoechie-tab">';
+                                                        foreach($data["questionaire_type"][$key]["question"] as $i => $iValue){
+                                                            echo '<div class="btcontent-template-tab'.$key.' bhoechie-tab-content '.(($i == 0) ? "active" : "").'">
+                                                                    <center>
+                                                                        <h1 class="glyphicon glyphicon-question-sign" style="font-size:4em;color:#55518a"></h1>
+                                                                        <h2 style="margin-top: 0;color:#55518a">Question no. '.($i+1).'</h2><br><br>
+                                                                    </center>
+                                                                    
+                                                                        <div style="border-left:3px solid #337ab7;border-bottom:1px solid #337ab7;padding:10px" class="col-md-12">
+                                                                            <h3 style="margin-top: 0;color:#55518a">'.$data["questionaire_type"][$key]["question"][$i]["question_title"].'</h3>
+                                                                        </div>
+                                                                    
+                                                                </div>';
+                                                        }   
+                                                        
+                                                    
+                                                echo '    </div>
+                                                </div>
+                                            </div>
+                                        </div>';
+                                    
+                                        //bouchie tabpanel start end
+                                    echo '</div>';
+                                }
+                            }
+                            
+                        ?>
+                        
+                        
+                        <!-- tab content end  -->
+                    </div>
+                </div>
+            </div>
+                <!-- content  end-->
+
+
+
+            
+            
+            
+        </div>
+        
     </div>
-</div>
+    <!-- tab end -->
+
 
 
 <!-- Array
+
+
+
+
+
 (
     [idquestionaire] => 23
     [idclass] => 0

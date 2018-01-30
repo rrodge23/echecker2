@@ -2453,18 +2453,19 @@ function goToFullScreen(){
             $('#agreement-container').hide();
             $('#examine-container').show();
             //COUNTDOWN TIMER
-            var setDate = new Date();
-            var countDownDate = setDate.setSeconds(setDate.getSeconds() + $('#countdownduration').val());
-           
+            
+            var countDownDate = (new Date(Date.now()).getTime() + (parseInt($("#countdownduration").val()+2)*100));
+            
+            
             // Update the count down every 1 second
             var x = setInterval(function() {
         
                 // Get todays date and time
-                var now = new Date().getTime();
+                var now = new Date(Date.now()).getTime();
                 
                 // Find the distance between now an the count down date
                 var distance = countDownDate - now;
-                console.log($('#countdownduration').val());
+                
                 // Time calculations for days, hours, minutes and seconds
                 var days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -2528,6 +2529,19 @@ function fullScreenToggle(elem) {
     }
 }
 //EXAMINE FULL SCREEN END
+
+//
+
+$(document).on("click","div.bhoechie-tab-menu>div.list-group>a",function(e) {
+    e.preventDefault();
+    $(this).siblings('a.active').removeClass("active");
+    $(this).addClass("active");
+    var index = $(this).index();
+    var tabNo = $(this).data('tab');
+    $("div.bhoechie-tab-container>div.bhoechie-tab>div.bhoechie-tab-content.btcontent-template-tab"+tabNo+"").removeClass("active");
+    $("div.bhoechie-tab-container>div.bhoechie-tab>div.bhoechie-tab-content.btcontent-template-tab"+tabNo+"").eq(index).addClass("active");
+});
+
 
 
 //
