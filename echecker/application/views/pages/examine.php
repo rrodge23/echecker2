@@ -9,14 +9,13 @@
     
 ?>
 <!-- tab start -->
+<form method="POST" id="frm-examine">
     <div class="row col-md-12">
         <div class="col-md-12">
             <div class="row">
                 <input type="hidden" name="duration" id="countdownduration" value="<?=$data["questionaire_duration"]?>">
             </div>
             
-
-                
             <div id="examine-content" style="height:100%;width=100% !important;">
                 <div id="agreement-container">
                     <div class="card card-profile">
@@ -35,8 +34,7 @@
                             </p>
                             <div class="card-footer">
                             
-                                <button onclick="goToFullScreen()" class="btn btn-primary btn-round button-fullscreen">Start</button>
-                            
+                                <button type="button" onclick="goToFullScreen();" class="btn btn-primary btn-round button-fullscreen">Start</button>
                             </div>
                         </div>
                     </div>
@@ -47,12 +45,12 @@
                 <!-- content -->
                 <div class="card card-stats">
                     <div class="card-header" data-background-color="blue">
-                        <i class="material-icons">content_copy</i>
+                        <i class="material-icons">clock</i><p id="demo" style=""></p>
                     </div>
                     <div class="card-content">
                         <h3 class="title"><?=$data["questionaire_title"]?></h3>
                         <p class="category"><?=$data["questionaire_description"]?></p>
-                        <p id="demo"></p>
+                        
                     </div>
                     <div class="card-footer col-md-12">
                         
@@ -62,10 +60,11 @@
                 <div class="col-md-12">
                     <ul class="nav nav-tabs tab-nav-right" role="tablist" style="margin-bottom:50px;">
                         <!-- tab header -->
+                       
                         <?php
                             if($data["questionaire_type"]){
                                 foreach($data["questionaire_type"] as $key=>$value){
-                                    echo '<li role="presentation" class="tab-examine '.(($key == 0) ? "active" : "").'" style="width:20%;">
+                                    echo '<li role="presentation" class="tab-examine tabno'.$key.' '.(($key == 0) ? "active" : "").'" style="width:20%;">
                                             <a href="#tab-examine'.$key.'" data-toggle="tab">
                                                 <span>'.$value["questionaire_type_title"].' - '.(($value["questionaire_type"] == 0) ? "MULTIPLE CHOICE" : "ESSAY").'</span>
                                             </a>
@@ -74,12 +73,15 @@
                             }
                             
                         ?>
+
+                        
                         
                         <!-- tab header end -->
                     </ul>
 
                     <!-- Tab panes -->
                     <div class="tab-content col-md-12">
+                        
                         <!-- tab content -->
                         <?php
                             if($data["questionaire_type"]){
@@ -89,13 +91,13 @@
                                     echo '
                                         <div class="container col-md-12">
                                             <div class="row col-md-12">
-                                                <div class="col-md-10 bhoechie-tab-container">
+                                                <div class="col-md-10 bhoechie-tab-container template'.$key.'">
                                                     <div class="col-md-2 bhoechie-tab-menu btmenu-template'.$key.'">
                                                         <div class="list-group">';
                                                             //bouche tab header
                                                             foreach($data["questionaire_type"][$key]["question"] as $i => $iValue){
                                                                 echo '<a href="#" class="list-group-item '.(($i == 0) ? "active" : "").' text-center" data-tab="'.$key.'">
-                                                                        <h4 class="glyphicon glyphicon-tags"></h4><br/>'.($i+1).'
+                                                                        <h4 class="glyphicon glyphicon-tags"></h4><br/><b>'.($i+1).'</b>
                                                                     </a>';
                                                             }
                                                             //bouchie tab header end
@@ -109,11 +111,40 @@
                                                                         <h2 style="margin-top: 0;color:#55518a">Question no. '.($i+1).'</h2><br><br>
                                                                     </center>
                                                                     
-                                                                        <div style="border-left:3px solid #337ab7;border-bottom:1px solid #337ab7;padding:10px" class="col-md-12">
-                                                                            <h3 style="margin-top: 0;color:#55518a">'.$data["questionaire_type"][$key]["question"][$i]["question_title"].'</h3>
-                                                                        </div>
-                                                                    
-                                                                </div>';
+                                                                    <div style="border-left:3px solid #337ab7;border-bottom:1px solid #337ab7;padding:10px" class="col-md-12">
+                                                                        <h3 style="margin-top: 0;color:#55518a">'.$data["questionaire_type"][$key]["question"][$i]["question_title"].'</h3>
+                                                                    </div><br><br>
+                                                                    ';
+                                                                    if($data["questionaire_type"][$key]["questionaire_type"] == 0){
+                                                                        echo '<div>';
+                                                                        foreach($data["questionaire_type"][$key]["question"][$i]["choices"] as $j => $value){
+                                                                            echo '<div class="radio">
+                                                                                    <label>
+                                                                                        <input type="radio" name="answer'.$i.'" value="'.$i.'" required="required">
+                                                                                        '.$value["choices_description"].'
+                                                                                    </label>
+                                                                                </div>';   
+                                                                        }
+                                                                        echo '</div>';
+                                                                    }
+
+                                                                    if($data["questionaire_type"][$key]["questionaire_type"] == 1){
+                                                                        
+                                                                            echo '<div class="form-group col-md-12">
+                                                                                    <label>Answer:</label>
+                                                                                    <div class="form-group label-floating">
+                                                                                        <label class="control-label">Enter your answer here. . . .</label>
+                                                                                        <textarea class="form-control" rows="5" required="required"></textarea>
+                                                                                    </div>
+                                                                                </div>';
+
+                                                                    }
+                                                                    echo '<span class="span-next-item'.$key.' item-'.$i.'">
+                                                                            <button class="btn-success btn pull-right btn-next-item" form="frm-examine" data-tabno="'.$key.'" data-item="'.$i.'">
+                                                                                <span class="material-icons">playlist_add_check</span>
+                                                                            </button>
+                                                                        </span>';   
+                                                            echo '</div>';
                                                         }   
                                                         
                                                     
@@ -130,6 +161,7 @@
                         ?>
                         
                         
+
                         <!-- tab content end  -->
                     </div>
                 </div>
@@ -145,15 +177,14 @@
         
     </div>
     <!-- tab end -->
-
-
-
+</form>
+    
 <!-- Array
 
 
 
 
-
+Array
 (
     [idquestionaire] => 23
     [idclass] => 0
@@ -169,12 +200,7 @@
     [questionaire_remarks] => 
     [questionaire_date] => 01-27-18
     [questionaire_time] => 05:44
-    [questionaire_instruction] => 
-please dont copy the answer of your seat mate
-
- 
-
-
+    [questionaire_instruction] => <p>please dont copy the answer of your seat mate</p><p>&nbsp;</p>
     [questionaire_type_id] => 0
     [questionaire_type] => Array
         (
@@ -198,13 +224,42 @@ please dont copy the answer of your seat mate
                                     [idquestion] => 31
                                     [idquestionaire_type] => 22
                                     [question_id] => 0
-                                    [question_title] => 
-english is
-
-
+                                    [question_title] => <p>english is</p>
                                     [question_points] => 
                                     [user_answer] => 
                                     [remark] => 
+                                    [choices] => Array
+                                        (
+                                            [0] => Array
+                                                (
+                                                    [idquestion_choices] => 36
+                                                    [idquestion] => 31
+                                                    [choices_description] => sample
+                                                )
+
+                                            [1] => Array
+                                                (
+                                                    [idquestion_choices] => 37
+                                                    [idquestion] => 31
+                                                    [choices_description] => being
+                                                )
+
+                                            [2] => Array
+                                                (
+                                                    [idquestion_choices] => 38
+                                                    [idquestion] => 31
+                                                    [choices_description] => tiger
+                                                )
+
+                                            [3] => Array
+                                                (
+                                                    [idquestion_choices] => 39
+                                                    [idquestion] => 31
+                                                    [choices_description] => mouse
+                                                )
+
+                                        )
+
                                     [answer] => Array
                                         (
                                             [0] => Array
@@ -244,13 +299,42 @@ english is
                                     [idquestion] => 32
                                     [idquestionaire_type] => 22
                                     [question_id] => 0
-                                    [question_title] => 
-difference difficult and hard?
-
-
+                                    [question_title] => <p>difference difficult and hard?</p>
                                     [question_points] => 
                                     [user_answer] => 
                                     [remark] => 
+                                    [choices] => Array
+                                        (
+                                            [0] => Array
+                                                (
+                                                    [idquestion_choices] => 40
+                                                    [idquestion] => 32
+                                                    [choices_description] => its your problem
+                                                )
+
+                                            [1] => Array
+                                                (
+                                                    [idquestion_choices] => 41
+                                                    [idquestion] => 32
+                                                    [choices_description] => not my problem
+                                                )
+
+                                            [2] => Array
+                                                (
+                                                    [idquestion_choices] => 42
+                                                    [idquestion] => 32
+                                                    [choices_description] => ask someone for that
+                                                )
+
+                                            [3] => Array
+                                                (
+                                                    [idquestion_choices] => 43
+                                                    [idquestion] => 32
+                                                    [choices_description] => im hungry
+                                                )
+
+                                        )
+
                                     [answer] => Array
                                         (
                                             [0] => Array
@@ -290,13 +374,42 @@ difference difficult and hard?
                                     [idquestion] => 33
                                     [idquestionaire_type] => 22
                                     [question_id] => 0
-                                    [question_title] => 
-what is English ?
-
-
+                                    [question_title] => <p>what is <strong>English</strong> ?</p>
                                     [question_points] => 
                                     [user_answer] => 
                                     [remark] => 
+                                    [choices] => Array
+                                        (
+                                            [0] => Array
+                                                (
+                                                    [idquestion_choices] => 44
+                                                    [idquestion] => 33
+                                                    [choices_description] => i dunno
+                                                )
+
+                                            [1] => Array
+                                                (
+                                                    [idquestion_choices] => 45
+                                                    [idquestion] => 33
+                                                    [choices_description] => nevermind
+                                                )
+
+                                            [2] => Array
+                                                (
+                                                    [idquestion_choices] => 46
+                                                    [idquestion] => 33
+                                                    [choices_description] => language
+                                                )
+
+                                            [3] => Array
+                                                (
+                                                    [idquestion_choices] => 47
+                                                    [idquestion] => 33
+                                                    [choices_description] => ignore
+                                                )
+
+                                        )
+
                                     [answer] => Array
                                         (
                                             [0] => Array
@@ -355,10 +468,7 @@ what is English ?
                                     [idquestion] => 34
                                     [idquestionaire_type] => 23
                                     [question_id] => 0
-                                    [question_title] => 
-explain what is language .
-
-
+                                    [question_title] => <p>explain what is language .</p>
                                     [question_points] => 
                                     [user_answer] => 
                                     [remark] => 
@@ -388,4 +498,67 @@ explain what is language .
 
         )
 
+)
+
+
+////
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+      <hr> Vertical checkbox:
+      <br>
+      <div class="btn-group btn-group-vertical" data-toggle="buttons">
+        <label class="btn active">
+          <input type="checkbox" name='email1' checked><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i> <span> Marketing Email</span>
+        </label>
+        <label class="btn">
+          <input type="checkbox" name='email2'><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i><span> Alert Email</span>
+        </label>
+        <label class="btn">
+          <input type="checkbox" name='email3'><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i><span> Account Email</span>
+        </label>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <hr> Horizontal radio:
+      <br>
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn active">
+          <input type="radio" name='gender2' checked><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-check-circle-o fa-2x"></i><span> Male</span>
+        </label>
+        <label class="btn">
+          <input type="radio" name='gender2'><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-check-circle-o fa-2x"></i><span> Female</span>
+        </label>
+      </div>
+
+
+    </div>
+  </div>
+  <hr> Horizontal checkbox:
+  <br>
+
+  <div class="btn-group btn-group" data-toggle="buttons">
+    <label class="btn active">
+      <input type="checkbox" name='email1' checked><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i><span> Marketing Email
+    </label>
+    <label class="btn">
+      <input type="checkbox" name='email2'><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i><span> Alert Email</span>
+    </label>
+    <label class="btn">
+      <input type="checkbox" name='email3'><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i><span> Account Email</span>
+    </label>
+  </div>
+
+</div>
+</div>
+
+<br>
+</div>
 ) -->

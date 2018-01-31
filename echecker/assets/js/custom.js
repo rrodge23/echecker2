@@ -2123,6 +2123,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 return false;
             }
         });
+        
         //ADD ANSWER
         $(document).on('click','div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer',function(e){
             e.preventDefault();
@@ -2203,25 +2204,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             }
         };
         a.a2 = {"sdf2":"sdf2"};
-            
         
-       
-
-    
-        /*for(i=0;i<3;i++){
-            a.type = new Array();
-            a.type = "sdf";
-            for(j=0;j<3;j++){
-                
-                a.items[j] = "items";
-                
-                for(k=0;k<3;k++){
-                   
-                    ai.ss[k] = "fsdfsdfsdf";
-                    
-                }
-            }
-        }*/
         $.ajax({
             url:"examinations/postQuestionnaireInformation",
             data:{data:a},
@@ -2490,7 +2473,7 @@ function goToFullScreen(){
     
     $(document).on('fullscreenchange webkitfullscreenchange mozfullscreenchange MSFullscreenChange', function() {
         if(!IsFullScreenCurrently()){
-            alert('hahahha');
+            //alert('hahahha');
         }
 
     });
@@ -2540,6 +2523,59 @@ $(document).on("click","div.bhoechie-tab-menu>div.list-group>a",function(e) {
     var tabNo = $(this).data('tab');
     $("div.bhoechie-tab-container>div.bhoechie-tab>div.bhoechie-tab-content.btcontent-template-tab"+tabNo+"").removeClass("active");
     $("div.bhoechie-tab-container>div.bhoechie-tab>div.bhoechie-tab-content.btcontent-template-tab"+tabNo+"").eq(index).addClass("active");
+});
+
+
+$(document).on("click",".btn-next-item",function(e) {
+    e.preventDefault();
+    var button = $(this);
+    var nextTab = button.data('tabno');
+    var spanNext = button.parent();
+    var inputNumerOfItemsValue = $('div.btmenu-template'+nextTab+'>div.list-group > a').length;
+
+    var resultInput = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active input[required]:checked').filter(function () {
+        return $.trim($(this).val()).length == 0
+      }).length == 0;
+    var resultSelect = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active textarea[required]').filter(function () {
+        return $.trim($(this).val()).length == 0
+    }).length == 0;
+    if(resultInput == true && resultSelect == true){
+        var activeHeader =  $('div.btmenu-template'+nextTab+'>div.list-group > a.active');
+        var activeContent = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active');
+        activeHeader.children('h4').removeClass('glyphicon-tags');
+        activeHeader.children('h4').addClass('glyphicon-check');
+        if(parseInt(activeHeader.children('b').text()) != (inputNumerOfItemsValue)){
+            
+            activeHeader.removeClass('active');
+            activeHeader.next().addClass('active');
+            activeContent.removeClass('active');
+            activeContent.next().addClass('active');
+            
+            //window.setInterval(function() {
+                
+                
+                var elem = $('div.bhoechie-tab-container.template'+nextTab+' .bhoechie-tab-content.active');
+                
+            //}, 5000);
+        }else{
+            
+            var contentTabHeader = $('ul > li.tab-examine');
+            var contentTabHeaderActive = $('li.tab-examine.tabno'+nextTab+'.active');
+            var contentTabContentActive = $('#tab-examine'+nextTab+'.active');
+            console.log(contentTabHeader.length+'-'+nextTab);
+            if(contentTabHeader.length != nextTab){
+                contentTabHeaderActive.removeClass('active');
+                contentTabContentActive.removeClass('active');
+                contentTabHeaderActive.next().addClass('active');
+                contentTabContentActive.next().addClass('active');
+            
+            }
+        }
+    }else{
+        swal("Cancelled", "Fill Up Fields.", "error");
+        return false;
+    }
+
 });
 
 

@@ -26,6 +26,7 @@ class Mdl_examinations extends CI_Model {
     
    
     public function deleteQuestionaire($data=false){
+        
         $query=$this->db->select('questionaire_typetbl.idquestionairetype')
                         ->where('questionaire_typetbl.idquestionaire',$data)
                 ->get('questionaire_typetbl');
@@ -216,7 +217,7 @@ class Mdl_examinations extends CI_Model {
                         for($i=0;$i<count($questionData);$i++){
                             $examData["questionaire_type"][$key]["question"][$i] = $questionData[$i];
 
-                            if($examData["questionaire_type"][$key]["question"][$i]["idquestionaire_type"] == "0"){
+                            if($examData["questionaire_type"][$key]["questionaire_type"] == "0"){
                                 $query = $this->db->where('idquestion',$examData["questionaire_type"][$key]["question"][$i]["idquestion"])
                                 ->get('question_choicestbl');
 
@@ -244,7 +245,7 @@ class Mdl_examinations extends CI_Model {
             }
            
         }   
-        
+       
         return $examData;
     }
     

@@ -8,7 +8,7 @@
     <?php 
         if($_SESSION['users']['user_level'] == "2"){ 
         echo "
-            <a rel='tooltip' data-original-title='Add' class='pull-right btn btn-success' type='button' name='create' href='examinations/addQuestionaire/'".$data["idsubject"]."'>
+            <a rel='tooltip' data-original-title='Add' class='pull-right btn btn-success' type='button' name='create' href='examinations/addQuestionaire/".$data["idsubject"]."'>
                 <i class='material-icons'>add</i>
             </a>
             ";
