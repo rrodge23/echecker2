@@ -39,7 +39,7 @@
                             <i class='material-icons'>list</i>
                         </a>";
                 if($_SESSION['users']['user_level'] == "2"){
-
+                    
                     echo "<a rel='tooltip' data-original-title='View Questionaires' class='btn btn-info' href='examinations/subjectclassinformation/$id'>
                             <i class='material-icons'>remove_red_eye</i>
                         </a>"; 

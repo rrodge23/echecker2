@@ -15,7 +15,7 @@ class Mdl_examinations extends CI_Model {
             ->get('user_subjecttbl');
         return $query->result_array();
     }
-
+    
     
     public function userQuestionaireList($data=false){
         if($_SESSION["users"]["user_level"] == "1"){ 
@@ -129,7 +129,14 @@ class Mdl_examinations extends CI_Model {
         foreach($data["data"] as $key => $value){
             $questionnaireData[$key] = $value;
         }
-        $questionnaireData["questionaire_status"] = "inactive";
+        
+        if(isset($_SESSION["users"]["position"])){
+            if($_SESSION["users"]["position"] == "1"){
+                $questionnaireData["questionaire_status"] = "unapproved";
+            }else if($_SESSION["users"]["position"] == "2"){
+                $questionnaireData["questionaire_status"] = "approved";
+            }
+        }
         $dataIdSubject = $questionnaireData["idsubject"];
         $isQuestionaireDataInserted = $this->db->insert('questionairetbl',$questionnaireData);
        
@@ -210,7 +217,7 @@ class Mdl_examinations extends CI_Model {
 
 
     public function getQuestionnaireInfoById($data=false){
-
+        
         $examData = array();
 
         $query=$this->db->where('idquestionaire',$data)
@@ -230,17 +237,18 @@ class Mdl_examinations extends CI_Model {
                     $query = $this->db->where('idquestionaire_type',$examData["questionaire_type"][$key]["idquestionairetype"])
                     ->get('questiontbl');
                     if($questionData = $query->result_array()){
+                        
                         for($i=0;$i<count($questionData);$i++){
                             $examData["questionaire_type"][$key]["question"][$i] = $questionData[$i];
 
                             if($examData["questionaire_type"][$key]["questionaire_type"] == "0"){
                                 $query = $this->db->where('idquestion',$examData["questionaire_type"][$key]["question"][$i]["idquestion"])
                                 ->get('question_choicestbl');
-
+                                
                                 if($choicesData = $query->result_array()){
                                     for($j=0;$j<count($choicesData);$j++){
                                         $examData["questionaire_type"][$key]["question"][$i]["choices"][$j] = $choicesData[$j];
-
+                                        
                                     }
                                 }
 
@@ -249,6 +257,7 @@ class Mdl_examinations extends CI_Model {
                             $query = $this->db->where('idquestion',$examData["questionaire_type"][$key]["question"][$i]["idquestion"])
                             ->get('question_answertbl');
                             if($answerData = $query->result_array()){
+                                
                                 for($j=0;$j<count($answerData);$j++){
                                     $examData["questionaire_type"][$key]["question"][$i]["answer"][$j] = $answerData[$j];
                                 }
@@ -260,8 +269,8 @@ class Mdl_examinations extends CI_Model {
                 
             }
            
-        }   
-       
+        }  
+        
         return $examData;
     }
     
@@ -298,29 +307,199 @@ class Mdl_examinations extends CI_Model {
         return array('', false);
     }
 
+
+    public function postUpdateQuestionnaire($data=false){
+       
+        $questionaireId = $data["data"]["idquestionaire"];
+        $subjectId = $data["data"]["idsubject"];
+        unset($data["data"]["idquestionaire"]);
+        unset($data["data"]["idsubject"]);
+
+        $isQuestionaireDataUpdated = $this->db->set($data["data"])
+                    ->where('idquestionaire',$questionaireId)
+                    ->update('questionairetbl');
+
+            if($isQuestionaireDataUpdated){
+                for($i=0;$i < (count($data)-1);$i++){
+                    $questionnaireTypeId = $data[$i]["data"]["idquestionairetype"];
+                    unset($data[$i]["data"]["idquestionairetype"]);
+                   
+                    $isQuestionaireTypeDataUpdated = $this->db->set($data[$i]["data"])
+                                ->where('idquestionairetype',$questionnaireTypeId)
+                                ->update('questionaire_typetbl');
+                    
+                    if($isQuestionaireTypeDataUpdated){
+                        
+                        for($j=0;$j<(count($data[$i])-1);$j++){
+                            
+
+                            $isQuestionDataUpdated = $this->db->set('question_title',$data[$i][$j]["data"]["question"])
+                                                ->where('idquestion',$data[$i][$j]["data"]["idquestion"])
+                                                ->update('questiontbl');
+                            if($isQuestionDataUpdated){
+
+                                if($data[$i]["data"]["questionaire_type"] == 0){
+                                    for($k=0;$k<(count($data[$i][$j])-1);$k++){
+                                        $choicesId = $data[$i][$j][$k]["idchoices"];
+                                        unset($data[$i][$j][$k]["idchoices"]);
+                                        $isChoicesDataUpdated = $this->db->set($data[$i][$j][$k])
+                                                        ->where('idquestion_choices',$choicesId)
+                                                        ->update('question_choicestbl');
+                                        if($isChoicesDataUpdated){
+                                            
+                                            $isAnswerDataUpdated = $this->db->set('answer',$data[$i][$j]["data"]["answer"])
+                                                            ->where('idquestion_answer',$data[$i][$j]["data"]["idanswer"])
+                                                            ->update('question_answertbl');
+                                            if(!$isAnswerDataUpdated){
+                                                return array("Error in Updating answer table",false);
+                                            }
+                                        }else{
+                                            return array("Error in Updating choices table",false);
+                                        }
+                                    }
+                                    
+                                    
+
+                                }else if($data[$i]["data"]["questionaire_type"] == 1){
+                                    for($k=0;$k<(count($data[$i][$j])-1);$k++){
+
+                                        $isAnswerDataUpdated = $this->db->set('answer',$data[$i][$j][$k]["data"]["answer"])
+                                                ->where('idquestion_answer',$data[$i][$j][$k]["data"]["idanswer"])
+                                                ->update('question_answertbl');
+                                        if(!$isAnswerDataUpdated){
+                                            return array("Error in Updating answer table",false);
+                                        }
+                                    }
+                                }
+                                
+                            }else{
+                                return array("Error in Updating question table",false);
+                            }
+
+                            
+                        }
+                    }else{
+                        return array("Error in Updating questionaire type table",false);
+                    }
+                }
+            }else{
+                return array("Error in Updating questionaire table",false);
+                
+            } // END else
+
+         // END IF 
+
+        
+       
+        return array("Record Successfully Added",true,$subjectId);
+        
+    }//endupdatequestionnaire
+
+
 } //end class
 
 /**
  * 
  * 
+
+
+
 Array
 (
     [0] => Array
         (
-            [0] => sample
-            [1] => not my problem
-            [2] => language
-            [itemPoints] => 2
-            [idquestion] => 33
+            [0] => Array
+                (
+                    [0] => Array
+                        (
+                            [choices] => rrrrr
+                            [idchoices] => 73
+                        )
+
+                    [1] => Array
+                        (
+                            [choices] => rrrrrrsrssrsrs
+                            [idchoices] => 74
+                        )
+
+                    [idquestion] => 49
+                    [question] => <p>arrrrr</p>
+                    [answer] => rrrrr
+                )
+
+            [1] => Array
+                (
+                    [0] => Array
+                        (
+                            [choices] => rrr
+                            [idchoices] => 75
+                        )
+
+                    [1] => Array
+                        (
+                            [choices] => rrrr
+                            [idchoices] => 76
+                        )
+
+                    [idquestion] => 50
+                    [question] => <p>rrrsrsrsrsr</p>
+                    [answer] => rrr
+                )
+
+            [data] => Array
+                (
+                    [questionaire_type_title] => r
+                    [questionaire_type] => 0
+                    [questionaire_type_question_quantity] => 2
+                    [questionaire_type_item_points] => 2
+                    [questionaire_type_item_quantity] => 2
+                    [questionaire_type_total_item] => 4
+                )
+
         )
 
     [1] => Array
         (
-            [0] => fghfdhfgdxfsg
-dgdsdfgh
+            [0] => Array
+                (
+                    [0] => Array
+                        (
+                            [answer] => rrrr
+                            [idanswer] => 104
+                        )
 
-            [itemPoints] => 2
-            [idquestion] => 34
+                    [1] => Array
+                        (
+                            [answer] => rrrr
+                            [idanswer] => 105
+                        )
+
+                    [idquestion] => 51
+                    [question] => <p>asfasdfsdf</p>
+                )
+
+            [data] => Array
+                (
+                    [questionaire_type_title] => r
+                    [questionaire_type] => 1
+                    [questionaire_type_question_quantity] => 2
+                    [questionaire_type_item_points] => 2
+                    [questionaire_type_item_quantity] => 2
+                    [questionaire_type_total_item] => 4
+                )
+
+        )
+
+    [data] => Array
+        (
+            [questionaire_title] => rrrr
+            [questionaire_description] => rrr
+            [questionaire_date] => 02-03-18
+            [questionaire_time] => 14:27
+            [questionaire_duration] => 10800
+            [questionaire_instruction] => <p>rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr</p>
+            [idsubject] => 14
+            [idquestionaire] => 31
         )
 
 )

@@ -59,6 +59,18 @@ class Examinations extends MY_Controller {
 		$submitResult = $this->mdl_Examinations->submitexamine($_POST["data"]);
 		echo json_encode($submitResult);
 	}
+
+	public function updateQuestionnaire($id){
+		$this->load->model('mdl_Examinations');
+		$questionaireInfoResult = $this->mdl_Examinations->getQuestionnaireInfoById($id);
+		$this->_view('updateQuestionnaire',$questionaireInfoResult);
+	}
+
+	public function postUpdateQuestionnaire(){
+		$this->load->model('mdl_Examinations');
+		$isQuestionnaireUpdated = $this->mdl_Examinations->postUpdateQuestionnaire($_POST["data"]);
+		echo json_encode($isQuestionnaireUpdated);
+	}
 }
 
 ?>

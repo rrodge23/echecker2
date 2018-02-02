@@ -273,7 +273,7 @@ $(document).ready(function(){
     });
     
     $(document).on("fileuploaded","#input-import-field",function(event,data,previewId,index){
-        alert(data.response);
+        
     });
     //********* FILEINPUT END
     
@@ -1379,7 +1379,7 @@ $(document).ready(function(){
     });
     //******** POST DELETE COURSE END*/
 $('#selectpicker').on('hide.bs.dropdown', function () {
-    alert('hide.bs.dropdown');
+    
 })
     
     //******** ADD SCHEDULE*/
@@ -2194,34 +2194,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         }
         
     });
-    $(document).on('click','#aaa', function() {
-        var i = 3;
-        var j = 3;
-        var a = [];
-        a = {
-            'a1': {
-                "sdf":"sdfsdf"
-            }
-        };
-        a.a2 = {"sdf2":"sdf2"};
-        
-        $.ajax({
-            url:"examinations/postQuestionnaireInformation",
-            data:{data:a},
-            method:"POST",
-            dataType:"json",
-            success:function(data){
-                if(data[1] == true){
-                    swal("success", "Record Added.", "success");   
-                    location.reload();
-                    $('#mdl-classes-update').modal('hide');
-                }else{
-                    swal("cancelled", data[0], "error");
-                }
-            }
-        });
-        
-    });
+    
     //tinyMCE TO SUBMIT
     $(document).on('mousedown','#frm-add-questionnaire', function() {
         tinyMCE.triggerSave();
@@ -2334,7 +2307,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                     }
                 }
                 
-                console.log(inputData);
+                
 
                 $.ajax({
                     url:"examinations/postQuestionnaireInformation",
@@ -2526,6 +2499,7 @@ $(document).on("click","div.bhoechie-tab-menu>div.list-group>a",function(e) {
     $(this).addClass("active");
     var index = $(this).index();
     var tabNo = $(this).data('tab');
+    
     $("div.bhoechie-tab-container>div.bhoechie-tab>div.bhoechie-tab-content.btcontent-template-tab"+tabNo+"").removeClass("active");
     $("div.bhoechie-tab-container>div.bhoechie-tab>div.bhoechie-tab-content.btcontent-template-tab"+tabNo+"").eq(index).addClass("active");
 });
@@ -2644,8 +2618,156 @@ $(document).on("click",".btn-next-item",function(e) {
 
 });
 
+// UPDATE QUESTIONNAIRE
 
 
+$(document).on('submit','#frm-update-questionnaire',function(e){
+    e.preventDefault();
+    tinyMCE.triggerSave();
+    if($('#tab-header li').length-1 <= 0){
+        swal("Cancelled", "Add Question Item First.", "error");
+        return false;
+    }
+    var examDate = new Date($('#questionnaire-add-day').val());
+    var todayDate = new Date(Date.now());
+    if(examDate < todayDate){
+        swal("Date Should be greater that current date", "invalid Date Input", "error");
+        return false;
+    }
+ 
+    swal({
+        title: "Are you sure?",
+        text: "Do you want to Update this record?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Update it!",
+        cancelButtonText: "No, cancel plx!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+        },
+        function(isConfirm){
+        if (isConfirm) {
+
+            var tabPanelCount = $('#tab-header li').length-1;
+            var inputTitle = $('#questionnaire-title').val();
+            var inputDescription = $('#questionnaire-description').val();
+            var inputDate = $('#questionnaire-day').val();
+            var inputTime = $('#questionnaire-time').val();
+            var inputDuration = $('#questionnaire-duration').val();
+            var inputInstruction = $('#questionnaire-instruction').val();
+            var inputIdSubject= $('#questionaire-idsubject').val();
+            var inputIdQuestionnaire= $('#questionaire-idquestionnaire').val();
+            
+            var inputData = [];
+            inputData = {
+                    
+                'data' : {
+
+                    "questionaire_title": inputTitle,
+                    "questionaire_description": inputDescription,
+                    "questionaire_date": inputDate,
+                    "questionaire_time": inputTime,
+                    "questionaire_duration": inputDuration,
+                    "questionaire_instruction": inputInstruction,
+                    "idsubject":inputIdSubject,
+                    "idquestionaire":inputIdQuestionnaire
+                }
+                
+            };
+          
+            
+            
+            for(i=0;i<tabPanelCount;i++){
+                var questionnaireTypeId = $('#questionnaire-type-idquestionairetype'+i+'').val();
+                var itemsCount = $('div.bhoechie-tab-menu.template'+i+' a').length;
+                var questionType = $('#tab-add-question'+i).data('questiontype');
+                var categoryTitle = $('#category-title-tabNo'+i+'').val();
+                var questionQuantity = $('#question-quantity-tabNo'+i+'').val();
+                var itemPoints = $('#item-points-tabNo'+i+'').val();
+                var itemQuantity = $('#item-quantity-tabNo'+i+'').val();
+                var totalItem = $('#total-item-tabNo'+i+'').val();
+                
+                inputData[i] = [];                          
+                
+                inputData[i] = {
+                    'data' : {
+                        'idquestionairetype':questionnaireTypeId,
+                        'questionaire_type_title': categoryTitle,
+                        'questionaire_type': questionType,
+                        'questionaire_type_question_quantity':questionQuantity,
+                        'questionaire_type_item_points':itemPoints,
+                        'questionaire_type_item_quantity':itemQuantity,
+                        'questionaire_type_total_item':totalItem,
+                    }
+                };
+                for(j=0;j<itemsCount;j++){
+                    inputData[i][j] = [];
+                    var question = tinymce.get("questionTabno"+i+"-itemno-"+j+"").getContent();
+                    var idquestion = $('#question-idquestion'+i+'-'+j+'').val();
+                    inputData[i][j] = {
+                        "data":{
+                            "idquestion":idquestion,
+                            "question": question
+                        }
+                    }
+                    if(questionType == 0){
+                        var choicesCount = $('center#add-answer0-0 > div.input-group').length;
+                        
+                        for(k=0;k<choicesCount;k++){
+                            inputData[i][j][k] = [];
+                            inputData[i][j][k] = {
+                                'choices_description':$('#choicesTabno-'+i+'-itemno-'+j+'-choicesno-'+k+'').val(),
+                                'idchoices':$('#input-question-idchoices'+i+'-'+j+'-'+k+'').val()
+                            }
+                        }
+                        var selectValue = $('#answerTabno-'+i+'-itemno-'+j+'-answerno-0').val();
+                        var answer = $('#choicesTabno-'+i+'-itemno-'+j+'-choicesno-'+selectValue+'').val();
+                        var idanswer = $('#input-question-idanswer'+i+'-'+j+'-0').val();
+                        inputData[i][j].data.answer = answer;
+                        inputData[i][j].data.idanswer = idanswer;
+
+                    }else{
+                        var answerCount = $('center#add-answer'+i+'-'+j+' div.add-answer > span.span-add-answer'+i+' > div.input-group').length
+                        
+                        for(k=0;k<answerCount;k++){
+                            inputData[i][j][k] = [];
+                            inputData[i][j][k] = {
+                                "data":{
+                                    'answer':$('#answerTabno-'+i+'-itemno-'+j+'-answerno-'+k+'').val(),
+                                    'idanswer':$('#input-question-idanswer'+i+'-'+j+'-'+k+'').val()
+                                }
+                            }
+                        }
+                        
+                    }
+
+
+                }
+            }
+            
+            $.ajax({
+                url:"examinations/postUpdateQuestionnaire",
+                data:{data:inputData},
+                method:"POST",
+                dataType:"json",
+                success:function(data){
+                    if(data[1] == true){
+                        swal("success", "Record Added.", "success");   
+                        window.location.replace('examinations/userquestionairelist/'+data[2]+'')
+                        $('#mdl-classes-update').modal('hide');
+                    }else{
+                        swal("cancelled", data[0], "error");
+                    }
+                }
+            });
+
+        } else {
+            swal("Cancelled", "Add Canceled.", "error");
+        }
+    });
+});
+// UPDATE QUESTIONNAIRE END
 //
 
 //

@@ -1,3 +1,6 @@
-<button id="aaa">
-        asdfasdfa
-</button>
+<?php
+
+        if($_SESSION["users"]["position"] == "2"){
+                
+        }
+?>
