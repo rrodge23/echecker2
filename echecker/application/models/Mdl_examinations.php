@@ -18,15 +18,30 @@ class Mdl_examinations extends CI_Model {
 
     
     public function userQuestionaireList($data=false){
-        $query=$this->db->where('idsubject',$data)
-            ->get('questionairetbl');
+        if($_SESSION["users"]["user_level"] == "1"){ 
+            $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
+                ->join('subjecttbl','questionairetbl.idsubject = subjecttbl.idsubject','left')
+                ->where('user_questionairetbl.idusers !=',$_SESSION["users"]["idusers"])
+                ->where('questionairetbl.questionaire_status','active')
+                ->where('questionairetbl.idsubject',$data)
+                ->or_where("(user_questionairetbl.questionaire_id = '' AND questionairetbl.questionaire_status = 'active')",NULL,FALSE)
+                ->get('questionairetbl');
+        }else if($_SESSION["users"]["user_level"] == "2"){
+            $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
+            ->join('subjecttbl','questionairetbl.idsubject = subjecttbl.idsubject','left')
+            ->where('user_questionairetbl.idusers !=',$_SESSION["users"]["idusers"])
+            ->or_where('user_questionairetbl.questionaire_id ',null)
+            ->or_where('user_questionairetbl.questionaire_id ',"")
+            ->where('questionairetbl.idsubject',$data)
+                ->get('questionairetbl');
+        } 
         return $query->result_array();
     }
 
     
    
     public function deleteQuestionaire($data=false){
-        
+
         $query=$this->db->select('questionaire_typetbl.idquestionairetype')
                         ->where('questionaire_typetbl.idquestionaire',$data)
                 ->get('questionaire_typetbl');
@@ -114,6 +129,7 @@ class Mdl_examinations extends CI_Model {
         foreach($data["data"] as $key => $value){
             $questionnaireData[$key] = $value;
         }
+        $questionnaireData["questionaire_status"] = "inactive";
         $dataIdSubject = $questionnaireData["idsubject"];
         $isQuestionaireDataInserted = $this->db->insert('questionairetbl',$questionnaireData);
        
@@ -249,7 +265,66 @@ class Mdl_examinations extends CI_Model {
         return $examData;
     }
     
-} 
+    public function submitexamine($data=false){
+        
+        for($i=0;$i<count($data);$i++){
+            
+            for($j=0;$j<(count($data[$i])-1);$j++){ //
+                $answerData = array('answer' => $data[$i][$j], 'iduser' => $_SESSION["users"]["idusers"]);
+                if($isAnswerInserted = $this->db->insert('user_answertbl',$answerData)){
 
+                    $userAnswerLastInsertId = $this->db->insert_id();
+                    $questionAnswerIdData = array('idquestion'=>$data[$i]["idquestion"],'iduseranswer'=>$userAnswerLastInsertId);
+                    $isQuestionAnswerIdDataInserted = $this->db->insert('question_user_answertbl',$questionAnswerIdData);
+                    if($isQuestionAnswerIdDataInserted){
+                        $userQuestionaireData = array('questionaire_id'=>$data["idquestionaire"],
+                                                        'idusers' => $_SESSION["users"]["idusers"]
+                                                    );
+                        if($isQuestionaireUserInserted = $this->db->insert('user_questionairetbl',$userQuestionaireData)){
+                            return array('Sucessfully Inserted', true);
+                        }
+                        
+                        return array('Error in Inserting anwer', false);
+                        
+
+                    }else{
+                        return array('Error in Inserting anwer', false);
+                    }
+                }else{
+                    return array('Error in Inserting anwer', false);
+                }
+            }
+        }
+        return array('', false);
+    }
+
+} //end class
+
+/**
+ * 
+ * 
+Array
+(
+    [0] => Array
+        (
+            [0] => sample
+            [1] => not my problem
+            [2] => language
+            [itemPoints] => 2
+            [idquestion] => 33
+        )
+
+    [1] => Array
+        (
+            [0] => fghfdhfgdxfsg
+dgdsdfgh
+
+            [itemPoints] => 2
+            [idquestion] => 34
+        )
+
+)
+false
+ */
 
 ?>

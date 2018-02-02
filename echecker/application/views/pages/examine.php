@@ -56,10 +56,12 @@
                         
                     </div>
                 </div>
+
                 <!-- tab start -->
                 <div class="col-md-12">
                     <ul class="nav nav-tabs tab-nav-right" role="tablist" style="margin-bottom:50px;">
                         <!-- tab header -->
+                        
                        
                         <?php
                             if($data["questionaire_type"]){
@@ -86,10 +88,14 @@
                         <?php
                             if($data["questionaire_type"]){
                                 foreach($data["questionaire_type"] as $key=>$value){
+                                    
                                     echo '<div role="tabpanel" class="tab-pane fade in '.(($key == 0) ? "active" : "").'" id="tab-examine'.$key.'">';
                                         //bouchie tabpanel start
                                     echo '
                                         <div class="container col-md-12">
+                                        
+                                        <input type="hidden" name="idquestionaire" id="input-idquestionaire" value="'.$data["idquestionaire"].'">
+                                        
                                             <div class="row col-md-12">
                                                 <div class="col-md-10 bhoechie-tab-container template'.$key.'">
                                                     <div class="col-md-2 bhoechie-tab-menu btmenu-template'.$key.'">
@@ -105,6 +111,10 @@
                                                     </div>
                                                     <div class="col-md-10 bhoechie-tab">';
                                                         foreach($data["questionaire_type"][$key]["question"] as $i => $iValue){
+                                                            echo '
+                                                            
+                                                                ';
+
                                                             echo '<div class="btcontent-template-tab'.$key.' bhoechie-tab-content '.(($i == 0) ? "active" : "").'">
                                                                     <center>
                                                                         <h1 class="glyphicon glyphicon-question-sign" style="font-size:4em;color:#55518a"></h1>
@@ -120,7 +130,7 @@
                                                                         foreach($data["questionaire_type"][$key]["question"][$i]["choices"] as $j => $value){
                                                                             echo '<div class="radio">
                                                                                     <label>
-                                                                                        <input type="radio" name="answer'.$i.'" value="'.$i.'" required="required">
+                                                                                        <input type="radio" class="answer'.$key.'-'.$i.'" name="answer'.$key.'-'.$i.'" value="'.$value["choices_description"].'" required="required" data-type="'.$data["questionaire_type"][$key]["questionaire_type"].'">
                                                                                         '.$value["choices_description"].'
                                                                                     </label>
                                                                                 </div>';   
@@ -134,11 +144,13 @@
                                                                                     <label>Answer:</label>
                                                                                     <div class="form-group label-floating">
                                                                                         <label class="control-label">Enter your answer here. . . .</label>
-                                                                                        <textarea class="form-control" rows="5" required="required"></textarea>
+                                                                                        <textarea class="form-control answer'.$key.'-'.$i.'" rows="5" required="required" data-type="'.$data["questionaire_type"][$key]["questionaire_type"].'"></textarea>
                                                                                     </div>
                                                                                 </div>';
 
                                                                     }
+                                                                    echo '<input type="hidden" name="idquestion" id="input-idquestion-tabno'.$key.'-'.$i.'" value="'.$data["questionaire_type"][$key]["question"][$i]["idquestion"].'">';
+                                                                    
                                                                     echo '<span class="span-next-item'.$key.' item-'.$i.'">
                                                                             <button class="btn-success btn pull-right btn-next-item" form="frm-examine" data-tabno="'.$key.'" data-item="'.$i.'">
                                                                                 <span class="material-icons">playlist_add_check</span>
@@ -155,6 +167,7 @@
                                     
                                         //bouchie tabpanel start end
                                     echo '</div>';
+                                    
                                 }
                             }
                             

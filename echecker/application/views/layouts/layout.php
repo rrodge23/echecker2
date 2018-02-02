@@ -6,7 +6,7 @@
         case '1':
             $m_subjects="";
             $m_users="";
-            $m_reports="";
+            $m_reports="1";
             $m_departments="";
             $m_courses="";
             $m_examination="1";

@@ -76,6 +76,8 @@ class Mdl_Users extends CI_Model {
     }
 
     public function insertUsers($data=array()){
+        print_r($data);
+        return false;
         $data['idsubject'] = explode(",", $data['idsubject']);
         $isDataValid = false;
         $studentDataIndex = array('firstname','middlename','lastname','year_level');

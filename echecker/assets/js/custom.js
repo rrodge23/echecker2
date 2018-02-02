@@ -2236,7 +2236,13 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             swal("Cancelled", "Add Question Item First.", "error");
             return false;
         }
-
+        var examDate = new Date($('#questionnaire-add-day').val());
+        var todayDate = new Date(Date.now());
+        if(examDate < todayDate){
+            swal("Date Should be greater that current date", "invalid Date Input", "error");
+            return false;
+        }
+     
         swal({
             title: "Are you sure?",
             text: "Do you want to add this record?",
@@ -2259,7 +2265,6 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
                 var inputDuration = $('#questionnaire-add-duration').val();
                 var inputInstruction = $('#questionnaire-add-instruction').val();
                 var inputIdSubject= $('#questionaire-idsubject').val();
-
                 
                 var inputData = [];
                 inputData = {
@@ -2544,31 +2549,92 @@ $(document).on("click",".btn-next-item",function(e) {
         var activeContent = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active');
         activeHeader.children('h4').removeClass('glyphicon-tags');
         activeHeader.children('h4').addClass('glyphicon-check');
-        if(parseInt(activeHeader.children('b').text()) != (inputNumerOfItemsValue)){
+   
+        
+        if(parseInt(activeHeader.children('b').text()) < (inputNumerOfItemsValue)){
             
+        
             activeHeader.removeClass('active');
             activeHeader.next().addClass('active');
             activeContent.removeClass('active');
             activeContent.next().addClass('active');
             
             //window.setInterval(function() {
-                
-                
-                var elem = $('div.bhoechie-tab-container.template'+nextTab+' .bhoechie-tab-content.active');
-                
+            
+            
+            var elem = $('div.bhoechie-tab-container.template'+nextTab+' .bhoechie-tab-content.active');
+        
             //}, 5000);
         }else{
-            
+           
             var contentTabHeader = $('ul > li.tab-examine');
-            var contentTabHeaderActive = $('li.tab-examine.tabno'+nextTab+'.active');
+            var contentTabHeaderActive = $('ul li.tab-examine.tabno'+nextTab+'.active');
             var contentTabContentActive = $('#tab-examine'+nextTab+'.active');
-            console.log(contentTabHeader.length+'-'+nextTab);
             if(contentTabHeader.length != nextTab){
-                contentTabHeaderActive.removeClass('active');
-                contentTabContentActive.removeClass('active');
-                contentTabHeaderActive.next().addClass('active');
-                contentTabContentActive.next().addClass('active');
-            
+             
+                if((contentTabHeader.length-1) > (contentTabHeaderActive.index())){
+                    contentTabHeaderActive.removeClass('in active');
+                    contentTabContentActive.removeClass('in active');
+                    contentTabHeaderActive.next().addClass('in active');
+                    contentTabContentActive.next().addClass('in active');
+                }else{
+                    swal({
+                        title: "Are you sure?",
+                        text: "Do you want to submit your exam?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, submit it!",
+                        cancelButtonText: "No, cancel plx!",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                        },
+                        function(isConfirm){
+                        
+                        if (isConfirm) {
+                            var dataAnswers = [];
+                            dataAnswers = {
+                                'idquestionaire' : $('#input-idquestionaire').val()
+                            }
+                            for(i=0;i<contentTabHeader.length;i++){
+                                dataAnswers[i] = [];
+                                dataAnswers[i] = {};
+                                var itemsCount = $('div.btmenu-template'+i+'>div.list-group > a').length;
+                                for(j=0;j<itemsCount;j++){
+                                    if($('.answer'+i+'-'+j+'').data('type') == 0){
+                                        dataAnswers[i][j] = $('.answer'+i+'-'+j+':checked').val();
+                                    }else{
+                                        dataAnswers[i][j] = $('.answer'+i+'-'+j+'').val();
+                                    }
+                                    
+                                    
+                                    dataAnswers[i].idquestion = $('#input-idquestion-tabno'+i+'-'+j+'').val();
+                                }
+                            }
+                            
+                            
+                            $.ajax({
+                                url:'examinations/submitexamine',
+                                data:{data:dataAnswers},
+                                dataType:"json",
+                                method:"POST",
+                                success:function(data){
+                                    if(data[1] == true){
+                                        swal("success", "Your Examination Has Been Submitted.", "success");
+                                        window.location.replace('examinations');
+                                    }else{
+                                        swal("Cancelled", "Error Delete Record.", "error");
+                                    }
+                                }
+                                
+                            });
+                        } else {
+                            swal("Cancelled", "Delete Canceled.", "error");
+                        }
+                    });
+                }
+                
+             
             }
         }
     }else{

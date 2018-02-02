@@ -116,10 +116,10 @@ class Users extends MY_Controller {
                         <span class="input-group-addon" id="basic-addon1"><div style="width:100px;float:left;text-align:right;">Position</div></span>
                         <select name="position" data-placeholder="Choose Department" class="chzn-select" required="required">
                             <option value="1">
-                                Teacher
+                                Regular Teacher
                             </option>
                             <option value="2">
-                                dean
+                                Dean
                             </option>
                         </select>
                      </div>';
