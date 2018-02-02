@@ -3,10 +3,10 @@
   if($_SESSION['users']['user_level'] != "99"){
     /*
     echo "<pre>";
-    print_r($data["data"]);
+    print_r($data);
     echo "</pre>";
     */
-  
+
 ?>
 
 <div class="user-subject-list">
@@ -37,7 +37,7 @@
                 <td class="text-center font-roboto color-a2">ID</td>
                 <td class="text-center font-roboto color-a2">TITLE</td>
                 <td class="text-center font-roboto color-a2">DESCRIPTION</td>
-                <td class="text-center font-roboto color-a2">DAY</td>
+                <td class="text-center font-roboto color-a2">DATE</td>
                 <td class="text-center font-roboto color-a2">TIME</td>
                 <?php
                     if($_SESSION['users']['user_level'] == "2"){
@@ -56,16 +56,28 @@
                             $id = $questionaire['idquestionaire'];
                             $title = $questionaire['questionaire_title'];
                             $description = $questionaire['questionaire_description'];
-                            $day = $questionaire['questionaire_date'];
+                            $date = $questionaire['questionaire_date'];
                             $time = $questionaire['questionaire_time'];
                             $status = $questionaire['questionaire_status'];
+                            if($status == "unapproved" && $_SESSION["users"]["user_level"] == "1"){
+                                continue;
+                            }
+                            if($date > Date('m-d-Y') && $_SESSION["users"]["user_level"] == "1"){
+                                continue;
+                            }
+                            
+                            if((strtotime(Date($date)) == strtotime(Date('m-d-y')) && ($_SESSION["users"]["user_level"] == "1"))){
+                                if(strtotime(Date($time)) > strtotime(Date('H:i'))){
+                                    continue;
+                                }
+                            }
                         
                         echo "
                             <tr>
                                 <td class='text-center font-roboto color-a2'>$id</td>
                                 <td class='text-center font-roboto color-a2'>$title</td>
                                 <td class='text-center font-roboto color-a2'>$description</td>
-                                <td class='text-center font-roboto color-a2'>$day</td>
+                                <td class='text-center font-roboto color-a2'>$date</td>
                                 <td class='text-center font-roboto color-a2'>$time</td>";
                                 if($_SESSION['users']['user_level'] == "2"){
                                     echo "<td class='text-center font-roboto color-a2'>$status</td>";
