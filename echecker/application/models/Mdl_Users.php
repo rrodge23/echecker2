@@ -76,11 +76,24 @@ class Mdl_Users extends CI_Model {
     }
 
     public function insertUsers($data=array()){
-        
+      
+        if((array_key_exists('department',$data)) && (array_key_exists('position',$data)) && (array_key_exists('user_level',$data)) ){
+            if($data["user_level"] == "2" && $data["position"] == "2"){// 2 if dean
+                $query = $this->db->join('teacher_informationtbl','users.idusers = teacher_informationtbl.id')
+                                ->where('teacher_informationtbl.position', $data["position"])
+                                ->where('teacher_informationtbl.department', $data["department"])
+                                ->get('users');
+                $isDeanDepartmentExist = $query->result_array();
+                if(count($isDeanDepartmentExist) > 0){
+                    return false;
+                }
+            }
+
+        }
         $data['idsubject'] = explode(",", $data['idsubject']);
         $isDataValid = false;
-        $studentDataIndex = array('firstname','middlename','lastname','year_level');
-        $teacherDataIndex = array('firstname','middlename','lastname','position');
+        $studentDataIndex = array('firstname','middlename','lastname','year_level','department');
+        $teacherDataIndex = array('firstname','middlename','lastname','position','department');
         
         if($data['user_level'] == 1 || $data['user_level'] == 2){
             if($data['user'] != "" && $data['pass'] != "" && $data['firstname'] != "" && $data['lastname'] != ""){
@@ -134,6 +147,7 @@ class Mdl_Users extends CI_Model {
                             return false;
                         }
                         if(array_key_exists('department',$data)){
+
                             $getDepartmentInfo = $this->db->where('department_name',$data['department'])->limit(1)->get('departmenttbl');
                             
                             if($departmentData = $getDepartmentInfo->row_array()){

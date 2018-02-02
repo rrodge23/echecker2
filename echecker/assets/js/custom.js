@@ -2439,8 +2439,47 @@ function goToFullScreen(){
                 
                 // If the count down is over, write some text 
                 if (distance < 0) {
+                    
                     clearInterval(x);
                     document.getElementById("demo").innerHTML = "EXPIRED";
+                    
+                    var contentTabHeader = $('ul > li.tab-examine');
+                    var dataAnswers = [];
+                    dataAnswers = {
+                        'idquestionaire' : $('#input-idquestionaire').val()
+                    }
+                    for(i=0;i<contentTabHeader.length;i++){
+                        dataAnswers[i] = [];
+                        dataAnswers[i] = {};
+                        var itemsCount = $('div.btmenu-template'+i+'>div.list-group > a').length;
+                        for(j=0;j<itemsCount;j++){
+                            if($('.answer'+i+'-'+j+'').data('type') == 0){
+                                dataAnswers[i][j] = $('.answer'+i+'-'+j+':checked').val();
+                            }else{
+                                dataAnswers[i][j] = $('.answer'+i+'-'+j+'').val();
+                            }
+                            
+                            
+                            dataAnswers[i].idquestion = $('#input-idquestion-tabno'+i+'-'+j+'').val();
+                        }
+                    }
+                    
+                    
+                    $.ajax({
+                        url:'examinations/submitexamine',
+                        data:{data:dataAnswers},
+                        dataType:"json",
+                        method:"POST",
+                        success:function(data){
+                            if(data[1] == true){
+                                swal("success", "Your Examination Has Been Submitted.", "success");
+                                window.location.replace('examinations');
+                            }else{
+                                swal("Cancelled", "Error Delete Record.", "error");
+                            }
+                        }
+                        
+                    });
                 }
             }, 1000);
             //COUNTDOWN TIMER END
@@ -2523,7 +2562,6 @@ $(document).on("click",".btn-next-item",function(e) {
         var activeContent = $('div.bhoechie-tab-container.template'+nextTab+' div.bhoechie-tab-content.active');
         activeHeader.children('h4').removeClass('glyphicon-tags');
         activeHeader.children('h4').addClass('glyphicon-check');
-   
         
         if(parseInt(activeHeader.children('b').text()) < (inputNumerOfItemsValue)){
             

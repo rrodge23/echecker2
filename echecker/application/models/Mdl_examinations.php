@@ -24,14 +24,14 @@ class Mdl_examinations extends CI_Model {
                 ->where('user_questionairetbl.idusers !=',$_SESSION["users"]["idusers"])
                 ->where('questionairetbl.questionaire_status','approved')
                 ->where('questionairetbl.idsubject',$data)
-                ->or_where("(questionairetbl.idquestionaire NOT IN ('SELECT user_questionairetbl.questionaire_id FROM user_questionairetbl') AND questionairetbl.questionaire_status = 'approved')",NULL,FALSE)
+                ->or_where("(questionairetbl.idquestionaire NOT IN ('SELECT user_questionairetbl.questionaire_id FROM user_questionairetbl') AND questionairetbl.questionaire_status = 'approved' AND questionairetbl.idsubject = $data)",NULL,FALSE)
                 ->get('questionairetbl');
         }else if($_SESSION["users"]["user_level"] == "2"){
             $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
             ->join('subjecttbl','questionairetbl.idsubject = subjecttbl.idsubject','left')
             ->where('user_questionairetbl.idusers !=',$_SESSION["users"]["idusers"])
-            ->or_where("(questionairetbl.idquestionaire NOT IN ('SELECT user_questionairetbl.questionaire_id FROM user_questionairetbl'))",NULL,FALSE)
             ->where('questionairetbl.idsubject',$data)
+            ->or_where("(questionairetbl.idquestionaire NOT IN ('SELECT user_questionairetbl.questionaire_id FROM user_questionairetbl') AND questionairetbl.idsubject = $data)",NULL,FALSE)
                 ->get('questionairetbl');
         } 
         return $query->result_array();
