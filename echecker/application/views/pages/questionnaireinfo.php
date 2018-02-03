@@ -199,9 +199,10 @@
                 <!-- content end /////////-->
             </div>
             <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">book</i>
-                </div>
+                
+                <button class="btn-information btn pull-right col-md-5" type="button" onclick="return false;" id="btn-submit-approval" data-id="<?=$data["idquestionaire"]?>">
+                    <span class="material-icons">check_circle</span>SUBMIT APPROVAL
+                </button>
             </div>
         </div>
     </div>

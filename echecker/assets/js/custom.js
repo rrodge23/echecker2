@@ -2442,7 +2442,7 @@ function goToFullScreen(){
                     
                     clearInterval(x);
                     document.getElementById("demo").innerHTML = "EXPIRED";
-                    
+
                     var contentTabHeader = $('ul > li.tab-examine');
                     var dataAnswers = [];
                     dataAnswers = {
@@ -2806,8 +2806,49 @@ $(document).on('submit','#frm-update-questionnaire',function(e){
     });
 });
 // UPDATE QUESTIONNAIRE END
-//
 
-//
+//btn-submit-approval
+$(document).on('click','#btn-submit-approval',function(e){
+    e.preventDefault();
+    var btn = $(this);
+    var id = btn.data('id');
+
+    swal({
+        title: "Are you sure?",
+        text: "Approve this Questionnaire ?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Approve it!",
+        cancelButtonText: "No, cancel plx!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+        },
+        function(isConfirm){
+        
+        if (isConfirm) {
+            
+            $.ajax({
+            url:'notifications/approvequestionnaire',
+            data:{id:id},
+            dataType:"json",
+            method:"POST",
+            success:function(data){
+                if(data[1] == true){
+                    window.location.replace('notifications');
+                    
+                }else{
+                    swal("Cancelled", "Fail to Submit Approval.", "error");
+                }
+            }
+        });
+        } else {
+            swal("Cancelled", "Canceled.", "error");
+        }
+    });
+    
+    
+});
+//btn-submit-approval
 
 //__userSessionUserLevelData 

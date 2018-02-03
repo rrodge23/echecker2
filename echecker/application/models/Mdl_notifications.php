@@ -106,6 +106,17 @@ class Mdl_notifications extends CI_Model {
         
     }
 
+    public function approvequestionnaire($id=false){
+        
+        $isQuestionnaireUpdated = $this->db->set('questionaire_status','approved')
+                        ->where('idquestionaire',$id)
+                        ->update('questionairetbl');
+        if($isQuestionnaireUpdated){
+            return array("Approved",true);
+        }
+        return array("Fail to Approve",false);
+    }
+
 }
 
 ?>

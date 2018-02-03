@@ -94,11 +94,11 @@
                         }
                                     
                         if($_SESSION['users']['user_level'] == "2"){
-                            
+                            if($status != "approved" || $_SESSION['users'][0]["position"] == "2"){
                             echo "<a href='examinations/updateQuestionnaire/$id' data-id='$id' rel='tooltip' data-original-title='Delete' class='btn btn-info' name='update'>
                                     <i class='material-icons'>create</i>
                                 </a>";
-                            
+                            }
                             echo "<button data-id='$id' rel='tooltip' data-original-title='Delete' class='btn-delete-questionaire btn btn-danger' type='submit' name='delete' onclick='return false;'>
                                     <i class='material-icons'>delete</i>
                                 </button>";
