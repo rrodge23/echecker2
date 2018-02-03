@@ -8,7 +8,7 @@
     }else{
         $displayUserLevel = "unknown";
     }
-
+    
 ?>
 
                     <div class="col-md-12">

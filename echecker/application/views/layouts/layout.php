@@ -1,7 +1,7 @@
 
 <?php
-    $dashboard="";$subjects="";$users="";$reports="";$departments="";$examinations="";$courses="";$schedules="";$classes="";
-    $m_subjects="";$m_users="";$m_reports="";$m_departments="";$m_courses="";$m_examination;$m_schedules="";$m_classes="";
+    $dashboard="";$subjects="";$users="";$reports="";$departments="";$examinations="";$courses="";$schedules="";$classes="";$notifications="";
+    $m_subjects="";$m_users="";$m_reports="";$m_departments="";$m_courses="";$m_examination;$m_schedules="";$m_classes="";$m_notifications="";
     switch($_SESSION['users']['user_level']){
         case '1':
             $m_subjects="";
@@ -12,6 +12,7 @@
             $m_examination="1";
             $m_schedules="";
             $m_classes="";
+            $m_notifications="";
             break;
         case '2':
             $m_subjects="";
@@ -22,8 +23,9 @@
             $m_examination="1";
             $m_schedules="";
             $m_classes="";
+            $m_notifications="1";
             break;
-        case '99':
+        case '99':  
             $m_subjects="1";
             $m_users="1";
             $m_reports="1";
@@ -32,6 +34,7 @@
             $m_examination="1";
             $m_schedules="1";
             $m_classes="1";
+            $m_notifications="";
             break;
     };
 
@@ -63,8 +66,12 @@
         case 'classes':
             $classes='active';
             break;   
+        case 'notifications':
+            $notifications='active';
+            break;   
         default:
     };
+    
 ?>
 
 <div class="wrapper">
@@ -163,7 +170,17 @@
                                     </a>
                                 </li>';
                     }
-                
+
+                    if(($m_notifications == '1') && ($_SESSION['users'][0]['position'] == "2")){
+                        
+                        echo '<li class="'.$notifications.'">
+                                    <a href="notifications">
+                                        <i class="material-icons">notifications</i>
+                                        <p>Notifications</p>
+                                    </a>
+                                </li>';
+                    }
+                    
                     ?>
                 </ul>
     	    </div>
