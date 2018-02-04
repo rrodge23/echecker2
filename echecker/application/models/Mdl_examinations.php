@@ -18,13 +18,15 @@ class Mdl_examinations extends CI_Model {
     
     
     public function userQuestionaireList($data=false){
+        $userID = $_SESSION["users"]["idusers"];
+        $dateNow = Date('m-d-y');
         if($_SESSION["users"]["user_level"] == "1"){ 
             $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
                 ->join('subjecttbl','questionairetbl.idsubject = subjecttbl.idsubject','left')
                 ->where('user_questionairetbl.idusers !=',$_SESSION["users"]["idusers"])
                 ->where('questionairetbl.questionaire_status','approved')
                 ->where('questionairetbl.idsubject',$data)
-                ->or_where("(questionairetbl.idquestionaire NOT IN ('SELECT user_questionairetbl.questionaire_id FROM user_questionairetbl') AND questionairetbl.questionaire_status = 'approved' AND questionairetbl.idsubject = $data)",NULL,FALSE)
+                ->or_where("(questionairetbl.idquestionaire != user_questionairetbl.questionaire_id AND user_questionairetbl.idusers != $userID AND questionairetbl.questionaire_status = 'approved' AND questionairetbl.idsubject = $data)",NULL,FALSE)
                 ->get('questionairetbl');
         }else if($_SESSION["users"]["user_level"] == "2"){
             $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
@@ -130,9 +132,9 @@ class Mdl_examinations extends CI_Model {
         }
         
         if(isset($_SESSION["users"]["position"])){
-            if($_SESSION["users"]["position"] == "1"){
+            if($_SESSION["users"][0]["position"] == "1"){
                 $questionnaireData["questionaire_status"] = "unapproved";
-            }else if($_SESSION["users"]["position"] == "2"){
+            }else if($_SESSION["users"][0]["position"] == "2"){
                 $questionnaireData["questionaire_status"] = "approved";
             }
         }

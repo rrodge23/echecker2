@@ -14,7 +14,13 @@ class Mdl_notifications extends CI_Model {
         $questionairesData = array();
         
         $query=$this->db->join('subjecttbl','questionairetbl.idsubject = subjecttbl.idsubject','left')
-                    ->where('questionaire_status','unapproved')
+                    ->join('user_subjecttbl','subjecttbl.idsubject = user_subjecttbl.idsubject','left')
+                    ->join('users','user_subjecttbl.UID = users.idusers','left')
+                    ->join('teacher_informationtbl','users.idusers = teacher_informationtbl.id','left')
+                    ->where('users.user_level','2')
+                    ->where('teacher_informationtbl.department',$_SESSION["users"][0]["department"])
+                    ->where('teacher_informationtbl.position','2')
+                    ->where('questionairetbl.questionaire_status','unapproved')
                     ->get('questionairetbl');
 
        if($questionairesData = $query->result_array()){

@@ -6,7 +6,7 @@
     print_r($data);
     echo "</pre>";
     */
-
+    
 ?>
 
 <div class="user-subject-list">
@@ -62,16 +62,20 @@
                             if($status == "unapproved" && $_SESSION["users"]["user_level"] == "1"){
                                 continue;
                             }
-                            if($date > Date('m-d-Y') && $_SESSION["users"]["user_level"] == "1"){
+                            date_default_timezone_set('Asia/Manila');
+                            $datetime = DateTime::createFromFormat('m-d-y',$date);
+                            $datetimenow = DateTime::createFromFormat('m-d-y',Date('m-d-y'));
+                            if($datetime > $datetimenow && $_SESSION["users"]["user_level"] == "1"){
                                 continue;
                             }
-                            
-                            if((strtotime(Date($date)) == strtotime(Date('m-d-y')) && ($_SESSION["users"]["user_level"] == "1"))){
-                                if(strtotime(Date($time)) > strtotime(Date('H:i'))){
+                            if($datetime == $datetimenow && $_SESSION["users"]["user_level"] == "1"){
+                                $datetimeTime = DateTime::createFromFormat('H:i',Date($time));
+                                $datetimeTimeNow = DateTime::createFromFormat('H:i',Date('H:i'));
+                                if($datetimeTime > $datetimeTimeNow){
                                     continue;
                                 }
                             }
-                        
+
                         echo "
                             <tr>
                                 <td class='text-center font-roboto color-a2'>$id</td>

@@ -2209,8 +2209,31 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             swal("Cancelled", "Add Question Item First.", "error");
             return false;
         }
-        var examDate = new Date($('#questionnaire-add-day').val());
-        var todayDate = new Date(Date.now());
+
+        var date = new Date(Date.now());
+        var month = date.getMonth();
+        var day = date.getDate().toString();
+        var year = date.getFullYear();
+        
+   
+        year = year.toString().substr(-2);
+        month = (month + 1).toString();
+
+   
+        if (month.length === 1)
+        {
+            month = "0" + month;
+        }
+    
+        if (day.length === 1)
+        {
+            day = "0" + day;
+        }
+        alert(month + day + year);
+        var examDate = new Date($('#questionnaire-add-day').val()).getTime();
+        var todayDate = new Date(month +'-'+day + '-' + year).getTime();
+        alert(examDate);                                                                
+        alert(todayDate);
         if(examDate < todayDate){
             swal("Date Should be greater that current date", "invalid Date Input", "error");
             return false;
@@ -2442,7 +2465,7 @@ function goToFullScreen(){
                     
                     clearInterval(x);
                     document.getElementById("demo").innerHTML = "EXPIRED";
-
+                    swal("Expired", "Time's Up !", "error");
                     var contentTabHeader = $('ul > li.tab-examine');
                     var dataAnswers = [];
                     dataAnswers = {

@@ -1,7 +1,9 @@
 <?php
 
 ?>
-
+<div class="title">
+    <h3>Confirmation List</h3>
+</div>
 <table id="table-departmentlist" class="table table-striped">        
     <thead>
         <tr>
@@ -10,7 +12,7 @@
             <td class="text-center font-roboto color-a2">DESCRIPTION</td>
             <td class="text-center font-roboto color-a2">DATE</td>
             <td class="text-center font-roboto color-a2">TIME</td>
-            <td class="text-center font-roboto color-a2">SUBJECT NAME</td>
+            <td class="text-center font-roboto color-a2">SUBJECT CODE</td>
             <td class="text-center font-roboto color-a2">ACTION</td>
 
         </tr>
@@ -40,10 +42,7 @@
                             <a href='notifications/viewquestionnaire/$id' rel='tooltip' data-original-title='View' class='btn-view-questionnaire btn btn-info' name='view'>
                                 <i class='material-icons'>remove_red_eye</i>
                             </a>
-                            <button href='departments/deletedepartment' data-id='$id' rel='tooltip' data-original-title='approved' class='btn-approved-questionnaire btn btn-success' type='button' name='approved' onclick='return false;'>
-                                <i class='material-icons'>playlist_add_check</i>
-                            </button>
-                        
+                          
                         </td>
                     </tr>
                     ";
