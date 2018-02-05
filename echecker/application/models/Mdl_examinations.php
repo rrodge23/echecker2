@@ -108,7 +108,6 @@ class Mdl_examinations extends CI_Model {
         return array("",true);
     }
 
-    
 
     public function subjectclassinformation($data=false){
         $query=$this->db->join('users','user_subjecttbl.UID = users.idusers','left')
@@ -233,7 +232,8 @@ class Mdl_examinations extends CI_Model {
         
         $examData = array();
 
-        $query=$this->db->where('idquestionaire',$data)
+        $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id')
+            ->where('idquestionaire',$data)
             ->get('questionairetbl');
         if($questionaireData = $query->result_array()){
            
@@ -250,9 +250,21 @@ class Mdl_examinations extends CI_Model {
                     $query = $this->db->where('idquestionaire_type',$examData["questionaire_type"][$key]["idquestionairetype"])
                     ->get('questiontbl');
                     if($questionData = $query->result_array()){
-                        
                         for($i=0;$i<count($questionData);$i++){
+                           
+                            
                             $examData["questionaire_type"][$key]["question"][$i] = $questionData[$i];
+
+                            $query = $this->db->join('user_answertbl','question_user_answertbl.iduseranswer = user_answertbl.iduseranswer')
+                                                  ->where('question_user_answertbl.idquestion',$questionData[$i]["idquestion"])
+                                                  ->where('user_answertbl.iduser',$_SESSION["users"]["idusers"])
+                                                ->get("question_user_answertbl");
+                            
+                            if($userAnswer = $query->result_array()){
+                                
+                                $examData["questionaire_type"][$key]["question"][$i]["user_answer"] = $userAnswer;
+                                
+                            }
 
                             if($examData["questionaire_type"][$key]["questionaire_type"] == "0"){
                                 $query = $this->db->where('idquestion',$examData["questionaire_type"][$key]["question"][$i]["idquestion"])
