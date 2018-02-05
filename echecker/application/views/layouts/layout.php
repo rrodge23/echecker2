@@ -17,7 +17,7 @@
         case '2':
             $m_subjects="";
             $m_users="";
-            $m_reports="1";
+            $m_reports="";
             $m_departments="";
             $m_courses="";
             $m_examination="1";
@@ -28,10 +28,10 @@
         case '99':  
             $m_subjects="1";
             $m_users="1";
-            $m_reports="1";
+            $m_reports="";
             $m_departments="1";
             $m_courses="1";
-            $m_examination="1";
+            $m_examination="";
             $m_schedules="1";
             $m_classes="1";
             $m_notifications="";
@@ -49,7 +49,7 @@
             $users='active';
             break;
         case 'reports':
-            $reports='active';
+            $examinations='active';
             break;
         case 'departments':
             $departments='active';

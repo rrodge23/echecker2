@@ -2229,11 +2229,9 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
         {
             day = "0" + day;
         }
-        alert(month + day + year);
         var examDate = new Date($('#questionnaire-add-day').val()).getTime();
         var todayDate = new Date(month +'-'+day + '-' + year).getTime();
-        alert(examDate);                                                                
-        alert(todayDate);
+       
         if(examDate < todayDate){
             swal("Date Should be greater that current date", "invalid Date Input", "error");
             return false;
@@ -2329,9 +2327,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
 
                     }
                 }
-                
-                
-
+         
                 $.ajax({
                     url:"examinations/postQuestionnaireInformation",
                     data:{data:inputData},
@@ -2814,7 +2810,7 @@ $(document).on('submit','#frm-update-questionnaire',function(e){
                 dataType:"json",
                 success:function(data){
                     if(data[1] == true){
-                        swal("success", "Record Added.", "success");   
+                        swal("success", "Record Updated.", "success");   
                         window.location.replace('examinations/userquestionairelist/'+data[2]+'')
                         $('#mdl-classes-update').modal('hide');
                     }else{
@@ -2824,7 +2820,7 @@ $(document).on('submit','#frm-update-questionnaire',function(e){
             });
 
         } else {
-            swal("Cancelled", "Add Canceled.", "error");
+            swal("Cancelled", "Update Canceled.", "error");
         }
     });
 });

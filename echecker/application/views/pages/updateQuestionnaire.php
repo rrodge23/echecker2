@@ -195,11 +195,14 @@
                         echo '<div class="form-group">
                             <label for="">Select Question Answer</label>
                             <select multiple name="answer" required="required" class="form-control" id="answerTabno-'.$i.'-itemno-'.$j.'-answerno-0" data-testno="" value="'.$selectIndexAnswer.'">';
+                        
                         for($k=0;$k<count($data["questionaire_type"][$i]["question"][$j]["choices"]);$k++){
+                            
                             if($selectIndexAnswer == $k){
-                                echo '<option value="'.$k.'" >Choices No '.($k+1).'</option>';
-                            }else{
                                 echo '<option value="'.$k.'" selected="selected">Choices No '.($k+1).'</option>';
+                            }else{
+                                
+                                echo '<option value="'.$k.'" >Choices No '.($k+1).'</option>';
                             }
                             
                         }    

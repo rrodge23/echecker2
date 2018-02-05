@@ -23,10 +23,10 @@ class Mdl_examinations extends CI_Model {
         if($_SESSION["users"]["user_level"] == "1"){ 
             $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
                 ->join('subjecttbl','questionairetbl.idsubject = subjecttbl.idsubject','left')
-                ->where('user_questionairetbl.idusers !=',$_SESSION["users"]["idusers"])
+                ->where("questionairetbl.idquestionaire NOT IN (SELECT user_questionairetbl.questionaire_id FROM user_questionairetbl WHERE user_questionairetbl.idusers != $userID)")
                 ->where('questionairetbl.questionaire_status','approved')
                 ->where('questionairetbl.idsubject',$data)
-                ->or_where("(questionairetbl.idquestionaire != user_questionairetbl.questionaire_id AND user_questionairetbl.idusers != $userID AND questionairetbl.questionaire_status = 'approved' AND questionairetbl.idsubject = $data)",NULL,FALSE)
+                ->or_where("(questionairetbl.idquestionaire != user_questionairetbl.questionaire_id AND user_questionairetbl.idusers != $userID AND questionairetbl.questionaire_status = 'approved' AND questionairetbl.idsubject = $data)")
                 ->get('questionairetbl');
         }else if($_SESSION["users"]["user_level"] == "2"){
             $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
@@ -168,17 +168,18 @@ class Mdl_examinations extends CI_Model {
                                         $choicesData["choices_description"] = $data[$i][$j][$k];
                                         $isChoicesDataInserted = $this->db->insert('question_choicestbl',$choicesData);
                                         if($isChoicesDataInserted){
-                                            $answerData["idquestion"] = $questionID;
-                                            $answerData["answer"] = $data[$i][$j]["answer"];
-                                            $isAnswerDataInserted = $this->db->insert('question_answertbl',$answerData);
-                                            if(!$isAnswerDataInserted){
-                                                return array("Error in Inserting answer table",false);
-                                            }
+                                            
                                         }else{
                                             return array("Error in Inserting choices table",false);
                                         }
                                     }
-                                    
+
+                                    $answerData["idquestion"] = $questionID;
+                                    $answerData["answer"] = $data[$i][$j]["answer"];
+                                    $isAnswerDataInserted = $this->db->insert('question_answertbl',$answerData);
+                                    if(!$isAnswerDataInserted){
+                                        return array("Error in Inserting answer table",false);
+                                    }
                                     
 
                                 }else if($data[$i]["data"]["questionaire_type"] == 1){
@@ -263,7 +264,11 @@ class Mdl_examinations extends CI_Model {
                                     $examData["questionaire_type"][$key]["question"][$i]["answer"][$j] = $answerData[$j];
                                 }
                                 
+                            }else{
+                                $examData["questionaire_type"][$key]["question"][$i]["answer"][0]["answer"] = "";
+                                $examData["questionaire_type"][$key]["question"][$i]["answer"][0]["idquestion_answer"] = "";
                             }
+                            
                         }
                     }
                 }
@@ -276,27 +281,43 @@ class Mdl_examinations extends CI_Model {
     }
     
     public function submitexamine($data=false){
+        $questionnaireInfo = $this->getQuestionnaireInfoById($data["idquestionaire"]);
         
-        for($i=0;$i<count($data);$i++){
+        $totalScore = 0;
+        for($i=0;$i<count($data)-1;$i++){
             
             for($j=0;$j<(count($data[$i])-1);$j++){ //
-                $answerData = array('answer' => $data[$i][$j], 'iduser' => $_SESSION["users"]["idusers"]);
+                if($questionnaireInfo["questionaire_type"][$i]["questionaire_type"] == 0){
+                    $questionScore = 0;
+                    if($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"][0]["answer"] == $data[$i][$j]){
+
+                        $questionScore = $questionnaireInfo["questionaire_type"][$i]["questionaire_type_item_points"];
+                        
+                    }
+                    
+                }else if($questionnaireInfo["questionaire_type"][$i]["questionaire_type"] == 1){
+                        $questionScore = 0;
+                        $questionPoints = $questionnaireInfo["questionaire_type"][$i]["questionaire_type_item_points"]/count($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"]); 
+                    for($k=0;$k<count($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"]);$k++){
+                        $arrAnswer = explode(" ", $data[$i][$j]);
+                        if(in_array($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"][$k]["answer"], $arrAnswer)){
+                            $questionScore += $questionPoints;
+                        }
+                    }
+                    
+                    
+                }
+                $totalScore += ceil($questionScore);
+         
+                $answerData = array('answer' => $data[$i][$j], 'iduser' => $_SESSION["users"]["idusers"],'question_score'=>$questionScore);
+                
                 if($isAnswerInserted = $this->db->insert('user_answertbl',$answerData)){
 
                     $userAnswerLastInsertId = $this->db->insert_id();
                     $questionAnswerIdData = array('idquestion'=>$data[$i]["idquestion"],'iduseranswer'=>$userAnswerLastInsertId);
                     $isQuestionAnswerIdDataInserted = $this->db->insert('question_user_answertbl',$questionAnswerIdData);
                     if($isQuestionAnswerIdDataInserted){
-                        $userQuestionaireData = array('questionaire_id'=>$data["idquestionaire"],
-                                                        'idusers' => $_SESSION["users"]["idusers"]
-                                                    );
-                        if($isQuestionaireUserInserted = $this->db->insert('user_questionairetbl',$userQuestionaireData)){
-                            return array('Sucessfully Inserted', true);
-                        }
-                        
-                        return array('Error in Inserting anwer', false);
-                        
-
+                       
                     }else{
                         return array('Error in Inserting anwer', false);
                     }
@@ -305,17 +326,26 @@ class Mdl_examinations extends CI_Model {
                 }
             }
         }
+        $userQuestionaireData = array('questionaire_id'=>$data["idquestionaire"],
+                'idusers' => $_SESSION["users"]["idusers"],
+                'user_total_score' => $totalScore
+                                );
+        if($isQuestionaireUserInserted = $this->db->insert('user_questionairetbl',$userQuestionaireData)){
+
+            return array('Sucessfully Inserted', true);
+
+        }
         return array('', false);
     }
 
 
     public function postUpdateQuestionnaire($data=false){
-       
+      
         $questionaireId = $data["data"]["idquestionaire"];
         $subjectId = $data["data"]["idsubject"];
         unset($data["data"]["idquestionaire"]);
         unset($data["data"]["idsubject"]);
-
+        
         $isQuestionaireDataUpdated = $this->db->set($data["data"])
                     ->where('idquestionaire',$questionaireId)
                     ->update('questionairetbl');

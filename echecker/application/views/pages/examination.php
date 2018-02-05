@@ -44,7 +44,9 @@
                             <i class='material-icons'>remove_red_eye</i>
                         </a>"; 
                 }    
-                           
+                    echo "<a rel='tooltip' data-original-title='View Questionaires' class='btn btn-info' href='reports/questionnairelistreports/$id'>
+                        <i class='material-icons'>history</i>
+                    </a>";           
                 echo "  </td>
                     </tr>
                     ";       
