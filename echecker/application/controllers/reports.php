@@ -17,7 +17,7 @@ class Reports extends MY_Controller {
 		$this->load->model('mdl_reports');
 		$questionaireList = $this->mdl_reports->questionnairelistreports($id);
 		
-		$this->_view('questionnairelistreports');
+		$this->_view('questionnairelistreports',$questionaireList);
 	}
     
 }

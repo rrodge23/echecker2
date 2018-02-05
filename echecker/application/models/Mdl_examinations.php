@@ -127,6 +127,8 @@ class Mdl_examinations extends CI_Model {
     public function postQuestionnaireInformation($data=false){
        
         $questionnaireData = array();
+        
+
         foreach($data["data"] as $key => $value){
             $questionnaireData[$key] = $value;
         }
@@ -138,6 +140,9 @@ class Mdl_examinations extends CI_Model {
                 $questionnaireData["questionaire_status"] = "approved";
             }
         }
+        
+        $questionnaireTotalScore = 0;
+
         $dataIdSubject = $questionnaireData["idsubject"];
         $isQuestionaireDataInserted = $this->db->insert('questionairetbl',$questionnaireData);
        
@@ -145,7 +150,7 @@ class Mdl_examinations extends CI_Model {
                 $questionaireID = $this->db->insert_id();
                 $questionnaireTypeData["idquestionaire"] = $questionaireID;
                 for($i=0;$i < (count($data)-1);$i++){
-                    
+                    $questionnaireTotalScore += ($data[$i]["data"]["questionaire_type_total_item"]);//
                     foreach($data[$i]["data"] as $key => $value){
                         $questionnaireTypeData[$key] = $value;
                     }
@@ -211,9 +216,15 @@ class Mdl_examinations extends CI_Model {
 
          // END IF 
 
+        $isUpdated = $this->db->set('questionaire_total_score',$questionaireID)
+                ->where('idquestionaire',$questionaireID)
+                ->update('questionairetbl');
+       if($isUpdated){
+            return array("Record Successfully Added",true,$dataIdSubject);
+       }else{
+            return array("Error in Inserting questionaire table",false);
+       }
         
-       
-        return array("Record Successfully Added",true,$dataIdSubject);
         
     }
 

@@ -1771,6 +1771,7 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
     
         $('#modal-dynamic').modal('show');
     });
+
     //******** ADD CLASS END*/
 
     //******** POST ADD CLASS*/
@@ -2130,8 +2131,8 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             var itemNo = $('div.bhoechie-tab-menu.template'+nextTab+' a').index($('div.bhoechie-tab-menu.template'+nextTab+' a.active'));
             var answerQuantity = $('div#tab-content > div.active div.bhoechie-tab-content.active input.form-control').length;
             var input = '<div class="input-group">'
-                            +'<span class="input-group-addon" id="basic-addon1">Description</span>'
-                            +'<input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="answerTabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'" name="answer">'
+                            +'<span class="input-group-addon" id="basic-addon1">'+answerQuantity+'</span>'
+                            +'<input type="text" class="form-control use" placeholder="Enter Answer no '+answerQuantity+'" aria-describedby="basic-addon1" required="required" id="answerTabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'" name="answer">'
                         +'</div>';
             $(input).insertBefore('div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer');
         });
