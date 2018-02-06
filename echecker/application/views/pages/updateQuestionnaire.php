@@ -167,7 +167,7 @@
                             for($k=0;$k<count($data["questionaire_type"][$i]["question"][$j]["answer"]);$k++){
                                 echo '<input type="hidden" id="input-question-idanswer'.$i.'-'.$j.'-'.$k.'" name="choices" value="'.$data["questionaire_type"][$i]["question"][$j]["answer"][$k]["idquestion_answer"].'">';
                                 echo '<div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1">Answer no '.($k+1).'</span>
+                                    <span class="input-group-addon" id="basic-addon1">Hint no '.($k+1).'</span>
                                     <input type="text" class="form-control use" placeholder="Enter Description" aria-describedby="basic-addon1" required="required" id="answerTabno-'.$i.'-itemno-'.$j.'-answerno-'.$k.'" name="answer" value="'.$data["questionaire_type"][$i]["question"][$j]["answer"][$k]["answer"].'">
                                 </div>';
                             }        
@@ -182,9 +182,9 @@
                     if($data["questionaire_type"][$i]["questionaire_type"] == 0){
                         $selectIndexAnswer = "";
                         for($k=0;$k<count($data["questionaire_type"][$i]["question"][$j]["choices"]);$k++){
-                            echo '<input type="hidden" id="input-question-idanswer'.$i.'-'.$j.'-'.$k.'" name="choices" value="'.$data["questionaire_type"][$i]["question"][$j]["answer"][$k]["idquestion_answer"].'">';
+                            echo '<input type="hidden" id="input-question-idanswer'.$i.'-'.$j.'-'.$k.'" name="choices" value="'.$data["questionaire_type"][$i]["question"][$j]["answer"][0]["idquestion_answer"].'">';
                             echo '<input type="hidden" id="input-question-idchoices'.$i.'-'.$j.'-'.$k.'" name="choices" value="'.$data["questionaire_type"][$i]["question"][$j]["choices"][$k]["idquestion_choices"].'">';
-                            if($data["questionaire_type"][$i]["question"][$j]["choices"][$k]["choices_description"] == $data["questionaire_type"][$i]["question"][$j]["answer"][$k]["answer"]){
+                            if($data["questionaire_type"][$i]["question"][$j]["choices"][$k]["choices_description"] == $data["questionaire_type"][$i]["question"][$j]["answer"][0]["answer"]){
                                 $selectIndexAnswer = $k;
                             }
                             echo '<div class="input-group">

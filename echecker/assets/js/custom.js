@@ -2131,8 +2131,8 @@ $('#selectpicker').on('hide.bs.dropdown', function () {
             var itemNo = $('div.bhoechie-tab-menu.template'+nextTab+' a').index($('div.bhoechie-tab-menu.template'+nextTab+' a.active'));
             var answerQuantity = $('div#tab-content > div.active div.bhoechie-tab-content.active input.form-control').length;
             var input = '<div class="input-group">'
-                            +'<span class="input-group-addon" id="basic-addon1">'+answerQuantity+'</span>'
-                            +'<input type="text" class="form-control use" placeholder="Enter Answer no '+answerQuantity+'" aria-describedby="basic-addon1" required="required" id="answerTabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'" name="answer">'
+                            +'<span class="input-group-addon" id="basic-addon1">Hint no. '+(answerQuantity+1)+'</span>'
+                            +'<input type="text" class="form-control use" placeholder="Enter Answer no '+(answerQuantity+1)+'" aria-describedby="basic-addon1" required="required" id="answerTabno-'+nextTab+'-itemno-'+itemNo+'-answerno-'+answerQuantity+'" name="answer">'
                         +'</div>';
             $(input).insertBefore('div.bhoechie-tab-content.active > center > div > div > span.span-add-answer'+nextTab+' > button.btn-add-answer');
         });
@@ -2473,14 +2473,18 @@ function goToFullScreen(){
                         dataAnswers[i] = {};
                         var itemsCount = $('div.btmenu-template'+i+'>div.list-group > a').length;
                         for(j=0;j<itemsCount;j++){
+                            dataAnswers[i][j] = [];
+                            dataAnswers[i][j] = {
+                                'idquestion':$('#input-idquestion-tabno'+i+'-'+j+'').val()
+                            };
                             if($('.answer'+i+'-'+j+'').data('type') == 0){
-                                dataAnswers[i][j] = $('.answer'+i+'-'+j+':checked').val();
+                                dataAnswers[i][j][0] = $('.answer'+i+'-'+j+':checked').val();
+                                
                             }else{
-                                dataAnswers[i][j] = $('.answer'+i+'-'+j+'').val();
+                                dataAnswers[i][j][0] = $('.answer'+i+'-'+j+'').val();
+                                
                             }
                             
-                            
-                            dataAnswers[i].idquestion = $('#input-idquestion-tabno'+i+'-'+j+'').val();
                         }
                     }
                     
@@ -2630,17 +2634,22 @@ $(document).on("click",".btn-next-item",function(e) {
                             }
                             for(i=0;i<contentTabHeader.length;i++){
                                 dataAnswers[i] = [];
-                                dataAnswers[i] = {};
+
                                 var itemsCount = $('div.btmenu-template'+i+'>div.list-group > a').length;
                                 for(j=0;j<itemsCount;j++){
+                                    dataAnswers[i][j] = [];
+                                    dataAnswers[i][j] = {
+                                        'idquestion':$('#input-idquestion-tabno'+i+'-'+j+'').val()
+                                    };
                                     if($('.answer'+i+'-'+j+'').data('type') == 0){
-                                        dataAnswers[i][j] = $('.answer'+i+'-'+j+':checked').val();
+                                        dataAnswers[i][j][0] = $('.answer'+i+'-'+j+':checked').val();
+                                        
                                     }else{
-                                        dataAnswers[i][j] = $('.answer'+i+'-'+j+'').val();
+                                        dataAnswers[i][j][0] = $('.answer'+i+'-'+j+'').val();
+                                        
                                     }
                                     
                                     
-                                    dataAnswers[i].idquestion = $('#input-idquestion-tabno'+i+'-'+j+'').val();
                                 }
                             }
                             

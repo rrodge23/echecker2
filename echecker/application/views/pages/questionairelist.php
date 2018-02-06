@@ -51,6 +51,7 @@
         <tbody>
             <?php
                 if($data["data"]){
+                    
                     foreach($data["data"] as $key=>$questionaire){
                     
                             $id = $questionaire['idquestionaire'];
@@ -89,7 +90,7 @@
                                 
                         echo        "<td class='text-center font-roboto color-a2'>
                                     
-                                <form action='examinations/userquestionairelist' method='POST' id='frm-userquestionairelist'>
+                                <form action='examinations/userquestionairelist' method='POST'>
                                     <input type='hidden' value=$id name='id'>";
                         if($_SESSION['users']['user_level'] == "1"){
                             echo "<a rel='tooltip' data-original-title='View Questionnaires' class='btn-view-questionaire btn btn-info' href='examinations/examine/$id'>

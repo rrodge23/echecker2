@@ -26,12 +26,11 @@ class Mdl_examinations extends CI_Model {
                 ->where("questionairetbl.idquestionaire NOT IN (SELECT user_questionairetbl.questionaire_id FROM user_questionairetbl WHERE user_questionairetbl.idusers != $userID)")
                 ->where('questionairetbl.questionaire_status','approved')
                 ->where('questionairetbl.idsubject',$data)
-                ->or_where("(questionairetbl.idquestionaire != user_questionairetbl.questionaire_id AND user_questionairetbl.idusers != $userID AND questionairetbl.questionaire_status = 'approved' AND questionairetbl.idsubject = $data)")
                 ->get('questionairetbl');
         }else if($_SESSION["users"]["user_level"] == "2"){
             $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
             ->join('subjecttbl','questionairetbl.idsubject = subjecttbl.idsubject','left')
-            ->where('user_questionairetbl.idusers !=',$_SESSION["users"]["idusers"])
+            //->where('user_questionairetbl.idusers !=',$_SESSION["users"]["idusers"])
             ->where('questionairetbl.idsubject',$data)
             ->or_where("(questionairetbl.idquestionaire NOT IN ('SELECT user_questionairetbl.questionaire_id FROM user_questionairetbl') AND questionairetbl.idsubject = $data)",NULL,FALSE)
                 ->get('questionairetbl');
@@ -141,7 +140,7 @@ class Mdl_examinations extends CI_Model {
         }
         
         $questionnaireTotalScore = 0;
-
+        $questionaireID = 0;
         $dataIdSubject = $questionnaireData["idsubject"];
         $isQuestionaireDataInserted = $this->db->insert('questionairetbl',$questionnaireData);
        
@@ -214,8 +213,8 @@ class Mdl_examinations extends CI_Model {
             } // END else
 
          // END IF 
-
-        $isUpdated = $this->db->set('questionaire_total_score',$questionaireID)
+        
+        $isUpdated = $this->db->set('questionaire_total_score',$questionnaireTotalScore)
                 ->where('idquestionaire',$questionaireID)
                 ->update('questionairetbl');
        if($isUpdated){
@@ -232,7 +231,7 @@ class Mdl_examinations extends CI_Model {
         
         $examData = array();
 
-        $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id')
+        $query=$this->db->join('user_questionairetbl','questionairetbl.idquestionaire = user_questionairetbl.questionaire_id','left')
             ->where('idquestionaire',$data)
             ->get('questionairetbl');
         if($questionaireData = $query->result_array()){
@@ -302,17 +301,55 @@ class Mdl_examinations extends CI_Model {
         
         return $examData;
     }
-    
+    /**
+     * Array
+(
+    [0] => Array
+        (
+            [0] => Array
+                (
+                    [0] => asfsdf
+                    [idquestion] => 79
+                )
+
+            [1] => Array
+                (
+                    [0] => sfsdf
+                    [idquestion] => 80
+                )
+
+        )
+
+    [1] => Array
+        (
+            [0] => Array
+                (
+                    [0] => asdfasdf 
+                    [idquestion] => 81
+                )
+
+            [1] => Array
+                (
+                    [0] => asdfasdfsd asdf asdf asdf 
+                    [idquestion] => 82
+                )
+
+        )
+
+    [idquestionaire] => 41
+)
+     */
     public function submitexamine($data=false){
+
         $questionnaireInfo = $this->getQuestionnaireInfoById($data["idquestionaire"]);
         
         $totalScore = 0;
         for($i=0;$i<count($data)-1;$i++){
             
-            for($j=0;$j<(count($data[$i])-1);$j++){ //
+            for($j=0;$j<(count($data[$i]));$j++){ //
                 if($questionnaireInfo["questionaire_type"][$i]["questionaire_type"] == 0){
                     $questionScore = 0;
-                    if($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"][0]["answer"] == $data[$i][$j]){
+                    if($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"][0]["answer"] == $data[$i][$j][0]){
 
                         $questionScore = $questionnaireInfo["questionaire_type"][$i]["questionaire_type_item_points"];
                         
@@ -322,7 +359,7 @@ class Mdl_examinations extends CI_Model {
                         $questionScore = 0;
                         $questionPoints = $questionnaireInfo["questionaire_type"][$i]["questionaire_type_item_points"]/count($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"]); 
                     for($k=0;$k<count($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"]);$k++){
-                        $arrAnswer = explode(" ", $data[$i][$j]);
+                        $arrAnswer = explode(" ", $data[$i][$j][0]);
                         if(in_array($questionnaireInfo["questionaire_type"][$i]["question"][$j]["answer"][$k]["answer"], $arrAnswer)){
                             $questionScore += $questionPoints;
                         }
@@ -331,13 +368,13 @@ class Mdl_examinations extends CI_Model {
                     
                 }
                 $totalScore += ceil($questionScore);
-         
-                $answerData = array('answer' => $data[$i][$j], 'iduser' => $_SESSION["users"]["idusers"],'question_score'=>$questionScore);
+                
+                $answerData = array('answer' => $data[$i][$j][0], 'iduser' => $_SESSION["users"]["idusers"],'question_score'=>$questionScore);
                 
                 if($isAnswerInserted = $this->db->insert('user_answertbl',$answerData)){
 
                     $userAnswerLastInsertId = $this->db->insert_id();
-                    $questionAnswerIdData = array('idquestion'=>$data[$i]["idquestion"],'iduseranswer'=>$userAnswerLastInsertId);
+                    $questionAnswerIdData = array('idquestion'=>$data[$i][$j]["idquestion"],'iduseranswer'=>$userAnswerLastInsertId);
                     $isQuestionAnswerIdDataInserted = $this->db->insert('question_user_answertbl',$questionAnswerIdData);
                     if($isQuestionAnswerIdDataInserted){
                        
@@ -349,9 +386,11 @@ class Mdl_examinations extends CI_Model {
                 }
             }
         }
-        $userQuestionaireData = array('questionaire_id'=>$data["idquestionaire"],
+       
+        $userQuestionaireData = array(
+                'questionaire_id'=>$data["idquestionaire"],
                 'idusers' => $_SESSION["users"]["idusers"],
-                'user_total_score' => $totalScore
+                'user_total_score' => (string)$totalScore
                                 );
         if($isQuestionaireUserInserted = $this->db->insert('user_questionairetbl',$userQuestionaireData)){
 

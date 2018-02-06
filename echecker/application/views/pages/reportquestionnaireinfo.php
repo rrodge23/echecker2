@@ -1,7 +1,7 @@
 <?php
-    echo "<pre>";
+    /*echo "<pre>";
     print_r($data);
-    echo "</pre>";
+    echo "</pre>";*/
 ?>
 
 
@@ -220,20 +220,25 @@
                                                                         
                                                                         echo '
                                                                         <div class="col-md-6">
-                                                                            <h5 class="title">
-                                                                                STATUS:
+                                                                            <div>
+                                                                                <h5 class="title">
+                                                                                    MARK:
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div>
+                                                                                <p class="category">
+                                                                                    <span class="pull-left">
+                                                                                        <i class="material-icons">'.(($iValue["answer"][0]["answer"] == $answer) ? "circle_check":"close").'</i>
+                                                                                    </span>'.(($iValue["answer"][0]["answer"] == $answer) ? "Correct !":"Wrong !").'
+                                                                                </p>
+                                                                            </div>
+                                                                            <div><h5 class="title">
+                                                                            POINT/S:
                                                                             </h5>
-                                                                            <p class="category">
-                                                                                <span>
-                                                                                    <i class="material-icons">'.(($iValue["answer"][0]["answer"] == $answer) ? "circle_check":"close").'</i>
-                                                                                </span>'.(($iValue["answer"][0]["answer"] == $answer) ? "Correct !":"Wrong !").'
-                                                                            </p>
-                                                                            <h5 class="title">
-                                                                            POINTS:
-                                                                            </h5>
-                                                                            <p class="category">
+                                                                            </div>
+                                                                            <div class="category">
                                                                                 '.(($iValue["answer"][0]["answer"] == $answer) ? $data["questionaire_type"][$key]["questionaire_type_item_points"]:"0").'
-                                                                            </p>
+                                                                            </div>
                                                                         </div>
 
 
@@ -242,21 +247,52 @@
                                                                     }
 
                                                                     if($data["questionaire_type"][$key]["questionaire_type"] == 1){
-                                                                            echo '
+                                                                            echo '  <div class="col-md-12">
+                                                                                    <div class="row">
                                                                                     <div class="title">
                                                                                         HINT SENTENCE / WORD:
                                                                                     </div>';
+                                                                                    
+                                                                                    $userAnswer = $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["answer"];           
+                                                                                  
                                                                                     foreach($data["questionaire_type"][$key]["question"][$i]["answer"] as $j => $jValue){
+                                                                                        $answer = $jValue["answer"];
                                                                                         echo '<div class="category">
-                                                                                                '.$jValue["answer"].'
+                                                                                                '.$jValue["answer"].' = '. preg_match_all("/\b($answer)\b/",$userAnswer) . ' found' . '
                                                                                             </div>';
                                                                                     }
+                                                                                
+                                                                                
+
                                                                                 echo '
-                                                                                    <div class="title">
-                                                                                        YOUR ANSWER:
                                                                                     </div>';
                                                                                     
+                                                                                
+                                                                                 echo'<div class="row">
 
+                                                                                        <div class="title">
+                                                                                            YOUR ANSWER:
+                                                                                        </div>
+                                                                                        
+                                                                                        <div class="col-md-12">';
+                                                                                $userAnswer = $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["answer"];            
+                                                                                $arrGivenAnswer = $data["questionaire_type"][$key]["question"][$i]['answer'];
+                                                                                
+                                                                                for($j=0;$j<count($arrGivenAnswer);$j++){
+                                                                                    $givenAnswer = $arrGivenAnswer[$j]["answer"];
+                                                                                    $userAnswer = preg_replace("/\b($givenAnswer)\b/",'<span style="background-color:yellow;">$1</span>',$userAnswer);
+                                                                                }
+                                                                                echo $userAnswer;           
+                                                                                echo '        </div>
+                                                                                        
+                                                                                    </div>
+                                                                                </div>
+                                                                                
+                                                                                ';
+
+
+                                                                                
+                                                                                    
                                                                                 echo '<div class="form-group col-md-12">
                                                                                 
                                                                                 </div>';
