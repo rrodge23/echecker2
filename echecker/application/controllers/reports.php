@@ -20,10 +20,31 @@ class Reports extends MY_Controller {
 		$this->_view('questionnairelistreports',$questionaireList);
 	}
 	public function reportquestionnaireinfo($id=false){
+	
 		$this->load->model('mdl_examinations');
 		$reportquestionnaireinfo = $this->mdl_examinations->getQuestionnaireInfoById($id);
 		
 		$this->_view('reportquestionnaireinfo',$reportquestionnaireinfo);
+	}
+
+	public function reportstudentquestionnaireinfo($id){
+		$this->load->model('mdl_examinations');
+		$reportquestionnaireinfo = $this->mdl_examinations->getQuestionnaireInfoById($id);
+		
+		$this->_view('reportquestionnaireinfo',$reportquestionnaireinfo);
+	}
+
+	public function reportstudentlistquestionnaire($id=false){
+		$this->load->model('mdl_reports');
+		$reportstudentlistquestionnaire = $this->mdl_reports->reportstudentlistquestionnaire($id);
+		
+		$this->_view('reportstudentlistquestionnaire',$reportstudentlistquestionnaire);
+	}
+
+	public function updatequestionscore(){
+		$this->load->model('mdl_reports');
+		$updatequestionscore = $this->mdl_reports->updatequestionscore($_POST);
+		echo json_encode($updatequestionscore);
 	}
     
 }

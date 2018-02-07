@@ -45,16 +45,19 @@ $(document).ready(function(){
             dataType:"json",
             data:form.serialize(),
             success:function(data){
-                if(data != false){
-                    if(data['status'] == 'active'){
-                        document.location.href = '/echecker/dashboard';
-                    }else{
-                        document.location.href = '/echecker/logout/changepassword';
-                    }
-                }else{
+                
+                if(data[0]['status'] == 'active' && data[1] == true){
+                    document.location.href = '/echecker/dashboard';
+                }else if(data[0]['status'] == 'inactive' && data[1] == true){
+                    document.location.href = '/echecker/logout/changepassword';
+                }else if(data[0]['status'] == 'invalid' && data[1] == true){
                     $('.validation-summary-errors').removeClass('hidden');
                     form.effect('bounce','slow');
+                }else if(data[0]['status'] == 'invalid' && data[1] == false){
+                    document.location.href = '/echecker/login/registeradmin';
                 }
+                    
+             
             }
         });
     });
@@ -83,6 +86,30 @@ $(document).ready(function(){
         });
     });
     //********* CHANGEPASSWORD END
+
+    //*********** REGISTER ADMIN
+    $(document).on('submit','#form-registeradmin',function(){
+        
+        var form = $(this);
+        var url = form.attr('action');
+        var type = form.attr('method');
+        $.ajax({
+            url:url,
+            type:type,
+            dataType:"json",
+            data:form.serialize(),
+            success:function(data){
+                if(data[1] == true){
+                    swal("Success", "Welcome Admin !", "success");
+                   document.location.href = '/echecker/dashboard';
+                }else{
+                    $('.validation-summary-errors').removeClass('hidden');
+                    form.effect('bounce','slow');
+                }
+            }
+        });
+    });
+    //********* REGISTER ADMIN END
 
     //********* SIGN OUT
     $('#btn-signout').on('click',function(){
@@ -2875,6 +2902,82 @@ $(document).on('click','#btn-submit-approval',function(e){
             swal("Cancelled", "Canceled.", "error");
         }
     });
+    
+    
+});
+$(document).on('click','.btn-report-update-essay-score',function(e){
+    e.preventDefault();
+    var btn = $(this);
+    var itemPoints = btn.data('itempoints');
+    var idquestionuseranswer = btn.data('idquestionuseranswer');
+    var iduserquestionaire = btn.data('iduserquestionaire');
+    var idquestion = btn.data('idquestion');
+    var idusers = btn.data('idusers');
+    var score = btn.data('questionscore');
+    
+    swal({
+        title: "Update Score",
+        text: "Please Enter Question New Score",
+        type: "input",
+        input: "number",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        inputPlaceholder: "Enter Here. . . . ."
+      }, function (inputValue) {
+        if (inputValue === false) return false;
+        if (inputValue === "") {
+          swal.showInputError("You need to write something!");
+          return false
+        }
+        if (isNaN(inputValue)) {
+          swal.showInputError("Input should be a number");
+          return false
+        }
+        if (parseInt(inputValue) > parseInt(itemPoints)) {
+          swal.showInputError("Updated score should not greater than item points !");
+          return false
+        }
+        
+        var newscore = inputValue;
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to update question score ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, update it!",
+            cancelButtonText: "No, cancel plx!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+            },
+            function(isConfirm){
+            
+            if (isConfirm) {
+                
+                $.ajax({
+                url:'reports/updatequestionscore',
+                data:{idusers:idusers,iduserquestionaire:iduserquestionaire,newscore:newscore,idquestionuseranswer:idquestionuseranswer,score:score,idquestion:idquestion},
+                dataType:"json",
+                method:"POST",
+                success:function(data){
+                    if(data[1] == true){
+                        swal("Successs", "score successfully updated", "success");
+                        $('p#user-essay-item-score').text(newscore);
+                        $('p#reports-user-total-score').text(data[2]);
+                        btn.data("questionscore",inputValue);
+                    }else{
+                        swal("Cancelled", "Fail to update", "error");
+                    }
+                }
+            });
+            } else {
+                swal("Cancelled", "Canceled.", "error");
+            }
+        });
+      });
+      /*
+    
+    */
     
     
 });

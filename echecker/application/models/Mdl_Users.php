@@ -9,42 +9,47 @@ class Mdl_Users extends CI_Model {
     }
     public function validateLogin($data=array()){
         
-        $query = $this->db->where('user', $data['username'])
-                        ->where('pass', $data['password'])
-                        ->join('user_leveltbl', 'users.user_level = user_leveltbl.user_level')
+        $queryHasAdmin = $this->db->where('user_level',"99")
                         ->get('users');
-        $usersData = $query->first_row('array');
+        $hasAdmin = $queryHasAdmin->row_array();
         
-        if($usersData['user_level'] == "99"){
+        if($hasAdmin){
+            $query = $this->db->where('user', $data['username'])
+            ->where('pass', $data['password'])
+            ->join('user_leveltbl', 'users.user_level = user_leveltbl.user_level')
+            ->get('users');
+            $usersData = $query->first_row('array');
+            
+            if($usersData['user_level'] == "99"){
             $query = $this->db->where('idadmin',$usersData['idusers'])->get('admin_informationtbl');
             $result = $query->first_row('array');
-            if(!$result){
-                return false;
-            }
-        }else if($usersData['user_level'] == "1"){
+            
+            }else if($usersData['user_level'] == "1"){
             $query = $this->db->where('id',$usersData['idusers'])->get('student_informationtbl');
             $result = $query->first_row('array');
-            if(!$result){
-                return false;
-            }
-        }else if($usersData['user_level'] == "2"){
             
+            }else if($usersData['user_level'] == "2"){
+
             $query = $this->db->where('id',$usersData['idusers'])->get('teacher_informationtbl');
             $result = $query->first_row('array');
-            if(!$result){
-                return false;
             }
-        }else{
-            return false;
-        }
-
-        if($usersData){
             
-            $result = array($usersData,$result);
-            return $result;
+            if($usersData){
+                
+                $_SESSION['users'] = $usersData;
+                array_push($_SESSION['users'], $result);
+                
+                return array($usersData,true);//has admin / has user // corect input
+            }else{
+                return array(array('status'=>'invalid'),true);//has admin / has user // invalid input
+            }
+            
+        }else{
+            return array(array('status'=>'invalid'),false);//no admin
         }
+        
        
-        return false;
+        return array("",false);
     }       
 
     public function getAllUserList(){
@@ -73,6 +78,57 @@ class Mdl_Users extends CI_Model {
                     ->where('users.user_level', '2')
                     ->get('users');
         return $query->result_array();
+    }
+    public function postregisteradmin($data=false){
+        print_r($data);
+        return false;
+        if($data["pass"] != $data["confirmPas"]){
+            return array("password did not match",false);
+        }
+        
+        $userLevelData = array(
+                            [0] => array(
+                                        'user_level'=>"99",
+                                        'userlevel_name'=>'admin'
+                                    )
+                            [1] => array(
+                                        'user_level'=>"1",
+                                        'userlevel_name'=>'student'
+                                    )
+                            [2] => array(
+                                        'user_level'=>"2",
+                                        'userlevel_name'=>'teacher'
+                                    )
+                        );
+        foreach($userLevelData as $key=>$value){
+            $isUserLevelInserted = $this->db->insert('user_leveltbl',$value);
+            if(!$isUserLevelInserted){
+                return array("error inserting userlevel",false);
+            }
+        }
+        
+        unset($data["confirmPass"]);
+
+        $data["user_level"] == "99";
+        $data["status"] == "active";
+        $data["code"] == "administrator";
+        $isUserAdminInserted = $this->db->insert('users',$data);
+        if($isUserAdminInserted){
+            $last_insert = $this->db->insert_id();
+            $admininfodata["firstname"] = "administrator";
+            $admininfodata["id"] = $last_insert;
+            $isAdminInfoInserted = $this->db->insert('admin_informationtbl',$admininfodata);
+            if($isAdminInfoInserted){
+                $data["idusers"] = $last_insert;
+                $data["firstname"] = 'administrator';
+                $_SESSION["users"] = $data;
+                return array("welcome admin !", true);
+            }else{
+                return array("Error Inserting admininfo",false);
+            }
+        }else{
+            return array("error in inserting user admin", false);
+        }
     }
 
     public function insertUsers($data=array()){

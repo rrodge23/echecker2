@@ -1,7 +1,7 @@
 <?php
-    /*echo "<pre>";
+    echo "<pre>";
     print_r($data);
-    echo "</pre>";*/
+    echo "</pre>";
 ?>
 
 
@@ -96,7 +96,7 @@
                         </p>
                         </div>
                         <div class="col-md-10">
-                            <p class="category">
+                            <p class="category" id="reports-user-total-score">
                                 <?=$data["user_total_score"]?>
                             </p>
                         </div>
@@ -123,9 +123,7 @@
                                 }
                             }
                             
-                        ?>
-
-                        
+                        ?>                        
                         
                         <!-- tab header end -->
                     </ul>
@@ -142,7 +140,13 @@
                                         //bouchie tabpanel start
                                     echo '
                                         <div class="container col-md-12">
-                                        <span class="title">CATEGORY TOTAL SCORE:</span><span class="category">'.($data["questionaire_type"][$key]["questionaire_type_total_item"]).'</span>
+                                        <div class="row">
+                                            <span class="title">TOTAL POINTS:</span><span class="category">'.($data["questionaire_type"][$key]["questionaire_type_total_item"]).'</span>
+                                        </div>
+                                        <div class="row">
+                                        <span class="title">POINTS PER ITEM:</span><span class="category">'.($data["questionaire_type"][$key]["questionaire_type_item_points"]).'</span>
+                                        </div>
+                                        
                                         <input type="hidden" name="idquestionaire" id="input-idquestionaire" value="'.$data["idquestionaire"].'">
 
                                             <div class="row col-md-12">
@@ -161,8 +165,12 @@
                                                     <div class="col-md-10 bhoechie-tab">';
                                                         foreach($data["questionaire_type"][$key]["question"] as $i => $iValue){
                                                             echo '
-                                                            
+                                                                
                                                                 ';
+                                                            if(isset($iValue["user_answer"][$i])){
+
+                                                                echo '<input type="hidden" id="report-idquestionuseranswer'.$key.'-'.$i.'" value="'.$iValue["user_answer"][0]["idquestionuseranswer"].'">';
+                                                            }
 
                                                             echo '<div class="btcontent-template-tab'.$key.' bhoechie-tab-content '.(($i == 0) ? "active" : "").'">
                                                                     <center>
@@ -173,6 +181,7 @@
                                                                     <div style="border-left:3px solid #337ab7;border-bottom:1px solid #337ab7;padding:10px" class="col-md-12">
                                                                         <h3 style="margin-top: 0;color:#55518a">'.$data["questionaire_type"][$key]["question"][$i]["question_title"].'</h3>
                                                                     </div><br><br>
+                                                                    <input type="hidden" id="report-idquestion'.$key.'-'.$i.' value="'.$iValue["idquestion"].'">
                                                                     ';
                                                                     if($data["questionaire_type"][$key]["questionaire_type"] == 0){
                                                                         if(count($iValue["user_answer"]) > 0 && !empty($iValue["user_answer"])){
@@ -200,7 +209,7 @@
                                                                                         CORRECT ANSWER:
                                                                                     </h5>
                                                                                
-                                                                             
+                                                                                    
                                                                                     <p class="category">
                                                                                         '.$iValue["answer"][0]["answer"].'
                                                                                     </p>
@@ -235,9 +244,11 @@
                                                                             <div><h5 class="title">
                                                                             POINT/S:
                                                                             </h5>
+
                                                                             </div>
                                                                             <div class="category">
-                                                                                '.(($iValue["answer"][0]["answer"] == $answer) ? $data["questionaire_type"][$key]["questionaire_type_item_points"]:"0").'
+                                                                            
+                                                                                '.(($iValue["answer"][0]["answer"] == $answer) ? $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["question_score"]:"0").'
                                                                             </div>
                                                                         </div>
 
@@ -245,28 +256,44 @@
                                                                         </div>
                                                                         </div>';
                                                                     }
-
+                                                                    
                                                                     if($data["questionaire_type"][$key]["questionaire_type"] == 1){
                                                                             echo '  <div class="col-md-12">
                                                                                     <div class="row">
+                                                                                    <div col-md-6>
                                                                                     <div class="title">
                                                                                         HINT SENTENCE / WORD:
                                                                                     </div>';
-                                                                                    
-                                                                                    $userAnswer = $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["answer"];           
-                                                                                  
-                                                                                    foreach($data["questionaire_type"][$key]["question"][$i]["answer"] as $j => $jValue){
-                                                                                        $answer = $jValue["answer"];
-                                                                                        echo '<div class="category">
-                                                                                                '.$jValue["answer"].' = '. preg_match_all("/\b($answer)\b/",$userAnswer) . ' found' . '
-                                                                                            </div>';
+                                                                                    if(($data["questionaire_type"][$key]["question"][$i]["user_answer"] !== null) && !empty($data["questionaire_type"][$key]["question"][$i]["user_answer"])){
+                                                                                        $userAnswer = $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["answer"];
+                                                                                        foreach($data["questionaire_type"][$key]["question"][$i]["answer"] as $j => $jValue){
+                                                                                            $answer = $jValue["answer"];
+                                                                                            echo '<div class="category">
+                                                                                                    '.$jValue["answer"].' = '. preg_match_all("/\b($answer)\b/",$userAnswer) . ' found' . '
+                                                                                                </div>';
+                                                                                        }
+                                                                                    }else{
+                                                                                        foreach($data["questionaire_type"][$key]["question"][$i]["answer"] as $j => $jValue){
+                                                                                            $answer = $jValue["answer"];
+                                                                                            echo '<div class="category">
+                                                                                                    '.$jValue["answer"].' = no answer
+                                                                                                </div>';
+                                                                                        }
                                                                                     }
+                                                                                               
                                                                                 
-                                                                                
-
                                                                                 echo '
-                                                                                    </div>';
+                                                                                    </div>
                                                                                     
+                                                                                    </div>
+                                                                                    
+                                                                                    ';
+                                                                                echo '<div class="row">
+                                                                                        <div class="title">
+                                                                                            <span>YOUR SCORE: </span><p id="user-essay-item-score">'.((($data["questionaire_type"][$key]["question"][$i]["user_answer"] !== null) && (!empty($data["questionaire_type"][$key]["question"][$i]["user_answer"]))) ? ceil($iValue["user_answer"][0]["question_score"]) : "no answer").'</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    ';    
                                                                                 
                                                                                  echo'<div class="row">
 
@@ -275,28 +302,43 @@
                                                                                         </div>
                                                                                         
                                                                                         <div class="col-md-12">';
-                                                                                $userAnswer = $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["answer"];            
-                                                                                $arrGivenAnswer = $data["questionaire_type"][$key]["question"][$i]['answer'];
-                                                                                
-                                                                                for($j=0;$j<count($arrGivenAnswer);$j++){
-                                                                                    $givenAnswer = $arrGivenAnswer[$j]["answer"];
-                                                                                    $userAnswer = preg_replace("/\b($givenAnswer)\b/",'<span style="background-color:yellow;">$1</span>',$userAnswer);
+                                                                                if(($data["questionaire_type"][$key]["question"][$i]["user_answer"] !== null) && !empty($data["questionaire_type"][$key]["question"][$i]["user_answer"])){
+                                                                                    $userAnswer = $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["answer"];            
+                                                                                    $arrGivenAnswer = $data["questionaire_type"][$key]["question"][$i]['answer'];
+                                                                                    
+                                                                                    for($j=0;$j<count($arrGivenAnswer);$j++){
+                                                                                        $givenAnswer = $arrGivenAnswer[$j]["answer"];
+                                                                                        $userAnswer = preg_replace("/\b($givenAnswer)\b/",'<span style="background-color:yellow;">$1</span>',$userAnswer);
+                                                                                    }
+                                                                                    echo $userAnswer; 
+                                                                                }else{
+                                                                                    echo "no answer";
                                                                                 }
-                                                                                echo $userAnswer;           
+                                                                                          
                                                                                 echo '        </div>
                                                                                         
                                                                                     </div>
                                                                                 </div>
                                                                                 
                                                                                 ';
-
-
+                                                                                $dataIdUserQuestionnaire = $data["iduserquestionaire"];
                                                                                 
-                                                                                    
-                                                                                echo '<div class="form-group col-md-12">
+                                                                                $dataQuestionItemPoints = $data["questionaire_type"][$key]["questionaire_type_item_points"];
+                                                                                $dataIdquestion = $data["questionaire_type"][$key]["question"][$i]["idquestion"];
+                                                                                $dataIdusers = $data["idusers"];
+                                                                                if(($data["questionaire_type"][$key]["question"][$i]["user_answer"] !== null) && !empty($data["questionaire_type"][$key]["question"][$i]["user_answer"])){
+                                                                                    $dataIdQuestionnaireUserAnswer = $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["idquestionuseranswer"];
+                                                                                    $dataQuestionScore = $data["questionaire_type"][$key]["question"][$i]["user_answer"][0]["question_score"];
+                                                                                    if($_SESSION["users"]["user_level"] == "2"){
+                                                                                        echo '<div class="form-group col-md-12">
+                                                                                                    <button class="btn-report-update-essay-score btn pull-right col-md-5" type="button" data-idusers="'.$dataIdusers.'" data-idquestion="'.$dataIdquestion.'" data-itempoints="'.$dataQuestionItemPoints.'" data-questionscore="'.$dataQuestionScore.'" data-idquestionuseranswer="'.$dataIdQuestionnaireUserAnswer.'" data-iduserquestionaire="'.$dataIdUserQuestionnaire.'">
+                                                                                                        <span class="material-icons">create</span>CHANGE SCORE
+                                                                                                    </button>
+                                                                                            </div>';
+                                                                                    }
                                                                                 
-                                                                                </div>';
-                                                                            
+                                                                                }
+                                                                             
 
                                                                     }
                                                                     echo '<input type="hidden" name="idquestion" id="input-idquestion-tabno'.$key.'-'.$i.'" value="'.$data["questionaire_type"][$key]["question"][$i]["idquestion"].'">';
@@ -304,7 +346,10 @@
                                                                     
                                                             echo '<br></div>';
                                                         }   
-                                                        
+                                                        echo '
+                                                            <br><br><br>
+                                                                            
+                                                                    ';
                                                     
                                                 echo '    </div>
                                                 </div>

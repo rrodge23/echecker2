@@ -8,7 +8,7 @@
     }else{
         $displayUserLevel = "unknown";
     }
-    
+    print_r($_SESSION["users"]);
 ?>
 
                     <div class="col-md-12">

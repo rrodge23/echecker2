@@ -18,15 +18,23 @@ class Login extends MY_Controller {
         $this->load->model('mdl_Users');
         $query = $this->mdl_Users->validateLogin($_POST);
         
-        if($query){
-            $_SESSION['users'] = $query[0];
-            array_push($_SESSION['users'], $query[1]);
-            echo json_encode($_SESSION['users']);
-
-        }else{
-            echo json_encode(false);
-        }
+        echo json_encode($query);
         
+    }
+
+    public function registeradmin(){
+        
+        $this->_view('registeradmin');
+           
+    }
+
+    public function postregisteradmin(){
+        
+        $this->load->model('mdl_Users');
+        $query = $this->mdl_Users->postregisteradmin($_POST);
+        
+        echo json_encode($query);
+           
     }
 
 }
